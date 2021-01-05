@@ -1,0 +1,185 @@
+
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer List {% endblock title %}
+
+{% block stylesheets %}
+<style>
+h5 {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #000; 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+} 
+
+h5 span { 
+    background:#fff; 
+    padding:0 10px; 
+    
+}
+
+.decoratedLine {
+    overflow: hidden;
+    padding-left: 40px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.decoratedLine>span {
+    position: relative;
+    display: inline-block;
+}
+
+.decoratedLine>span:before,
+.decoratedLine>span:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-bottom: 1px solid;
+    width: 900px;
+    /* half of limiter*/
+    margin: 0 20px;
+}
+
+.decoratedLine>span:before {
+    right: 100%;
+}
+
+.decoratedLine>span:after {
+    left: 100%;
+}
+.card{
+font-family:arial !important;
+}
+
+.help-block{
+  margin: 10px;
+}
+
+.help-text{
+  color: #435a43bd;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    Update User Profile
+  </div>
+  <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="decoratedLine vlabelBold"><span>User Profile Details</span></div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required">First Name </label>
+              {{ form.first_name }}
+            </div>
+            <span class="text-danger">{{ form.first_name.errors }}</span>
+
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required">Last Name</label>
+              {{ form.last_name }}
+            </div>
+            <span class="text-danger">{{ form.last_name.errors }}</span>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required">Username</label>
+              {{ form.username }}
+            </div>
+            <span class="text-danger">{{ form.username.errors }}</span>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark">Email Address</label>
+              {{ form.email }}
+            </div>
+            <span class="text-danger">{{ form.email.errors }}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required"> Profile Image</label>
+              
+              <a style="color: blue" href='/media/{{ user.profile_image }}/'>
+                {{ user.profile_image }}
+              </a>
+              
+              {{ form.profile_image }}
+              <div class="help-block">
+                <p class="help-text">{{ form.profile_image.help_text }}</p>
+              </div>
+            </div>
+            <span class="text-danger">{{ form.profile_image.errors }}</span>
+
+          </div>
+
+          
+
+        </div>
+
+        <div class="decoratedLine vlabelBold"><span>User Business Details</span></div>
+
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required">Business Name</label>
+              {{ customer_form.company_name }}
+            </div>
+            <span class="text-danger">{{ customer_form.company_name.errors }}</span>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required">Business Logo</label>
+              <a style="color: blue" href='/media/{{ customer.company_logo }}/'>
+                {{ customer.company_logo }}
+              </a>
+              {{ customer_form.company_logo }}
+              <div class="help-block">
+                <p class="help-text">{{ customer_form.company_logo.help_text }}</p>
+              </div>
+            </div>
+            <span class="text-danger">{{ customer_form.company_logo.errors }}</span>
+          </div>
+        </div>
+
+
+        <div class="row">
+         
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="text-normal text-dark required">Business Info</label>
+              {{ customer_form.business_info }}
+            </div>
+            <span class="text-danger">{{ customer_form.business_info.errors }}</span>
+          </div>
+        </div>
+      </div>
+
+        <div class="card-footer">
+          <button type="submit" class="btn btn-outline-primary ">Update</button>
+          <a href="{% url 'customer:social-accounts' %}" type="button" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </form>
+    
+    
+  </div>
+</div>
+
+{% endblock content %}

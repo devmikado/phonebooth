@@ -1,0 +1,536 @@
+{% extends 'layouts/base.html' %}
+{% load utils %}
+{% block title %} Customer Reports {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/css/main.css' %}" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'assets/css/util.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/animate/animate.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+
+<style>
+.d.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #fff!important;
+    background: #6363658c!important;
+}
+.column1{
+    font-family:arial !important;
+}
+.dataTables_length{
+     display:none;
+}
+.pagination li a {
+    font-size: 15px !important;
+    }
+.leftAlign{
+    text-align: justify !important;
+}
+.rightAlign{
+    text-align: right !important;
+}
+.header1{
+    line-height:2 !important;
+    font-size:14px !important;
+}
+.inputBorder{
+ border: 2px solid #aaa !important;
+}
+.select2-selection__choice_rp{
+    background-color: #fff;
+    border: 1px solid #bf3b2f;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+.select2-selection__choice__remove_rp{
+    border-radius: 14px;
+    background-color: #000;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    padding-left: 1px;
+    vertical-align: middle;
+    font-size: larger;
+ }
+ .ellipse{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 175px;
+    }
+
+.table100.ver1 th {
+  font-family: Lato-Bold;
+  font-size: 18px;
+  color: #000;
+  line-height: 1.4;
+  /* background-color: #6c7ae0; */
+  /* background-color: #676f6e; */
+  background-color: #fff;
+  border: 2px #bf3b2f solid;
+  text-align: center;
+}
+
+</style>
+{% endblock stylesheets %}
+{% block content %}
+<div id="loaderAjax" style="display:none;">
+    <div class="d-flex justify-content-center overlay">
+      <div class="spinner-grow spinner-grow-lg" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+       <div id="report" class="container-fluid pt-3 p-3 my-3">
+           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+           <div class="form-groups">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card-deck">
+                              <div class="card ">
+                                     <div class="card-body ">
+                                         <div class="row">
+                                            <label class="col-lg-11">
+                                                     <ul class="select2-selection__rendered">
+                                                        <li class="select2-selection__choice_rp" title="{% if from_date %}
+                                                                          {{from_date}} - {{to_date}}
+                                                                {% else %}
+                                                                          {{date_duration_from}} - {{date_duration_to}}
+                                                                {% endif %}">
+                                                              <div class="ellipse">
+                                                                  <b>Duration:</b> {% if from_date %}
+                                                                          {{from_date}} - {{to_date}}
+                                                                {% else %}
+                                                                          {{date_duration_from}} - {{date_duration_to}}
+                                                                {% endif %}
+                                                              </div>
+
+                                                        </li>
+                                                        {% if social_auth_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{social_auth_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Accounts: </b>{{social_auth_ids }}
+                                                            </div>
+
+                                                        </li>
+                                                    {% endif %}
+                                                        {% if location_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{location_ids }}">
+                                                            <div class="ellipse">
+
+                                                                <b>Locations: </b>{{location_ids }}
+                                                            </div>
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if sentiment_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{sentiment_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Sentiments: </b>{{sentiment_ids }}
+                                                            </div>
+
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if culture_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{culture_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Cultures: </b>{{culture_ids }}
+                                                            </div>
+
+                                                        </li>
+                                                        {% endif %}
+                                                    </ul>
+                                            </label>
+                                            <div style="float:right;text-align: center;">
+                                                    
+                                                        <form name="exportFile" method="post">
+                                                            {% csrf_token %}
+                                                            <a onclick="edit_report('{{persona.id}}')" class="" data-toggle="modal" data-id="3" style="cursor: pointer;padding: 10px;">
+                                                                <i class="ti-pencil-alt mR-10" style="color: #bf3b2f;font-size: 20px;" title="Edit Persona"></i><br/> <span>Edit Filters</span>
+                                                            </a>
+                                                        </form>
+                                                </div>
+                                         </div>
+                                     </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+           </div>
+          <div class="card">
+              <div  class="card-body" width="80%">
+                  <div class="wrap-table100">
+                        <div class="table100 ver1"  style="height: 100px; border-radius: 5px !important;">
+                            <div class="table100-head">
+                                <table>
+                                        <thead>
+                                            <th class="cell100 column1"  >
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <span style="font-size:18px;">{{persona.chip_title|title}}<br/></span>
+                                                        <span style="font-size:13px;">( {{persona.report_type.name|safe}} )</span>
+                                                    </div>
+                                                    <div class="col-lg-12" style="text-align: right;margin-top: -37px;float:right;vertical-align: bottom;">
+                                                            
+                                                                <form name="exportFile" method="post">
+                                                                {% csrf_token %}
+                                                                {% if dataRow %}
+                                                                    <button type="submit" class="excel-btn" id="exportFile" name="export" value="export"><i class="ti-download mR-10" style="color: #bf3b2f" title="Download Report" ></i> <span></span></button>
+
+<!--                                                        <a href="#" id="downloadFile" class="excel-btn" disabled="disabled" download><i class="ti-download mR-10" style="color: #fff" title="Download Report"></i></a>-->
+                                                                    <a  onclick="window.location.reload();" id="refreshReports" class="excel-btn" style="cursor: pointer;"><i class="ti-reload mR-10" style="color: #bf3b2f" title="Refresh Report"></i></a>
+                                                                    
+                                                                    {% else %}
+                                                                    
+                                                                    <button class="excel-btn" id="exportFile" name="export" value="export" style="cursor: default;" disabled><i class="ti-download mR-10" style="color: #d39791" title="Download Report" ></i> <span></span></button>
+
+                                                
+                                                                    <a  id="refreshReports" class="excel-btn" ><i class="ti-reload mR-10" style="color: #d39791" title="Refresh Report"></i></a>
+                                                                    {% endif %}
+
+                                                                      </form>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </thead>
+                                </table>
+                            </div>
+                        </div>
+                  </div>
+
+                            {% if dataRow %}
+                                <div class="table100-body js-pscroll">
+                                    <table class="report-table">
+                                        <thead>
+                                           <tr class="row100 head">
+                                            <th class="cell100 column1 leftAlign header1" style="line-height:3;font-size:14px !important;width: 5%;">#</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 20%;">Date</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Weekday</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 40%;">Location</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 15%;">Culture</th>
+                                              {% if persona.report_type.id == 3 %}
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Happy </th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Negative </th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Neutral  </th>
+                                              {% else %}
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 15%;">Language</th>
+                                                <th class="cell100 column1 rightAlign header1" style="font-size:14px !important;width: 15%;">Counts</th>
+                                                {% endif %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for trRow in dataRow %}
+
+                                            <tr class="row100 body">
+                                                <td class="cell100 column1 leftAlign" style="width: 3%;">{{ forloop.counter|add:pageNo }}</td>
+                                                <td class="cell100 column1 leftAlign" >{{trRow.date}}</td>
+                                                <td class="cell100 column1 leftAlign" >{{trRow.weekday}}</td>
+                                                <td class="cell100 column1 leftAlign" >{{trRow.location}}</td>
+                                                <td class="cell100 column1 leftAlign" >{{trRow.culture}}</td>
+                                                {% if persona.report_type.id == 3 %}
+                                                    <td class="cell100 column1 rightAlign" >{{ trRow.happy_comments }}%</td>
+                                                    <td class="cell100 column1 rightAlign" >{{trRow.negative_comments}}%</td>
+                                                    <td class="cell100 column1 rightAlign" >{{trRow.neutral_comments}}%</td>
+                                                {% else %}
+                                                    <td class="cell100 column1 leftAlign" >{{trRow.language}} </td>
+                                                    <td class="cell100 column1 rightAlign" >{{trRow.comments_count}} </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                      {% else %}
+                                      <div class="table100-body js-pscroll">
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr class="row100 head">
+                                            <th class="cell100 column1 leftAlign header1" style="line-height:3;font-size:14px !important;width: 5%;">#</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 20%;">Date</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Weekday</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 40%;">Location</th>
+                                            <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 15%;">Culture</th>
+                                              {% if persona.report_type.id == 3 %}
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Happy <br/>% </th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Negative <br/>% </th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 10%;">Neutral <br/>% </th>
+                                              {% else %}
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 15%;">Language</th>
+                                                <th class="cell100 column1 rightAlign header1" style="font-size:14px !important;width: 15%;">Counts</th>
+                                                {% endif %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="row100 body">
+                                                {% if persona.report_type.id == 3 %}
+                                                <td colspan="8" class="cell100 column1 centerAlign" style="width: 3%;">Sorry! There's no data to be displayed here.</td>
+                                                {% else %}
+                                                <td colspan="7" class="cell100 column1 centerAlign" style="width: 3%;">Sorry! There's no data to be displayed here.</td>
+                                                {% endif %}
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    {% endif %}
+                                </div>
+                              </div>
+                            {% paginate dataRow %}
+                      </div>
+                   </div>
+                  </div>
+          </div>
+<!-- Edit Modal-->
+<div id="EditModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="cutomerModalTitle">Edit Persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+        <div class="modal-body">
+            <p id="edit_reportTitle" align="center" style="margin-top: -40px;"><b>Report Type: </b>Last week's daily culture sentiments</p>
+            <div class="alert alert-danger" style="display:none" id="editPersonaErrors"></div>
+        <div class="alert alert-success" style="display:none" id="editPersonaSuccess"></div>
+        <form id="editChipForm" method="POST" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ chipForm.chip_title.label }}
+            <div class="input-group">
+                {{ chipForm.chip_title }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ chipForm.start_date.label }}
+                {{ chipForm.start_date }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                {{ chipForm.end_date.label }}
+                {{ chipForm.end_date }}
+            </div>
+
+        </div>
+        <input type="hidden" name="chip_id" id="chip_id" />
+        <section class="content1">
+           <div class="container-fluid">
+              <div id="edit_persona_type" class="row clearfix" style="display:none;" >
+              </div>
+              <div id="edit_report_type" class="row clearfix" style="display:none;">
+              </div>
+           </div>
+           <div id="edit_gen_report" class="row clearfix" >
+              <div class="container-fluid">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                       <label class="control-label" for="id_customer_chip_title">Title:</label>
+                       <div class="input-group">
+                          <input type="text" name="customer_chip_title" id="edit_id_customer_chip_title" placeholder="Enter chip title" maxlength="200" class="form-control" required="" autocomplete="off">
+                       </div>
+                    </div>
+                    <input type="hidden"  name="view" value="View Report"/>
+                    <input type="hidden"  name="viewsave" value="Save Report"/>
+                    <div id="edit_report-params">
+
+                 </div>
+                  <input type="hidden" id="edit_reportType" name="reportType" value="1">
+                   <input type="hidden" id="edit_hidden-report" name="reports" value="11">
+                   <input type="hidden" name="customer_id" value={{customer_id}}>
+
+              </div>
+           </div>
+        </section>
+        </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" id="viewPersona">View Report</button>
+            <button type="button" class="btn btn-outline-primary" id="edit_saveCustomerChip">Save & View Report</button>
+            <button type="button" class="btn btn-outline-dark" id="edit_close" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+
+    </div>
+  </div>
+<!--  </font>-->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript" src="{% static 'assets/jquery.cookie.js' %}"></script>
+<script src="{% static 'assets/select2.min.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'assets/bootstrap-datepicker.min.css' %}" />
+<script src="{% static 'assets/bootstrap-datepicker.min.js' %}"></script>
+<!--<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>-->
+<script>
+$(document).ready( function() {
+    $('#dataTable_1').dataTable({
+       "bSort" : false
+    });
+})
+$(function(){
+     $('#date_from').datepicker({
+          format: "M dd, yyyy",
+          todayBtn: "linked",
+          autoclose: true,
+          todayHighlight: true
+        });
+
+        $('#date_from').on('changeDate', function() {
+                 var temp = $(this).datepicker('getDate');
+                 var d = new Date(temp);
+                 d.setDate(d.getDate() + 1);
+                 $('#date_to').datepicker({
+                    startDate: d,
+                    format: "M dd, yyyy",
+                    todayBtn: "linked",
+                    autoclose: true,
+                    todayHighlight: true
+                });
+        });
+});
+function edit_report(id){
+    $('#EditModal').modal('show');
+    var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+    var modal_id = id;
+    $.ajax({
+      type : "GET",
+                url:"/b2b/edit-persona-details/"+modal_id+"/",
+      success : function(result){
+        reportClick(result.report_type_id)
+        setTimeout(function(){
+          $("#EditModal #edit_id_customer_chip_title").val(result.chip_title);
+          $("#EditModal #edit_reportTitle").html('<b>Report Type: </b>'+result.report_type);
+          $("#EditModal #id_chip_id").val(result.chip_id);
+          $("#EditModal #edit_hidden-report").val(id);
+          $("#EditModal #social_accounts").val(result.social_auth_id.text);
+
+
+            if (result.social_auth_id){
+          result.social_auth_id.forEach(function(social_account) {
+            console.log(social_account.text, social_account.id);
+              // var data = {id: social_account.trim(), text: social_account.trim()};
+              var newOption = new Option(social_account.text, social_account.id, true, true);
+              $("#EditModal #social_accounts").append(newOption).trigger('change');
+          });
+          }
+
+          console.log("-------------result.locations--------------->");
+          console.log(result.locations);
+          if (result.locations){
+            result.locations.forEach(function(loc) {
+              var newOption = new Option(loc.text, loc.id, true, true);
+              console.log(newOption)
+              $("#EditModal #locations").append(newOption).trigger('change');
+            });
+          }
+
+
+
+          if (result.cultures){
+            result.cultures.forEach(function(nationality) {
+              var newOption = new Option(nationality.text, nationality.id, true, true);
+              $("#EditModal #nationalities").append(newOption).trigger('change');
+            });
+          }
+
+
+          if (result.sentiments){
+            result.sentiments.forEach(function(sentiment) {
+              var newOption = new Option(sentiment.text, sentiment.id, true, true);
+              $("#EditModal #sentiment").append(newOption).trigger('change');
+            });
+          }
+
+        $('input[name=date_from]').val(result.date_duration_from);
+        $('input[name=date_to]').val(result.date_duration_to);
+
+       },1000);
+    },
+      error: function(result)
+    {
+      console.log("--------------------------");
+      console.log(result);
+      console.log("--------------------------");
+      alert("Ajax Error !!!!!!!!!!!!!");
+    }
+    });
+  }
+
+
+
+      $("#report_type").change(function(){
+       console.log("==============change====================>");
+      });
+      $("#goBackReport,#edit_goBackReport").click(function(){
+          $("#persona_type,#edit_persona_type").hide();
+          $("#report_type,#edit_report_type").show();
+          $("#gen_report,#edit_gen_report").hide();
+          $("#goBackReport,#edit_goBackReport").hide();
+          $("#saveCustomerChip,#edit_saveCustomerChip").hide();
+      });
+    function reportClick(id){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           $("#reportType").val(id);
+           $("#edit_reportType").val(id);
+
+           $.ajax({
+                   headers: temp,
+                   url:'/b2b/get_parameters_details/'+id+"/",
+                   type:"GET",
+                   success: function(data){
+                       $("#EditModal #edit_report-params").html(data);
+                   }
+           });
+        }
+        $("#edit_saveCustomerChip").click(function(){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           var chip_id = $("#EditModal #edit_hidden-report").val();
+           $.ajax({
+               headers: temp,
+               url:'/b2b/add-new-persona/',
+               type:"POST",
+               data: $("#editChipForm").serialize(),
+               success: function(data){
+                   if(data.success === 1)
+                   {    
+                       $('#editChipForm').attr('action', "/b2b/get_persona_report/"+chip_id+"/").submit();
+                        data.message = "Persona has been updated successfully...!";
+                        // window.location.href=""
+                   }
+                   if(data.success === 0)
+                   {
+                       $("#editPersonaErrors").text(data.message)
+                       $("#editPersonaErrors").show()
+                       $("#EditModal").show()
+                   }
+               },
+               error:function(data) {
+                   if(data.success === 0)
+                   {
+                       $("#editPersonaErrors").text(data.message)
+                       $("#editPersonaErrors").show()
+                       $("#EditModal").show()
+                   }
+               }
+           });
+       });
+        $("#viewPersona").click(function(e){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           var chip_id = $("#EditModal #edit_hidden-report").val();
+           $("#editChipForm").serialize()
+           e.preventDefault();
+           $('#editChipForm').attr('action', "/b2b/get_persona_report/"+chip_id+"/").submit();
+       });
+
+</script>
+{% endblock content %}

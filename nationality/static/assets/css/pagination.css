@@ -1,0 +1,65 @@
+ul:not(.browser-default) {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+ul:not(.browser-default) > li {
+    list-style-type: none;
+}
+
+.pagination li {
+    display: inline-block;
+    border-radius: 2px;
+    text-align: center;
+    vertical-align: top;
+    height: 30px;
+}
+
+.pagination li.disabled a {
+    cursor: default;
+    color: #999;
+}
+
+.pagination li a {
+    color: #444;
+    display: inline-block;
+    font-size: 1.2rem;
+    padding: 0 10px;
+    line-height: 30px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.pagination svg {
+    margin-top: 3px;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+.pagination li.disabled a {
+    cursor: default;
+    color: #999;
+}
+
+.pagination li a {
+    color: #444;
+    font-size: 1.2rem;
+    line-height: 30px;
+}
+
+.pagination li.active, .pagination .body-home header .side-nav li.nav-home, .body-home header .side-nav .pagination li.nav-home, .pagination .body-home header .side-nav li.nav-report, .body-home header .side-nav .pagination li.nav-report {
+    /* background-color: #2bb673; */
+    background-color: #746b6a;
+}
+
+.pagination li.active a, .pagination .body-home header .side-nav li.nav-home a, .body-home header .side-nav .pagination li.nav-home a, .pagination .body-home header .side-nav li.nav-report a, .body-home header .side-nav .pagination li.nav-report a {
+    color: #fff;
+}
+
+.pagination{
+    margin-top: 10px;
+}

@@ -1,0 +1,83 @@
+{% load static %}
+  <style>
+  .dropdown-menu{
+      left: 0 !important;
+    }
+  .dropdown .dropdown-menu a{
+    color: #000; 
+    text-decoration: none;
+
+    }
+    
+  
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+    li:hover ul {
+      display:block;
+    }
+
+    #userProfile-dropdown > li a i {
+        margin-right: 10px !important;
+        color:#bf3b2f;
+    }
+    
+  
+  </style>
+
+
+
+  <div class="header navbar">
+    <div class="header-container">
+      <!-- <ul class="nav-left">
+        <li>
+           <a id="sidebar-toggle" class="sidebar-toggle" href="javascript:void(0);">
+             
+             <i><img src="/media/icons/next.png" width="20px;"/></i>
+             
+            
+          </a>
+        </li>
+      </ul> -->
+     
+    </div>
+  </div>
+
+
+  <script src="{% static 'assets/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'assets/bootstrap.min.js' %}"></script>
+
+  <script>
+    $('.app .sidebar').hover(function(){
+      var logo = $(".sidebar-logo").find("img").attr("src");
+      console.log("---------------logo--------------->");
+      console.log(logo);
+      if (logo == "/media/booth.png"){
+        $(".sidebar-logo").find("img").attr("src", "/media/logo.png");
+      }
+      else{
+        $(".sidebar-logo").find("img").attr("src", "/media/booth.png");
+      }
+
+  });
+  $("#sidebar-toggle").click(function(e) {
+    e.preventDefault();
+    $("#sidebar").toggleClass("toggled");
+    var icon = $(this).parent().find("img").attr("src");
+    if (icon == "/media/icons/next.png"){
+      console.log("---------------ddd------------------>")
+      // icon = "/media/icons/left-arrow.png"
+      $(this).parent().find("img").attr("src", "/media/icons/left-arrow.png")
+      
+      // $(".sidebar-logo").find("img").css({"max-width":"120px", "height":"auto", "width":"100%"});
+      // $(".sidebar-logo").css({"display": "flex", "align-items": "center", "justify-content": "center"})
+
+    }
+    else{
+      $(this).parent().find("img").attr("src", "/media/icons/next.png");
+      // $(".sidebar-logo").find("img").removeAttr('style');
+      // $(".sidebar-logo").removeAttr('style');
+    }
+    });
+  </script>

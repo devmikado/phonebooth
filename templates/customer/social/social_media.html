@@ -1,0 +1,596 @@
+{% extends 'layouts/base.html' %}
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% block title %} Social Accounts {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'assets/css/social.css' %}" rel="stylesheet">
+<style>
+.plus-btn{
+  position: absolute !important;
+  right: 19px;
+  bottom: 16px;
+}
+
+.card{
+  margin-right: 15px;
+}
+a {
+    color: #2196f3 !important;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <script>
+
+
+      <!--function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().-->
+        <!--console.log('statusChangeCallback');-->
+        <!--console.log(response);                   // The current login status of the person.-->
+        <!--if (response.status === 'connected') {   // Logged into your webpage and Facebook.-->
+          <!--testAPI();-->
+        <!--} else {                                 // Not logged into your webpage or we are unable to tell.-->
+          <!--document.getElementById('status').innerHTML = 'Please log ' +-->
+            <!--'into this webpage.';-->
+        <!--}-->
+      <!--}-->
+
+
+      <!--function checkLoginState() {               // Called when a person is finished with the Login Button.-->
+        <!--FB.getLoginStatus(function(response) {   // See the onlogin handler-->
+          <!--statusChangeCallback(response);-->
+        <!--});-->
+      <!--}-->
+
+
+      <!--window.fbAsyncInit = function() {-->
+        <!--FB.init({-->
+          <!--appId      : '285853375806387',-->
+          <!--cookie     : true,                     // Enable cookies to allow the server to access the session.-->
+          <!--xfbml      : true,                     // Parse social plugins on this webpage.-->
+          <!--version    : 'v3.2'           // Use this Graph API version for this call.-->
+        <!--});-->
+
+
+        <!--FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.-->
+          <!--statusChangeCallback(response);        // Returns the login status.-->
+        <!--});-->
+      <!--};-->
+
+      <!--function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.-->
+        <!--console.log('Welcome!  Fetching your information.... ');-->
+        <!--FB.api('/me', function(response) {-->
+            <!--console.log('11111111111111111111111111111111')-->
+            <!--console.log(response)-->
+            <!--console.log('11111111111111111111111111111111')-->
+          <!--console.log('Successful login for: ' + response.name);-->
+          <!--document.getElementById('status').innerHTML =-->
+            <!--'Thanks for logging in, ' + response.name + '!';-->
+        <!--});-->
+
+        <!---->
+      <!--}-->
+
+
+  </script>
+
+<!-- Load the JS SDK asynchronously -->
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+
+<div id="status">
+</div>
+
+<!-- Load the JS SDK asynchronously -->
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+<div class="row">
+
+    <div style="margin-left: 80px;"></div>
+
+    <div class="card social-media-cards">
+        <div class="card-body">
+            <div class="col-md-12"></div>
+
+            <!-- instagram -->
+            <div class="row">
+
+                <div class="col-md-4">
+                    <p align="center" >
+                        <img class=""  src="{% static 'assets/static/images/insta.png' %}" alt="logo" width="35">
+                        Instagram
+                    </p>
+                </div>
+
+                <div class="col-md-8">
+
+                    {% if context.instagram_accounts_count %}
+                        You have
+                        <span class="badge badge-light">
+                            {{ context.instagram_accounts_count }}
+                        </span>
+                        account connected.<br> Add More
+                    {% else %}
+                        Connect your first account
+                    {% endif %}
+
+                    <!-- link account -->
+                    <a class="plus-btn" id="insta-login" href="{% url 'social:begin' 'facebook' %}" style="cursor: pointer;">
+                        <i class="ti-plus"  title="Connect new Instagram account"></i>
+                    </a>
+                    <!-- link account -->
+                    {% if context.instagram_accounts_count %}
+                        <div class="down-icon-wrap">
+                            {% if context.insta_account %}
+                                <i class="c-black-500 ti-angle-down" id="instabtn" title="View connected Instagram accounts">   </i>
+                                <a href="#" class="ptinsta" data-toggle="popover" title="Connected Accounts" data-placement="bottom" data-popover-content="#insta" >
+                                </a>
+                            {% else %}
+
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if context.instagram_accounts_count %}
+                        <div class="hidden" id="insta" style="display: none">
+
+                            <div class="popover-body">
+                                {% if context.insta_account %}
+                                {% for acc in context.insta_account %}
+
+                                {% for j, i in acc.items %}
+
+                                <li class="insta-list" style="list-style: none; padding: 5px;border-bottom: 1px solid #f4f4f4; font-size: 13.5px;">
+                                    {{ forloop.counter }}.
+
+                                    <span>{{ i|title }}</span>
+                                    <a href="{% url 'social:begin' 'facebook' %}">
+                                        <i style="float:right;right: 21px;position: absolute;"  class="c-red-500  ti-close instaDisconnect" data-id="{{ j }}"> </i>
+                                    </a>
+                                    <!--<i style="float:right;right: 21px;position: absolute;" onclick="toggleClick({{j}}, 'insta')" class="c-red-500  ti-close instaDisconnect" data-id="{{ j }}"> </i>-->
+
+                                </li>
+
+                                {% endfor %}
+
+                                {% endfor %}
+
+                                {% else %}
+                                    No account connected
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer mb-2 instagram" style="margin-bottom: 0 !important;">
+
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <!-- facebook -->
+    <!-- <div class="col-md-3"> -->
+    <div class="card">
+        <div class="card-body social-media-cards">
+            <div class="row">
+                <div class="col-md-4">
+                    <p align="center" >
+                        <img class="" src="{% static 'assets/static/images/facebook.png' %}" alt="logo" width="35">
+                        Facebook</p>
+                </div>
+                <div class="col-md-8">
+
+                    {% if context.facebook_pages_count %}
+                    You have
+                    <span class="badge badge-light">
+                            
+                            {{ context.facebook_pages_count  }}
+                            
+  
+                          </span>
+                    page connected.<br> Add More
+                    {% else %}
+                    Connect your first account
+
+                    {% endif %}
+
+                    <a class="plus-btn" id="fb-login" href="{% url 'social:begin' 'facebook' %}" style="cursor: pointer;">
+                        <i class="ti-plus"  title="Connect new Facebook account"></i></a>
+                    <!-- <span class="btn-fab-presentation">
+                        <svg fill="#ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="https://api.snovel.in/static/dashboard/images/add.svg" class="injected-svg">
+                          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" role="presentation"></path>
+                          <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+                      </svg>
+                    </span>
+                  </a> -->
+                  {% if context.facebook_pages_count %}
+                    <div class="down-icon-wrap">
+
+                        {% if context.fb_accounts %}
+                        <i class="c-black-500 ti-angle-down" id="fbbtn" title="View connected Facebook accounts">   </i>
+
+
+                        <a href="#" class="ptfacebook" data-toggle="popover" title="Connected Accounts" data-placement="bottom" data-popover-content="#fb" >
+
+                        </a>
+                        {% else %}
+
+                        {% endif %}
+
+
+                    </div>
+                    {% endif %}
+                    <!-- Popover #1 -->
+
+                    <!-- Content for Popover #1 -->
+                    {% if context.facebook_pages_count %}
+                    <div class="hidden" id="fb" style="display: none">
+
+                        <div class="popover-body">
+                            {% if context.fb_accounts %}
+                            {% for acc in context.fb_accounts %}
+
+                            {% for j, i in acc.items %}
+
+                            <li class="fb-list" style="list-style: none; padding: 5px;border-bottom: 1px solid #f4f4f4; font-size: 13.5px;">
+                                {{ forloop.counter }}.
+
+                                <span>{{ i|title }}</span>
+
+                                <a href="{% url 'social:begin' 'facebook' %}">
+                                    <i style="float:right;right: 21px;position: absolute;" class="c-red-500  ti-close fbDisconnect" data-id="{{ j }}"> </i>
+                                </a>
+                                <!--<i style="float:right;right: 21px;position: absolute;" onclick="toggleClick({{j}}, 'facebook')" class="c-red-500  ti-close fbDisconnect" data-id="{{ j }}"> </i>-->
+
+                            </li>
+
+                            {% endfor %}
+
+                            {% endfor %}
+                            {% else %}
+                            No account connected
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer mb-2 facebook" style="margin-bottom: 0 !important;">
+
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <!-- twitter -->
+    <!-- <div cla ss="col-md-3"> -->
+    <div class="card social-media-cards">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <p align="center">
+                        <img class="" src="{% static 'assets/static/images/twitter.png' %}" alt="logo" width="35">
+                        Twitter</p>
+                </div>
+                <div class="col-md-8">
+
+                    {% if context.twitter_accounts_count %}
+                    You have
+                    <span class="badge badge-light">
+                          
+                          {{ context.twitter_accounts_count  }}
+                          
+
+                        </span>
+                    account connected.<br> Add More
+                    {% else %}
+                    Connect your first account
+
+                    {% endif %}
+
+                    <a class="plus-btn" href="{% url 'social:begin' 'twitter' %}" style="cursor: pointer;">
+                        <i class="ti-plus" title="Connect new Twitter account" ></i></a>
+                    <!-- <span class="btn-fab-presentation">
+                        <svg fill="#ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="https://api.snovel.in/static/dashboard/images/add.svg" class="injected-svg">
+                          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" role="presentation"></path>
+                          <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+                      </svg>
+                    </span>
+
+                </a> -->
+
+                    <div class="down-icon-wrap">
+                        {% if context.twitter_accounts %}
+                        <i class="c-black-500 ti-angle-down" id="twitbtn" title="View connected Twitter accounts">   </i>
+
+                        <a href="#" class="ptwitter" data-toggle="popover" title="Connected Accounts" data-placement="bottom" data-popover-content="#twit" data-trigger="manual" >
+
+                        </a>
+                        {% else %}
+                        {% endif %}
+
+                    </div>
+
+                    <!-- Popover #1 -->
+
+                    <!-- Content for Popover #1 -->
+                    <div class="hidden" id="twit" style="display: none">
+
+                        <div class="popover-body">
+                            {% if context.twitter_accounts %}
+                            {% for acc in context.twitter_accounts %}
+
+                            {% for j, i in acc.items %}
+
+                            <li class="twit-list" style="padding: 5px;border-bottom: 1px solid #f4f4f4;">
+                                {{ forloop.counter }}.
+
+                                <span>{{ i|title }}</span>
+
+
+                                <a><i style="float:right;right: 21px;position: absolute;" onclick="toggleClick({{j}}, 'twitter')" class="c-red-500  ti-close twitDisconnect" data-id="{{ j }}"> </i></a>
+
+
+                            </li>
+
+                            {% endfor %}
+
+                            {% endfor %}
+                            {% else %}
+                            No account connected
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer mb-2 twitter" style="margin-bottom: 0 !important;">
+
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <script src="{% static 'assets/js/popper.js' %}"></script>
+    <script>
+$(function(){
+    $("[data-toggle=popover]").popover({
+        html : true,
+        content: function() {
+          var content = $(this).attr("data-popover-content");
+          return $(content).children(".popover-body").html();
+        },
+        title: function() {
+          var title = $(this).attr("data-popover-content");
+          return $(title).children(".popover-heading").html();
+        }
+    });
+});
+
+$("#instabtn").click(function(){
+  event.stopPropagation();
+  $('[class="ptinsta"]').popover('toggle');
+});
+
+$("#fbbtn").click(function(){
+  event.stopPropagation();
+  $('[class="ptfacebook"]').popover('toggle');
+});
+
+$("#twitbtn").click(function(){
+  event.stopPropagation();
+  $('[class="ptwitter"]').popover('toggle');
+});
+
+$(document).click(function(){
+    $('.popover').popover('hide');
+});
+</script>
+    <script>
+function toggleClick(id, platform){
+  console.log("-------------platform--------------->");
+  console.log(platform)
+  $('[data-toggle=popover]').popover('hide');
+  $('#modalconfirm').modal('show');
+  $('#modalconfirm')
+          .find("h4.modal-title")
+          .html("Disconnect Social Account");
+  $('#modalconfirm')
+          .find(".modal-body")
+          .html('<p>Do you want to disconnect account ?</p><input type="text" id="response" \ class="form-control" aria-label="Text input with checkbox"');
+
+  $('.modal-footer').html('<input class="btn btn-outline-primary" type="button" value="Yes" id="disconnect" onclick="disconnect(' + id + ')" data-attr='+platform +' /> <input style="margin-left: 10px; font-size: 13px;" type="button" class="btn btn-outline-secondary" data-dismiss="modal" value="Close" />');
+}
+
+
+function disconnect(id){
+  // console.log("rrrrrrrrrrrrrrrrrrrrr");
+  // console.log(ff);
+  var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+  var platform = $("#disconnect").attr("data-attr");
+  console.log(platform);
+  $.ajax({
+      headers: temp,
+      url: "/customer/disconnect-social-accounts/"+id+"/"+platform+"/",
+      type: 'POST',
+      // data: id,
+      success: function (response) {
+          if (response.success == 1){
+              window.location.href=""
+          }
+      }
+  });
+}
+
+
+</script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {% if msg %}
+    <h4 class="fw-100 c-red-900 mB-40" style="font-size:14px; text-align:center;">{{ msg | safe }}</h4>
+    {% endif %}
+
+</div>
+
+<div class="modal fade " id="instgramLogin" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="cutomerModalTitle">Login with Instagram</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <section class="content1">
+                    <div class="container">
+                        <div id="persona_type" class="row clearfix" style="display:none;" >
+                        </div>
+                        <div id="report_type" class="row clearfix" >
+                        </div>
+                    </div>
+                    <div id="gen_report" class="row clearfix">
+                        <div class="container">
+                            <form id="customerChip" class="form-horizontal" name="customerChip" >
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <!-- <label for="exampleInputEmail1">Email address</label> -->
+                                    <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Phone number, username, or email ">
+
+                                </div>
+                                <div class="form-group">
+                                    <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                </div>
+
+                        </div>
+                        </form>
+                    </div>
+            </div>
+            </section>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveCustomerChip">Login</button>
+                <br>
+                <button type="button" class="btn btn-dark" id="close" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script> -->
+<script>
+$("#insta-login").click(function(){
+  var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+  data = {
+    "user_id": '{{ context.user_id }}',
+    "social_account": "instagram",
+  }
+  $.ajax({
+      headers: temp,
+      url:'/customer/social/',
+      type:"POST",
+      data: data,
+      success: function(data){
+          console.log("-------------data------------->");
+          console.log(data);
+      }
+  });
+});
+
+$("#fb-login").click(function(){
+  var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+  data = {
+    "user_id": '{{ context.user_id }}',
+    "social_account": "facebook",
+  }
+  $.ajax({
+      headers: temp,
+      url:'/customer/social/',
+      type:"POST",
+      data: data,
+      success: function(data){
+          console.log("-------------data------------->");
+          console.log(data);
+      }
+  });
+});
+
+
+$("#instagram-popup").click(function(){
+  var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+  $.ajax({
+      headers: temp,
+      url:'/customer/insta-login/',
+      type:"POST",
+      data: temp,
+      success: function(data){
+          console.log("-------------data------------->");
+          console.log(data);
+          window.open(data.url,  '_self');
+      }
+  });
+  // $("#instgramLogin").modal('show');
+  
+});
+
+// $('#saveCustomerChip').click(function(){
+  
+  
+// });
+
+</script>
+
+<script>
+  // new_user
+  $(document).ready(function() {
+    console.log('{{context.new_user}}');
+    var new_user = '{{context.new_user}}';
+    var user_id = '{{ context.user_id }}';
+    if (new_user == "True"){
+      $('#modalconfirm').modal('show');
+      $('#modalconfirm')
+              .find("h4.modal-title")
+              .html("Welcome to Phonebooth");
+      $('#modalconfirm')
+              .find(".modal-body")
+              .html('<p>We welcome you to a world of fantastic insights about your social media activities. </p><p>Please connect your social media accounts with PhoneBooth and get the valuable insights.</p>');
+
+      $('.modal-footer').html('<input class="btn btn-outline-primary" type="button" value="Ok" data-dismiss="modal" /> ');
+    }
+
+    var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+    $.ajax({
+        headers: temp,
+        url:'/customer/change-status/'+user_id+'/',
+        type:"POST",
+        data: temp,
+        success: function(data){
+            console.log("-------------data------------->");
+            console.log(data);
+        }
+    });
+
+  });
+
+  
+  
+</script>
+
+
+
+{% endblock %}

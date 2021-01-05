@@ -1,0 +1,141 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer Report {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+
+<link href="{% static 'assets/css/social.css' %}" rel="stylesheet">
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+
+<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+<style>
+.plus-btn{
+  position: absolute !important;
+  right: 19px;
+  bottom: 16px;
+}
+
+.card{
+  margin-right: 15px;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-4">
+                {% if instaComment %}
+                    <a href="{% url 'b2b:insta-report' type='unanswered' %}">
+                {% endif %}
+                <p align="center" >
+                    
+                    <img class=""  src="{% static 'assets/static/images/insta.png' %}" alt="logo" width="55" style="margin-right: 10px;">
+                    {% if instaComment %}
+                        <span class="badge badge-notify">{{ instaComment }}</span>
+                    {% else %}
+                        <span class="empty-badge"> </span>
+                    {% endif %}
+                    <span style="margin-right: 20px;">
+                        Instagram
+                    </span>
+                    
+                    
+                </p></a>
+            </div>
+            <!-- {% if instaComment %}
+                <span class="badge badge-notify">{{ instaComment }}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %} -->
+
+            <div class="col-md-4">
+                {% if fbcomment %}
+                    <a href="{% url 'b2b:fb-report' type='unanswered' %}">
+                {% endif %}
+                <p align="center" >
+                    
+                    <img class="" src="{% static 'assets/static/images/facebook.png' %}" alt="logo" width="55" style="margin-right: 10px;">
+                    {% if fbcomment %}
+                        <span class="badge badge-notify">{{fbcomment}}</span>
+                    {% else %}
+                        <span class="empty-badge"> </span>
+                    {% endif %}
+                    <br>
+                    <span style="margin-right: 10px;">Facebook </span>
+                        
+                        
+                </p></a>
+            </div>
+
+            <div class="col-md-4">
+                {% if twComment %}
+                    <a href="{% url 'b2b:twitter-report' type='unanswered' %}">
+                {% endif %}
+                <p align="center">
+                    <img class="" src="{% static 'assets/static/images/twitter.png' %}" alt="logo" width="55" style="margin-right: 10px;">
+                    {% if twComment %}
+                        <span class="badge badge-notify">{{twComment}}</span>
+                    {% else %}
+                        <span class="empty-badge"> </span>
+                    {% endif %}
+                    <br>
+                    <span style="margin-right: 30px;">
+                        Twitter
+                    </span>
+                    
+                </p></a>
+            </div>
+            <!-- {% if twComment %}
+                <span class="badge badge-notify">{{twComment}}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %} -->
+            
+        </div>
+            
+        <!-- <div class="col-md-3">
+            <div class="insta-btn">
+                {% if instaComment %}
+                  <a href="{% url 'b2b:insta-report' type='unanswered' %}">
+                {% endif %}
+                <button type="button" class="btn btn-social-icon1 btn-instagram" title="Instagram new messages">
+                    <img class="" src="{% static 'assets/static/images/insta.png' %}" alt="logo" width="25">
+                </button>
+            </div>
+            {% if instaComment %}
+                <span class="badge badge-notify">{{ instaComment }}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %}
+
+            {% if fbcomment %}
+              <a href="{% url 'b2b:fb-report' type='unanswered' %}">
+            {% endif %}
+            <button type="button" class="btn btn-social-icon1 btn-facebook" title="Facebook new messages">
+                <img class="" src="{% static 'assets/static/images/facebook.png' %}" alt="logo" width="25">
+            </button>
+          </a>
+            {% if fbcomment %}
+                <span class="badge badge-notify">{{fbcomment}}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %}
+
+            {% if twComment %}
+              <a href="{% url 'b2b:twitter-report' type='unanswered' %}">
+            {% endif %}
+              
+              <button type="button" class="btn btn-social-icon1 btn-twitter" title="Twitter new messages">
+                <img class="" src="{% static 'assets/static/images/twitter.png' %}" alt="logo" width="25">
+            </button> </a>
+            {% if twComment %}
+                <span class="badge badge-notify">{{twComment}}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %}
+        </div> -->
+    </div>
+</div>
+{% endblock content %}

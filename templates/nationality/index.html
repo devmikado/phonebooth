@@ -1,0 +1,729 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} B2B Dashboard {% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+{% load static %}
+{% load twitter_ethnicity_tags %}
+{% block content %}
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+<style>
+ .select2-container {
+  min-width: 230px;
+}
+
+.select2-results__option {
+  padding-right: 20px;
+  vertical-align: middle;
+}
+.select2-results__option:before {
+  content: "";
+  display: inline-block;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #e9e9e9;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+.select2-results__option[aria-selected=true]:before {
+  font-family:fontAwesome;
+  content: "\f00c";
+  color: #fff;
+  background-color: green;
+  border: 0;
+  display: inline-block;
+  padding-left: 3px;
+}
+.select2-container--default .select2-results__option[aria-selected=true] {
+	background-color: #fff;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+	background-color: #eaeaeb;
+	color: #272727;
+}
+.select2-container--default .select2-selection--multiple {
+	margin-bottom: 10px;
+}
+.select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple {
+	border-radius: 4px;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+	border-color: green;
+	border-width: 2px;
+}
+.select2-container--default .select2-selection--multiple {
+	border-width: 2px;
+}
+.select2-container--open .select2-dropdown--below {
+
+	border-radius: 6px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+}
+.select2-selection .select2-selection--multiple:after {
+	content: 'hhghgh';
+}
+/* select with icons badges single*/
+.select-icon .select2-selection__placeholder .badge {
+	display: none;
+}
+.select-icon .placeholder {
+	display: none;
+}
+.select-icon .select2-results__option:before,
+.select-icon .select2-results__option[aria-selected=true]:before {
+	display: none !important;
+	/* content: "" !important; */
+}
+.select-icon  .select2-search--dropdown {
+	display: none;
+}
+</style>
+<style>
+#socialCheckbox input[type="checkbox"][id^="cb"] {
+  display: none;
+}
+
+#socialCheckbox label {
+  border: 1px solid #fff;
+  padding: 10px;
+  display: block;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+
+#socialCheckbox label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+#socialCheckbox label i {
+  height: 100px;
+  width: 100px;
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+#socialCheckbox :checked + label {
+  border-color: #ddd;
+}
+
+#socialCheckbox :checked + label:before {
+  content: "✓";
+  background-color: grey;
+  transform: scale(1);
+}
+
+#socialCheckbox :checked + label i {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px #333;
+  z-index: -1;
+}
+</style>
+<div class="row gap-20 masonry pos-r">
+              <div class="masonry-sizer col-md-6"></div>
+              <div class="masonry-item w-100">
+                <div class="row gap-20">
+                  <!-- #Toatl Visits ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1"> Hashtags</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">{{collected_hashtags}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- #Total Page Views ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1"> Tweets</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash2"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">{{total_tweets}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- #Unique Visitors ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1">Users</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash3"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">{{collected_users}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- #Bounce Rate ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1">Culture</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash4"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">{{collected_users}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="masonry-item col-12">
+                <div style="width:400px; height:280px; float:left; margin-right:5px; margin-top:5px;">
+                  <div class="p-20 bd" style="height:280px; background-color:#f1f1ff">
+                    <h6 class="c-grey-900"></h6>
+                    <div class="mT-30" style="padding-top:20%; text-align:center;">
+                        <a href="#chipTypeModal" data-toggle="modal" style="color:#C8574C;"> Create New Persona </a>
+                    </div>
+                  </div>
+                </div>
+
+                {% for chips in chipTileObj %}
+                <div style="width:400px; height:280px; float:left; margin-right:5px; margin-top:5px;">
+                  <div class="bgc-white p-20 bd" style="height:280px;">
+
+                    <div class="mt-0">
+                    <h6 class="c-grey-900" style="float:left;">{{chips.chip_title}} : {{chips.start_date|date:"d M Y"}} - {{chips.end_date|date:"d M Y"}}</h6>
+                     <span class="dropdown" style="float:right;">
+                        <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+                          <div class="peer mR-10">
+                            <span class="icon-holder">
+                              <i class="c-brown-500 ti-settings"></i>
+                            </span>
+                          </div>
+                        </a>
+                        <ul class="dropdown-menu fsz-sm">
+                        <li>
+                        <a href="#EditModal" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700" data-toggle="modal" data-modal_id="{{chips.id}}">
+                          <i class="ti-pencil mR-10"></i> <span>Edit</span>
+                        </a>
+                       </li>
+                       <li>
+                        <a href="javascript:void(0)" onclick="delete_chip({{chips.id}})" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                          <i class="ti-trash mR-10"></i> <span> Delete </span>
+                        </a>
+                       </li>
+                      </ul>
+                      </span>
+                    </div>
+                    <div style="clear:both"></div>
+                    
+                    <div class="mT-10 peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c gap-10">
+                    <a href="/view-chip-details/{{chips.id}}" class="btn btn-lg btn-block" style="background-color:#C8574C; color:#ffffff; border: solid 1px #ffffff; font-size:16px;">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+<!-- Modal -->
+<div class="modal fade" id="customerModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="cutomerModalTitle">Create new customer chip</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form id="customerChip" name="customerChip" >
+              {% csrf_token %}
+          <div class="form-group">
+                <label> Title </label>
+                <div class="input-group">
+                    <input type="text" name="customer_chip_title" id="id_customer_chip_title" placeholder="Enter chip title" maxlength="200" class="form-control" required="">
+                </div>
+          </div>
+          <div class="form-group">
+                <label> Select Customer </label>
+                <div class="input-group">
+                    <input type="text" name="customer_name" id="id_customer_name" placeholder="Select customer" maxlength="200" class="form-control" required="">
+                </div>
+          </div>
+          <div class="form-group d-inline-block w-100">
+              <label class="w-15"> Sources  </label>
+          </div>
+          <div class="form-group d-inline-block w-100" id="socialCheckbox">
+              <div class="d-inline-block">
+                <input type="checkbox" id="cb1" />
+                <label for="cb1"><i class="ti-facebook" style="color:#3b5998; font-size:24px; text-align:center;"></i></label>
+              </div>
+              <div class="d-inline-block ml-3">
+                <input type="checkbox" id="cb2" />
+                <label for="cb2"><i class="ti-twitter-alt" style="color:#00acee; font-size:24px; text-align:center;"></i></label>
+              </div>
+              <div class="d-inline-block ml-3">
+                <input type="checkbox" id="cb3" />
+                <label for="cb3"><i class="ti-instagram" style="color:#f09433; font-size:24px; text-align:center;"></i></label>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="chipTypeModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="exampleModalLongTitle">Which type of chip Do you want ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-auto">
+          <div class="text-center w-100" style="width:100%; padding-top:5%; padding-bottom:5%;">
+          <a href="#submitModal" data-toggle="modal" class="btn btn-primary" data-dismiss="modal">Listen</a>
+          <a href="/customer-dashboard/" class="btn btn-success">Profile</a>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div id="submitModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" style="display:none" id="addChipErrors"></div>
+        <form id="newChipForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ chipForm.chip_title.label }}
+            <div class="input-group">
+                {{ chipForm.chip_title }}
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ chipForm.start_date.label }}
+            {{ chipForm.start_date }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            {{ chipForm.end_date.label }}
+            {{ chipForm.end_date }}
+        </div>
+
+        </div>
+
+        <div class="card-deck">
+          <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Location</div>
+                <div class="card-body">
+                <select id="locations" name="locations" class="js-select2" multiple="multiple">
+			    </select>
+
+                </div>
+
+            </div>
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Hashtag</div>
+                <div class="card-body">
+                <select id="hashtags" name="hashtags" class="js-select2" multiple="multiple">
+			    </select>
+                </div>
+
+            </div>
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Nationality</div>
+                <div class="card-body">
+                <select id="nationalities" name="nationalities" class="js-select2" multiple="multiple">
+			    </select>
+                </div>
+            </div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="saveChipData" type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- Modal end-->
+<!-- Edit Data Start -->
+<div id="EditModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Chip</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" style="display:none" id="editChipErrors"></div>
+        <div class="alert alert-success" style="display:none" id="editChipSuccess"></div>
+        <form id="editChipForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ chipForm.chip_title.label }}
+            <div class="input-group">
+                {{ chipForm.chip_title }}
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ chipForm.start_date.label }}
+            {{ chipForm.start_date }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            {{ chipForm.end_date.label }}
+            {{ chipForm.end_date }}
+        </div>
+
+        </div>
+        <input type="hidden" name="chip_id" id="id_chip_id" />
+        <div class="card-deck">
+          <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Location</div>
+                <div class="card-body">
+                <select name="locations" id="edit_locations" class="js-select2" multiple="multiple">
+			    </select>
+
+                </div>
+
+            </div>
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Hashtag</div>
+                <div class="card-body">
+                <select name="hashtags" id="edit_hashtags" class="js-select2" multiple="multiple">
+			    </select>
+                </div>
+
+            </div>
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Nationality</div>
+                <div class="card-body">
+                <select name="nationalities" id="edit_nationalities" class="js-select2" multiple="multiple">
+			    </select>
+                </div>
+            </div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="edit_saveChipData" type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Data End -->
+<script src="{% static 'assets/jquery-3.4.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/jquery.cookie.js' %}"></script>
+<script src="{% static 'assets/select2.min.js' %}"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+<script src="{% static 'assets/bootstrap.min.js' %}"></script>
+<!-- Include Bootstrap Datepicker -->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-datepicker.min.css' %}" />
+<script src="{% static 'assets/bootstrap-datepicker.min.js' %}"></script>
+
+<script>
+function delete_chip(chip_id)
+{
+    var result = confirm("Are you sure want to delete this chip ? ");
+    if(result)
+    {
+        var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+        $.ajax({
+                    headers: temp,
+                    url:'/delete-chip-details/'+chip_id+"/",
+                    type:"POST",
+                    data: "chip_id="+chip_id,
+                    success: function(data){
+                        if(data.success === 1)
+                        {
+                            alert("Chip has been deleted successfully..!!");
+                            window.location.href="";
+                        }
+                    },
+                    error:function(data) {
+                        if(data.success === 0)
+                        {
+                            alert("Something went wrong..!!");
+                        }
+                    }
+                });
+    }
+}
+
+     $(document).ready(function() {
+        $("#submitModal .js-select2").select2({
+			placeholder: 'Select an item',
+			closeOnSelect : false,
+			allowHtml: false,
+			allowClear: false,
+			dropdownAutoWidth: true
+            });
+
+        $("#EditModal .js-select2").select2({
+			closeOnSelect : false,
+			placeholder: 'Select an item',
+			allowHtml: false,
+			allowClear: false,
+			dropdownAutoWidth: true
+            });
+
+        $('#submitModal #locations, #EditModal #edit_locations').select2({
+          placeholder: "Search for a locations",
+          minimumInputLength: 3,
+          ajax: {
+            url: "/nationality/get-locations-list/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+            return {
+              results: data
+            };
+          },
+          cache: false
+          }
+        });
+
+        $('#submitModal #hashtags, #EditModal #edit_hashtags').select2({
+          placeholder: "Search for a hashtags",
+          minimumInputLength: 3,
+          ajax: {
+            url: "/nationality/get-hashtags-list/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function(data)
+            {
+                return {
+                    results: data
+                };
+            },
+            cache: false
+          }
+        });
+
+        $('#submitModal #nationalities, #EditModal #edit_nationalities').select2({
+          placeholder: "Search for a nationalities",
+          minimumInputLength: 3,
+          ajax: {
+            url: "/nationality/get-nationalities-list/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function(data)
+            {
+                return {
+                    results: data
+                };
+            },
+            cache: false
+          }
+        });
+
+        $("#submitModal #start_date").datepicker({format: "dd/mm/yyyy", autoclose:true});
+        $("#submitModal #end_date").datepicker({format:"dd/mm/yyyy", autoclose:true});
+
+        $("#EditModal #start_date").datepicker({format: "dd/mm/yyyy"}).on('show.bs.modal', function(event) {
+            // prevent datepicker from firing bootstrap modal "show.bs.modal"
+            event.stopPropagation();
+        });
+        $("#EditModal #end_date").datepicker({format:"dd/mm/yyyy"}).on('show.bs.modal', function(event) {
+            // prevent datepicker from firing bootstrap modal "show.bs.modal"
+            event.stopPropagation();
+        });
+        var startDate = new Date();
+        $('#EditModal #start_date').data({date: startDate}).datepicker('update').children("input").val(startDate);
+
+
+	 });    
+
+	 $(document).ready(function(){
+        $('#EditModal').on('hidden.bs.modal', function (e) {
+            $(this).find("input,textarea,select").val('').end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
+        });
+        $('#submitModal').on('hidden.bs.modal', function (e) {
+            $(this).find("input,textarea,select").val('').end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
+        });
+
+	    $("#EditModal").on("show.bs.modal", function(e)
+        {
+		   var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+		   var modal_id = $(e.relatedTarget).data("modal_id");
+		   $.ajax({
+			    type : "GET",
+			    url:"/edit-chip-details/"+modal_id+"/",
+			    success : function(result){
+                    $("#EditModal #id_chip_title").val(result.chip_title);
+                    $("#EditModal #id_chip_id").val(result.chip_id);
+                    var locationsArr = result.locations.split(",");
+                    var hashtagsArr = result.hashtags.split(",");
+                    var nationalitiesArr = result.nationalities .split(",");
+
+                    locationsArr.forEach(function(loc) {
+                        var data = {id: loc.trim(), text: loc.trim()};
+                        var newOption = new Option(data.text, data.id, true, true);
+                        $("#EditModal #edit_locations").append(newOption).trigger('change');
+                    });
+
+                    hashtagsArr.forEach(function(hash) {
+                        var data = {id: hash.trim(), text: hash.trim()};
+                        var newOption = new Option(data.text, data.id, true, true);
+                        $("#EditModal #edit_hashtags").append(newOption).trigger('change');
+                    });
+
+                    nationalitiesArr.forEach(function(nationality) {
+                        var data = {id: nationality.trim(), text: nationality.trim()};
+                        var newOption = new Option(data.text, data.id, true, true);
+                        $("#EditModal #edit_nationalities").append(newOption).trigger('change');
+                    });
+
+                    $('#EditModal #start_date').datepicker("update", new Date(result.start_date));
+                    $('#EditModal #end_date').datepicker("update", new Date(result.end_date));
+
+				},
+			    error: function(result)
+				{
+					console.log("--------------------------");
+					console.log(result);
+					console.log("--------------------------");
+					alert("Ajax Errpr !!!!!!!!!!!!!");
+				}
+		   });
+	    });
+	 })
+	$("#edit_saveChipData").click(function(){
+
+	    var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+        $.ajax({
+                    headers: temp,
+                    url:'/edit-chip-data/',
+                    type:"POST",
+                    data: $("#editChipForm").serialize(),
+                    success: function(data){
+                        if(data.success === 1)
+                        {
+                            data.message = "Chip has been updated successfully...!";
+                            $("#editChipErrors").text()
+                            $("#editChipErrors").hide()
+                            $("#editChipSuccess").text(data.message)
+                            $("#editChipSuccess").show()
+                            $('#EditModal').hide()
+                            window.location.href=""
+
+                        }
+                        if(data.success === 0)
+                        {
+                            $("#editChipErrors").text(data.message)
+                            $("#editChipErrors").show()
+                        }
+                    },
+                    error:function(data) {
+                        if(data.success === 0)
+                        {
+                            $("#editChipErrors").text(data.message)
+                            $("#editChipErrors").show()
+                        }
+                    }
+                });
+
+
+	 });
+    $("#saveChipData").click(function(){
+        var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+        $.ajax({
+                    headers: temp,
+                    url:'/nationality/save-new-chip-details/',
+                    type:"POST",
+                    data: $("#newChipForm").serialize(),
+                    success: function(data){
+                        if(data.success === 1)
+                        {
+                            $("#addChipErrors").text()
+                            $("#addChipErrors").hide()
+                            $("#addChipSuccess").text(data.message)
+                            $("#addChipSuccess").show()
+                            $('#submitModal').hide()
+                            window.location.href=""
+
+                        }
+                        if(data.success === 0)
+                        {
+                            $("#addChipErrors").text(data.message)
+                            $("#addChipErrors").show()
+                        }
+                    },
+                    error:function(data) {
+                        if(data.success === 0)
+                        {
+                            $("#addChipErrors").text(data.message)
+                            $("#addChipErrors").show()
+                        }
+                    }
+                });
+    })
+
+</script>
+
+{% endblock content %}

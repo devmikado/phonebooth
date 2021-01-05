@@ -1,0 +1,553 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer Reports {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<style>
+.table100.ver1 {
+    /* border-bottom-left-radius: 0px !important; */
+    /* border-bottom-right-radius: 0px !important; */
+ }
+ .column1{
+    font-family:arial !important;
+}
+.inputBorder{
+ border: 2px solid #aaa !important;
+}
+#brand_div{
+    background: url(/media/logo.png) no-repeat;
+}
+.select2-selection__choice_rp{
+    background-color: #fff;
+    border: 1px solid #bf3b2f;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+.select2-selection__choice__remove_rp{
+    border-radius: 14px;
+    background-color: #000;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    padding-left: 1px;
+    vertical-align: middle;
+    font-size: larger;
+ }
+.ellipse{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 175px;
+  }
+
+.table100.ver1 th {
+  font-family: Lato-Bold;
+  font-size: 18px;
+  color: #000;
+  line-height: 1.4;
+  /* background-color: #6c7ae0; */
+  /* background-color: #676f6e; */
+  background-color: #fff;
+  border: 2px #bf3b2f solid;
+  text-align: center;
+}
+
+.no-data {
+  font-family: arial !important;
+    height: 50px;
+    color: #555;
+    background-color: #fff;
+    text-align: center;
+    font-size: 14px;
+    padding: 12px;
+}
+</style>
+{% endblock stylesheets %}
+{% block content %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <div id="report" class="container-fluid pt-3 p-3 my-3">
+           <div class="form-groups">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card-deck">
+                              <div class="card ">
+                                     <div class="card-body ">
+                                         <div class="row">
+                                            <div class="col-lg-11">
+                                             <ul class="select2-selection__rendered">
+                                                        <li class="select2-selection__choice_rp" title="{% if from_date %}
+                                                                          {{from_date}} - {{to_date}}
+                                                                {% else %}
+                                                                          {{date_duration_from}} - {{date_duration_to}}
+                                                                {% endif %}">
+                                                              <div class="ellipse">
+                                                                  <b>Duration:</b> {% if from_date %}
+                                                                          {{from_date}} - {{to_date}}
+                                                                {% else %}
+                                                                          {{date_duration_from}} - {{date_duration_to}}
+                                                                {% endif %}
+                                                              </div>
+
+                                                        </li>
+                                                        {% if social_auth_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{social_auth_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Accounts: </b>{{social_auth_ids }}
+                                                            </div>
+
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if location_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{location_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Locations: </b>{{location_ids }}
+                                                            </div>
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if sentiment_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{sentiment_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Sentiments: </b>{{sentiment_ids }}
+                                                            </div>
+
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if culture_ids %}
+                                                        <li class="select2-selection__choice_rp" title="{{culture_ids }}">
+                                                            <div class="ellipse">
+                                                                <b>Cultures: </b>{{culture_ids }}
+                                                            </div>
+
+                                                        </li>
+                                                        {% endif %}
+                                                    </ul>
+                                            </div>
+                                             <div style="float:right;text-align: center;">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                        <form name="exportFile" method="post">
+                                                            <a onclick="edit_report('{{persona.id}}')" class="" data-toggle="modal" data-id="3" style="cursor: pointer;padding: 10px;">
+                                                                <i class="ti-pencil-alt mR-10" style="color: #bf3b2f;font-size: 20px;" title="Edit Persona"></i><br/> <span>Edit Filters</span>
+                                                            </a>
+                                                        </form>
+                                                 </form>
+                                                </div>
+
+                                         </div>
+                                     </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+           </div>
+                  <div class="card">
+
+                        <div class="card-body" width="80%">
+                            <div class="wrap-table100">
+                            <div class="table100 ver1"  style="height: 100px; border-radius: 5px !important;">
+                            <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                            <th class="cell100 column1 ">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <span style="font-size:18px;">{{persona.chip_title|title}}<br/></span>
+                                                        <span style="font-size:13px;">( {{persona.report_type.name|safe}} )</span>
+                                                    </div>
+                                                    <div class="col-lg-12" style="text-align: right;margin-top: -37px;float:right;vertical-align: bottom;">
+                                                    {% if No_data %}
+                                                        <a class="excel-btn" disabled="disabled" download><i class="ti-download mR-10" style="color: #d39791" title="Download Report"></i></a>
+                                                        
+                                                        <a  id="refreshReports" class="excel-btn"><i class="ti-reload mR-10" style="color: #d39791" title="Refresh Report" ></i></a>
+
+                                                    {% else %}
+                                                        <a href="#" id="downloadFile" class="excel-btn" disabled="disabled" download><i class="ti-download mR-10" style="color: #bf3b2f; cursor: pointer;" title="Download Report"></i></a>
+                                                        <a  onclick="window.location.reload();" id="refreshReports" class="excel-btn" style="cursor: pointer;"><i class="ti-reload mR-10" style="color: #bf3b2f" title="Refresh Report" ></i></a>
+                                                        
+                                                    {% endif %}
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="table100-body ">
+                                    <table class="report-table">
+                                        <thead>
+                                              <tr>
+                                                {% if No_data %}
+                                                <div class="no-data">
+                                                  Sorry! There's no data to be displayed here.
+                                                </div>
+                                                {% else %}
+                                                  <div id='brand_div'>
+                                                      <div id="chart_div" class="" width="80%">
+                                                      </div>
+                                                  </div>
+                                                {% endif %}
+                                              </tr>
+                                        </thead>
+                                    </table>
+                            </div>
+                        </div>
+                      <div id="chart_div_hidden" class="card-body" width="80%" style="display:none">
+                        </div>
+                  </div>
+          </div>
+<!-- Edit Modal-->
+<div id="EditModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="cutomerModalTitle">Edit Persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+        <div class="modal-body">
+            <p id="edit_reportTitle" align="center" style="margin-top: -40px;"><b>Report Type: </b>Last week's daily culture sentiments</p>
+            <div class="alert alert-danger" style="display:none" id="editPersonaErrors"></div>
+        <div class="alert alert-success" style="display:none" id="editPersonaSuccess"></div>
+        <form id="editChipForm" method="POST" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ chipForm.chip_title.label }}
+            <div class="input-group">
+                {{ chipForm.chip_title }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ chipForm.start_date.label }}
+                {{ chipForm.start_date }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                {{ chipForm.end_date.label }}
+                {{ chipForm.end_date }}
+            </div>
+
+        </div>
+        <input type="hidden" name="chip_id" id="chip_id" />
+        <section class="content1">
+           <div class="container-fluid">
+              <div id="edit_persona_type" class="row clearfix" style="display:none;" >
+              </div>
+              <div id="edit_report_type" class="row clearfix" style="display:none;">
+              </div>
+           </div>
+           <div id="edit_gen_report" class="row clearfix" >
+              <div class="container-fluid">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                       <label class="control-label" for="id_customer_chip_title">Title:</label>
+                       <div class="input-group">
+                          <input type="text" name="customer_chip_title" id="edit_id_customer_chip_title" placeholder="Enter chip title" maxlength="200" class="form-control" required="" autocomplete="off">
+                       </div>
+                    </div>
+                    <input type="hidden"  name="view" value="View Report"/>
+                    <div id="edit_report-params">
+
+                 </div>
+                  <input type="hidden" id="edit_reportType" name="reportType" value="1">
+                   <input type="hidden" id="edit_hidden-report" name="reports" value="11">
+                   <input type="hidden" name="customer_id" value={{customer_id}}>
+
+              </div>
+           </div>
+        </section>
+        </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" id="viewPersona">View Report</button>
+            <button type="button" class="btn btn-outline-primary" id="edit_saveCustomerChip">Save & View Report</button>
+            <button type="button" class="btn btn-outline-dark" id="edit_close" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+
+    </div>
+  </div>
+<script>
+$(function(){
+     $('#date_from').datepicker({
+          format: "M dd, yyyy",
+          todayBtn: "linked",
+          autoclose: true,
+          todayHighlight: true
+        });
+
+        $('#date_from').on('changeDate', function() {
+                 var temp = $(this).datepicker('getDate');
+                 var d = new Date(temp);
+                 d.setDate(d.getDate() + 1);
+                 $('#date_to').datepicker({
+                    startDate: d,
+                    format: "M dd, yyyy",
+                    todayBtn: "linked",
+                    autoclose: true,
+                    todayHighlight: true
+                });
+        });
+});
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script type="text/javascript">
+  function edit_report(id){
+  $('#EditModal').modal('show');
+  var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+  var modal_id = id;
+  $.ajax({
+    type : "GET",
+              url:"/b2b/edit-persona-details/"+modal_id+"/",
+    success : function(result){
+      reportClick(result.report_type_id)
+      setTimeout(function(){
+        $("#EditModal #edit_id_customer_chip_title").val(result.chip_title);
+        $("#EditModal #edit_reportTitle").html('<b>Report Type: </b>'+result.report_type);
+        $("#EditModal #id_chip_id").val(result.chip_id);
+        $("#EditModal #edit_hidden-report").val(id);
+        $("#EditModal #social_accounts").val(result.social_auth_id.text);
+
+
+          if (result.social_auth_id){
+        result.social_auth_id.forEach(function(social_account) {
+          console.log(social_account.text, social_account.id);
+            // var data = {id: social_account.trim(), text: social_account.trim()};
+            var newOption = new Option(social_account.text, social_account.id, true, true);
+            $("#EditModal #social_accounts").append(newOption).trigger('change');
+        });
+        }
+
+        if (result.locations){
+          result.locations.forEach(function(loc) {
+            var newOption = new Option(loc.text, loc.id, true, true);
+            $("#EditModal #locations").append(newOption).trigger('change');
+          });
+        }
+
+
+
+        if (result.cultures){
+          result.cultures.forEach(function(nationality) {
+            var newOption = new Option(nationality.text, nationality.id, true, true);
+            $("#EditModal #nationalities").append(newOption).trigger('change');
+          });
+        }
+
+
+        if (result.sentiments){
+          result.sentiments.forEach(function(sentiment) {
+            var newOption = new Option(sentiment.text, sentiment.id, true, true);
+            $("#EditModal #sentiment").append(newOption).trigger('change');
+          });
+        }
+
+      $('input[name=date_from]').val(result.date_duration_from);
+      $('input[name=date_to]').val(result.date_duration_to);
+
+      },1000);
+    },
+      error: function(result)
+    {
+      console.log("--------------------------");
+      console.log(result);
+      console.log("--------------------------");
+      alert("Ajax Error !!!!!!!!!!!!!");
+    }
+    });
+  }
+
+
+
+
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', '{{scale}}');
+      data.addColumn('number', 'Positive');
+      data.addColumn('number', 'Negative');
+      data.addColumn('number', 'Neutral');
+      data.addRows( {{ mydata | safe  }} );
+            
+
+      var options = {
+        title: '{{persona.chip_title|title}}',
+        subtitle: '1. Report Type: {{persona.report_type.name|safe}}  \t\t 2.  Sentiments: {{sentiment_ids }} \n 3. Locations: {{location_ids }} \b 4. Social Platforms: {{social_auth_ids }} \n 5. Cultures: {{culture_ids }}',
+          chart: {
+            title: 'xcvx',
+            subtitle: '',
+          },
+          //legend: {position: 'top', maxLines: 5},
+          bars: 'vertical', // Required for Material Bar Charts.
+          hAxis: {
+                format: 'decimal',
+                maxLines: 15,
+                {% if persona.report_type.id == 1 %}
+                //direction:-1,
+                slantedText:true,
+                slantedTextAngle:50 // here you can even use 180
+                {% endif %}
+            },
+          height: 450,
+          colors: ['#76a024', '#FF5733', 'grey'],
+          backgroundColor: '#fff' // this is important!
+      };
+
+      
+      var chart_div = document.getElementById('chart_div');
+      var chart_div_hidden = document.getElementById('chart_div_hidden');
+      var chart = new google.visualization.ColumnChart(chart_div);
+      var btnSave = document.getElementById('downloadFile');
+      
+      google.visualization.events.addListener(chart, 'ready', function () {
+        btnSave.disabled = false;
+        chart_div_hidden.innerHTML = '<img style="height:30px;" src="/media/logo.png"><br><img id="chartId" src="' + chart.getImageURI() + '">';
+        $imgsrc = $('#chartId').attr('src');
+        $('#downloadFile').attr('href',$imgsrc);
+      });
+ 
+    
+    chart.draw(data, options);
+    configureChart();
+    
+  }
+
+  function configureChart() {
+    var chartContainer = document.getElementById('chart_div');
+    var svg = chartContainer.getElementsByTagName('svg')[0];
+
+    var barLabels = svg.querySelectorAll("text[text-anchor='start']");
+    for (var i = 0; i < barLabels.length; i++) {
+        if (barLabels[i].innerHTML == "Title") {
+          console.log(barLabels[i])
+            var barArea = barLabels[i].parentNode;
+            console.log(barArea);
+            var x = 160;
+            var y = 10;
+            var presidentIcon = createImage({ href: '/media/logo.png', x: x, y: y, width: 70, height: 30 });
+            barArea.parentElement.appendChild(presidentIcon);
+            // barLabels[i].setAttribute('x', parseFloat(x) + 20);
+        }
+    }
+}
+
+
+function createImage(options) {
+    var image = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    image.setAttributeNS(null, 'height', options.height);
+    image.setAttributeNS(null, 'width', options.width);
+    image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', options.href);
+    image.setAttributeNS(null, 'x', options.x);
+    image.setAttributeNS(null, 'y', options.y);
+    image.setAttributeNS(null, 'visibility', 'visible');
+    return image;
+}
+  
+
+
+
+      $("#report_type").change(function(){
+       console.log("==============change====================>");
+      });
+      $("#goBackReport,#edit_goBackReport").click(function(){
+          $("#persona_type,#edit_persona_type").hide();
+          $("#report_type,#edit_report_type").show();
+          $("#gen_report,#edit_gen_report").hide();
+          $("#goBackReport,#edit_goBackReport").hide();
+          $("#saveCustomerChip,#edit_saveCustomerChip").hide();
+      });
+    function reportClick(id){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           $("#reportType").val(id);
+           $("#edit_reportType").val(id);
+
+           $.ajax({
+                   headers: temp,
+                   url:'/b2b/get_parameters_details/'+id+"/",
+                   type:"GET",
+                   success: function(data){
+                       $("#EditModal #edit_report-params").html(data);
+                   }
+           });
+        }
+        $("#edit_saveCustomerChip").click(function(){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           var chip_id = $("#EditModal #edit_hidden-report").val();
+           console.log("---------------chip_id------------------>")
+           console.log(chip_id);
+           console.log ($("#editChipForm").serialize())
+           $.ajax({
+               headers: temp,
+               url:'/b2b/add-new-persona/',
+               type:"POST",
+               data: $("#editChipForm").serialize(),
+               success: function(data){
+                   if(data.success === 1)
+                   {
+                        data.message = "Persona has been updated successfully...!";
+                        window.location.href=""
+                   }
+                   if(data.success === 0)
+                   {
+                       $("#editPersonaErrors").text(data.message)
+                       $("#editPersonaErrors").show()
+                       $("#EditModal").show()
+                   }
+               },
+               error:function(data) {
+                   if(data.success === 0)
+                   {
+                       $("#editPersonaErrors").text(data.message)
+                       $("#editPersonaErrors").show()
+                       $("#EditModal").show()
+                   }
+               }
+           });
+       });
+        $("#viewPersona").click(function(e){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           var chip_id = $("#EditModal #edit_hidden-report").val();
+           console.log ($("#editChipForm").serialize())
+           $("#editChipForm").serialize()
+           e.preventDefault();
+           $('#editChipForm').attr('action', "/b2b/get_persona_report/"+chip_id+"/").submit();
+       });
+
+  </script>
+  <script>
+  // $("#downloadFile").click(function(){
+  //   var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+  //   var image = $('#chartId').attr('src');
+  //   var data = image;
+  //   console.log(data)
+  //   var req = {"data": data.split(",")[1]}; 
+  //   console.log(req)
+  //   $.ajax({
+  //           headers: temp,
+  //           url:'/customer/download/',
+  //           type:"POST",
+  //           data: req,
+  //           success: function(data){
+  //               console.log(data);
+  //           }
+  //   });
+  // });
+
+  </script>
+  
+
+{% endblock content %}

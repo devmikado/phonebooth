@@ -1,0 +1,41 @@
+
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer List {% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<h2>Customer List</h2>
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Facebook</th>
+            <th scope="col">Twitter</th>
+            <th scope="col">Instagram</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for customer in object_list %}
+            {% if customer.is_superuser == False %}
+            <tr>
+                <th scope="row"></th>
+                <td>{{ customer.firstname }}</td>
+                <td>{{ customer.lastname }}</td>
+                <td><a href="{% url 'customer:customers-details' pk=customer.pk %}">{{ customer.email }}</a></td>
+                <td>{{ customer.is_staff }}</td>
+                <td>{{ customer.is_active }}</td>
+                <td>{{ customer.is_superuser }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

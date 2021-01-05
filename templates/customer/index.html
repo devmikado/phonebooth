@@ -1,0 +1,942 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer Dahsboard {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+
+<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+<style>
+    .boxShadow{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px 2px rgba(0, 0, 0, 0) !important;
+    }
+
+    .btn.btn-lg.btn-outline-primary.add-chip{
+      bottom: 40px; 
+      position: fixed; 
+      border-radius: 155px; 
+      right: 20px; 
+      width: 50px; 
+      height: 50px; 
+      vertical-align: middle;
+    }
+
+    .float{
+      position:absolute;
+      width:60px;
+      height:60px;
+      /* top:60px;
+      left:60px; */
+      background-color:#f9fafb;
+      color:#bf3b2f;
+      border-radius:50px;
+      text-align:center;
+      border: 1px solid #bf3b2f;
+      box-shadow: 2px 2px 3px #999;
+    }
+
+    .float:hover{
+      color:#bf3b2f;
+    }
+
+    .my-float{
+      margin-top:19px;
+    }
+
+</style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <!-- <div class="col-md-3">
+            <div class="insta-btn">
+              {% if instaComment %}
+                <a href="{% url 'b2b:insta-report' type='unanswered' %}">
+              {% endif %}
+              <button type="button" class="btn btn-social-icon1 btn-instagram" title="Instagram new messages">
+                  <img class="" src="{% static 'assets/static/images/insta.png' %}" alt="logo" width="25">
+              </button>
+            </div>
+            {% if instaComment %}
+                <span class="badge badge-notify">{{ instaComment }}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %}
+
+            
+            {% if fbcomment %}
+              <a href="{% url 'b2b:fb-report' type='unanswered' %}">
+            {% endif %}
+            <button type="button" class="btn btn-social-icon1 btn-facebook" title="Facebook new messages">
+                <img class="" src="{% static 'assets/static/images/facebook.png' %}" alt="logo" width="25">
+            </button>
+          </a>
+            {% if fbcomment %}
+                <span class="badge badge-notify">{{fbcomment}}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %}
+
+            
+            {% if twComment %}
+              <a href="{% url 'b2b:twitter-report' type='unanswered' %}">
+            {% endif %}
+              
+              <button type="button" class="btn btn-social-icon1 btn-twitter" title="Twitter new messages">
+                <img class="" src="{% static 'assets/static/images/twitter.png' %}" alt="logo" width="25">
+            </button> </a>
+            {% if twComment %}
+                <span class="badge badge-notify">{{twComment}}</span>
+            {% else %}
+                <span class="empty-badge"> </span>
+            {% endif %}
+
+        </div> -->
+    </div>
+    <!-- <hr/> -->
+     {% if social_logins %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="width: 21.2rem;">
+                <div class="card-header">
+                  Unanswered
+                </div>
+                <div class="card-body"  style="height:100px;">
+                    <a href="#"><button type="button" class="btn btn-social-icon btn-facebook">
+                        
+                    </button> </a>
+                    <span class="badge badge-notify">{{ fbComment }}</span>
+
+                    <a href="{% url 'b2b:twitter-report' type='unanswered' %}"><button type="button" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></button> </a>
+                    <span class="badge badge-notify">{{twComment}}</span>
+
+                    <a href="#"><button type="button" class="btn btn-social-icon btn-instagram"><i class="fa fa-instagram"></i></button> </a>
+                    <span class="badge badge-notify">{{instaComment}}</span>
+                </div>
+              </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card" style="width: 21.2rem;">
+                <div class="card-header">
+                  Positive
+                </div>
+                <div class="card-body"  style="height:100px;">
+                    <a href="#"><button type="button" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></button> </a>
+                    <span class="badge badge-notify">{{ fbComment }}</span>
+
+                    <a href="{% url 'b2b:twitter-report' type='positive' %}"><button type="button" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></button> </a>
+                    <span class="badge badge-notify">{{twCommentpositive}}</span>
+
+                    <a href="#"><button type="button" class="btn btn-social-icon btn-instagram"><i class="fa fa-instagram"></i></button> </a>
+                    <span class="badge badge-notify">{{instaComment}}</span>
+                </div>
+              </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card" style="width: 21.2rem;">
+                <div class="card-header">
+                  Negative
+                </div>
+                <div class="card-body"  style="height:100px;">
+                    <a href="#"><button type="button" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></button> </a>
+                    <span class="badge badge-notify">{{ fbComment }}</span>
+
+                    <a href="{% url 'b2b:twitter-report' type='negative' %}"><button type="button" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></button> </a>
+                    <span class="badge badge-notify">{{twCommentnegative}}</span>
+
+                    <a href="#"><button type="button" class="btn btn-social-icon btn-instagram"><i class="fa fa-instagram"></i></button> </a>
+                    <span class="badge badge-notify">{{instaComment}}</span>
+                </div>
+              </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- <div style="float:right"><a href="#chipTypeModal" data-toggle="modal"  class="float" onclick="addChip()" title="Create New Persona"> <i class="fa fa-plus my-float"></i> </a></div> -->
+
+    <div style="height: 60px;">
+        <div><a href="#chipTypeModal" data-toggle="modal"  class="float" onclick="addChip()" title="Create New Persona"> <i class="fa fa-plus my-float"></i> </a></div>
+    </div>
+
+    <div class="row gap-20 masonry pos-r">
+            <div class="masonry-sizer col-md-12"></div>
+            <div class="masonry-item col-12 row">
+              {% for chips in customerPersonaObj %}
+
+              <div class="col-lg-4 col-md-4 col-sm-6" style="margin-top:20px;">
+                <div class="bgc-white p-20 bd boxShadow" style="height:180px;min-height: 180px;">
+
+                  <div class="mt-0 row" style="min-height: 45px;max-height: 45px;">
+                     <div class="col-md-10">
+                         <h6 class="c-grey-900" style="float:left;">
+
+                                <div style="min-height: 38px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 255px; font-family:arial;justify-content:center;" title="{{chips.chip_title}}"> <i class="fa fa-book" style="color:#bf3b2f;"></i>  {{chips.chip_title|title}} </div>
+<!--                                <div style="float:left;font-size: 12px;">{{chips.date_duration_from|date:"M d, Y"}} - {{chips.date_duration_to|date:"M d, Y"}}</div>-->
+                                {% for reporttype in reportTypeObj %}
+                                {% if chips.report_type_id == reporttype.id %}
+                                     <pre class="fsz-sm" style="font-family:arial;justify-content:center;font-size:11px !important;">({{reporttype.name|title}}) </pre>
+                                {% endif %}
+                              {% endfor %}
+                         </h6>
+                     </div>
+                     <div class="col-md-2">
+                   <span class="dropdown" style="float:right;">
+                      <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+                        <div class="peer">
+                          <span class="icon-holder">
+                            <i class="ti-settings" style="color: #bf3b2f" title="Settings: Edit/Delete Persona"></i>
+                          </span>
+                        </div>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-right fsz-sm"  style="min-width:100px;">
+                      <li>
+                      <a onclick="edit_report('{{chips.id}}')" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700" data-toggle="modal" data-id="3" style="cursor: pointer;padding: 10px;">
+                        <i class="ti-pencil mR-10" style="color: #bf3b2f" title="Edit Persona"></i> <span>Edit</span>
+                      </a>
+                     </li>
+                     <li>
+                      <a href="javascript:void(0)" onclick="delete_chip({{chips.id}})" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700" style="padding: 10px;">
+                        <i class="ti-trash mR-10" style="color: #bf3b2f" title="Delete Persona"></i> <span> Delete </span>
+                      </a>
+                     </li>
+                    </ul>
+                    </span>
+                      </div>
+                  </div>
+                  <div style="clear:both"></div>
+<!--                  <div class="mT-10  pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c">-->
+<!--                      <div class="right" style="min-height: 110px;">-->
+<!--                          <div class="peer">-->
+<!--                            <h1><i class="fa fa-book" style="color:#bf3b2f;"></i></h1>-->
+<!--                              {% for reporttype in reportTypeObj %}-->
+
+<!--                                {% if chips.report_type_id == reporttype.id %}-->
+<!--                                     <pre class="fsz-sm" style="font-family:arial;justify-content:center;">{{reporttype.name|title}} <br />  </pre>-->
+<!--                                {% endif %}-->
+<!--                              {% endfor %}-->
+<!--                          </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+                  <div class="mT-10 peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c">
+                  <a href="/b2b/get_persona_report/{{chips.id}}/" class="btn btn-outline-primary" style="font-size:16px;width:100%">View Details</a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+   
+
+    <!-- <a href="#" class="float">
+      <i class="fa fa-plus my-float"></i>
+    </a> -->
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa4VG5jE5EA7zLDNxHxc2kOPz8w8fezts&amp;callback=myMap"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.0/morris.min.js"></script>
+<!-- Modal -->
+<div class="modal fade" id="customerModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+  <div class="modal-content">
+     <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="cutomerModalTitle">Create New Persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+     <div class="modal-body">
+        <div class="alert alert-danger" style="display:none" id="addPersonaErrors"></div>
+        <div class="alert alert-success" style="display:none" id="addPersonaSuccess"></div>
+        <section class="content1">
+           <div class="container-fluid">
+              <div id="persona_type" class="row clearfix" style="display:none;" >
+              </div>
+              <div id="report_type" class="row clearfix" >
+              </div>
+           </div>
+           <div id="gen_report" class="row clearfix" style="display:none;">
+              <div class="container-fluid">
+                 <form id="customerChip" class="form-horizontal" name="customerChip" autocomplete="off">
+                      {% csrf_token %}
+                     <p id="reportTitle" align="center" style="margin-top: -40px;"><b>Report Type: </b>Last week's daily culture sentiments</p>
+                    <div class="form-group">
+                       <label class="control-label required" for="id_customer_chip_title">Title:</label>
+                       <div class="input-group">
+                          <input type="text" name="customer_chip_title" id="id_customer_chip_title" placeholder="Enter chip title" maxlength="200" class="form-control" required="" autocomplete="off">
+                       </div>
+                    </div>
+                    <input type="hidden" id="hidden-report" name="reports" value="">
+                     {% include 'persona/include/parameters.html' %}
+                    <div id="report-params">
+                        <input type="hidden" id="reportType" name="reportType" value="1">
+<!--                        <input type="hidden" name="reports" value="{{report_type}}">-->
+                       <input type="hidden" name="customer_id" value={{customer_id}}>
+                 </div>
+                 </form>
+              </div>
+           </div>
+        </section>
+        <div class="modal-footer">
+<!--          <button type="button" class="btn btn-light" id="goBackPersona"> <i class="fa fa-arrow-left"></i> Previous</button>-->
+        <button type="button" class="btn btn-light" id="goBackReport" style="position: absolute; left: 0;"> <i class="fa fa-arrow-left"></i> </button>
+        <button type="button" class="btn btn-outline-primary" id="saveCustomerChip">Save changes</button>
+        <button type="button" class="btn btn-outline-dark" id="close" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Edit Data Start -->
+<div id="EditModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100" id="cutomerModalTitle">Edit Persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+        <div class="modal-body">
+            <p id="edit_reportTitle" align="center" style="margin-top: -40px;"><b>Report Type: </b>Last week's daily culture sentiments</p>
+            <div class="alert alert-danger" style="display:none" id="editPersonaErrors"></div>
+        <div class="alert alert-success" style="display:none" id="editPersonaSuccess"></div>
+        <form id="editChipForm" method="POST" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ chipForm.chip_title.label }}
+            <div class="input-group">
+                {{ chipForm.chip_title }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ chipForm.start_date.label }}
+                {{ chipForm.start_date }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                {{ chipForm.end_date.label }}
+                {{ chipForm.end_date }}
+            </div>
+
+        </div>
+        <input type="hidden" name="chip_id" id="chip_id" />
+        <section class="content1">
+           <div class="container-fluid">
+              <div id="edit_persona_type" class="row clearfix" style="display:none;" >
+              </div>
+              <div id="edit_report_type" class="row clearfix" style="display:none;">
+              </div>
+           </div>
+           <div id="edit_gen_report" class="row clearfix" >
+              <div class="container-fluid">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                       <label class="control-label required" for="id_customer_chip_title">Title:</label>
+                       <div class="input-group">
+                          <input type="text" name="customer_chip_title" id="edit_id_customer_chip_title" placeholder="Enter chip title" maxlength="200" class="form-control" required="" autocomplete="off">
+                       </div>
+                    </div>
+
+                    <div id="edit_report-params">
+
+                 </div>
+                  <input type="hidden" id="edit_reportType" name="reportType" value="1">
+                   <input type="hidden" id="edit_hidden-report" name="reports" value="11">
+                   <input type="hidden" name="customer_id" value={{customer_id}}>
+
+              </div>
+           </div>
+        </section>
+        </form>
+        </div>
+        <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-light" id="edit_goBackReport" style="position: absolute; left: 0;"> <i class="fa fa-arrow-left"></i> </button> -->
+            <button type="button" class="btn btn-outline-primary" id="edit_saveCustomerChip">Save changes</button>
+            <button type="button" class="btn btn-outline-dark" id="edit_close" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script>
+
+  function edit_report(id){
+    $('#EditModal').modal('show');
+    var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+    var modal_id = id;
+    $.ajax({
+      type : "GET",
+                url:"/b2b/edit-persona-details/"+modal_id+"/",
+      success : function(result){
+        reportClick(result.report_type_id)
+        setTimeout(function(){
+          $("#EditModal #edit_id_customer_chip_title").val(result.chip_title);
+          $("#EditModal #edit_reportTitle").html('<b>Report Type: </b>'+result.report_type);
+          $("#EditModal #id_chip_id").val(result.chip_id);
+          $("#EditModal #edit_hidden-report").val(id);
+          $("#EditModal #social_accounts").val(result.social_auth_id.text);
+   
+          
+            if (result.social_auth_id){
+          result.social_auth_id.forEach(function(social_account) {
+            console.log(social_account.text, social_account.id);
+              // var data = {id: social_account.trim(), text: social_account.trim()};
+              var newOption = new Option(social_account.text, social_account.id, true, true);
+              $("#EditModal #social_accounts").append(newOption).trigger('change');
+          });
+          }
+
+          if (result.locations){
+            result.locations.forEach(function(loc) {
+              var newOption = new Option(loc.text, loc.id, true, true);
+              $("#EditModal #locations").append(newOption).trigger('change');
+            });
+          }
+
+        
+
+          if (result.cultures){
+            result.cultures.forEach(function(nationality) {
+              var newOption = new Option(nationality.text, nationality.id, true, true);
+              $("#EditModal #nationalities").append(newOption).trigger('change');
+            });
+          }
+
+
+          if (result.sentiments){
+            result.sentiments.forEach(function(sentiment) {
+              var newOption = new Option(sentiment.text, sentiment.id, true, true);
+              $("#EditModal #sentiment").append(newOption).trigger('change');
+            });
+          }
+
+        $('input[name=date_from]').val(result.date_duration_from);
+        $('input[name=date_to]').val(result.date_duration_to);
+       
+       },1000);
+    },
+      error: function(result)
+    {
+      console.log("--------------------------");
+      console.log(result);
+      console.log("--------------------------");
+      alert("Ajax Error !!!!!!!!!!!!!");
+    }
+    });
+  }
+
+   function addChip(){
+       $('#customerModal').modal({backdrop: 'static', keyboard: false});
+   }
+       $("#goBackPersona").hide();
+       $("#goBackReport").hide();
+       $("#saveCustomerChip").hide();
+       $("#close, .close, #edit_close").click(function(){
+          $("#report_type,#edit_gen_report").show();
+          $("#gen_report, #edit_report_type").hide();
+          $("#goBackPersona,#edit_goBackPersona").hide();
+          $("#goBackReport,#edit_goBackReport").hide();
+          $("#saveCustomerChip,#edit_saveCustomerChip").hide();
+          $("#addPersonaErrors,#addPersonaSuccess").hide()
+          $("#addPersonaErrors,#addPersonaSuccess").hide()
+       });
+       $("#report,#edit_report").click(function(){
+          $("#persona_type,#edit_persona_type").hide();
+          $("#report_type,#edit_report_type").show();
+          $("#gen_report,#edit_gen_report").hide();
+          $("#goBackReport,#edit_goBackReport").hide();
+          $("#saveCustomerChip, #edit_saveCustomerChip").hide();
+      });
+      $("#report_type, #edit_report_type").click(function(){
+          $("#persona_type,#edit_persona_type").hide();
+          $("#report_type,#edit_report_type").hide();
+          $("#gen_report,#edit_gen_report").show();
+          $("#goBackPersona,#edit_goBackPersona").hide();
+          $("#goBackReport,#edit_goBackReport").show();
+          $("#saveCustomerChip,#edit_saveCustomerChip").show();
+
+       //    console.log($(this));
+
+          var x = $("#report_names")
+           var report_type  = x.children("span").text();
+      });
+
+      $("#report_type").change(function(){
+       console.log("==============change====================>");
+      });
+      $("#goBackReport,#edit_goBackReport").click(function(){
+          $("#persona_type,#edit_persona_type").hide();
+          $("#report_type,#edit_report_type").show();
+          $("#gen_report,#edit_gen_report").hide();
+          $("#goBackReport,#edit_goBackReport").hide();
+          $("#saveCustomerChip,#edit_saveCustomerChip").hide();
+      });
+
+
+   $(document).ready(function() {
+       var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+       // var report_type = $("#report_type").text();
+       // console.log(report_type);
+       var colors = ['bg-cyan', 'bg-cyan', 'bg-cyan', 'bg-cyan']
+       $.ajax({
+               headers: temp,
+               url:'/b2b/get-all-report-type/',
+               type:"GET",
+               success: function(data){
+                   for (i = 0; i < data.length; i++)
+                   {
+                       var type = "there"
+                       // reportClick(\'' + type + '\')
+
+                       $("#report_type,#edit_report_type").append('<div class="cards col-lg-5 offset-md-1 " style="cursor: pointer;margin-left:40px;padding:0; margin-top: 10px;margin-bottom: 10px;" onclick="reportClick(\'' + data[i]['report'][0] + '\')"> \
+                            <div class="cards-body row" style="height: 82px;padding: 20px;font-size: initial;color:#000 !important;font-family: Roboto,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Droid Sans,Helvetica Neue,Arial,sans-serif;line-height: 1.5;" \
+                            onclick="reportClick(\'' + data[i]['report'][0] + '\')"> \
+                                <div class="col-md-1"><i class="fa fa-book" style="color:#bf3b2f;"></i></div>\
+                                <div class="col-md-10">'+ data[i]['report'][1] + '</div></div>\
+                            <div class="cards-footer mb-2 instagram" style="margin-bottom: 0 !important;    padding: 4px 20px !important;">\
+                            </div>\
+                        </div>\
+                        ' );
+                   }
+                    $("#report_type").append('<br/');
+               }
+       });
+
+
+
+     $("#submitModal .js-select2").select2({
+           placeholder: 'Select an item',
+           closeOnSelect : false,
+           allowHtml: false,
+           allowClear: false,
+           dropdownAutoWidth: true
+       });
+
+     $("#EditModal .js-select2").select2({
+           closeOnSelect : false,
+           placeholder: 'Select an item',
+           allowHtml: false,
+           allowClear: false,
+           dropdownAutoWidth: true
+       });
+
+     $("#customerModal .js-select2").select2({
+           closeOnSelect : false,
+           placeholder: 'Select an item',
+           allowHtml: false,
+           allowClear: false,
+           dropdownAutoWidth: true
+       });
+
+
+       $('#customerModal #reports').select2({
+         placeholder: "Search for a report type",
+         minimumInputLength: 3,
+         ajax: {
+           url: "/b2b/get-report-type/",
+           dataType: 'json',
+           delay: 250,
+           processResults: function (data) {
+
+            console.log("-------------data------------->");
+            console.log(data);
+           return {
+             results: data
+           };
+         },
+         cache: false
+         }
+       });
+
+
+
+
+       $('#submitModal #hashtags, #EditModal #edit_hashtags #customerModal').select2({
+
+         placeholder: "Search for a hashtags",
+         minimumInputLength: 3,
+         language: {
+           noResults: function(data) {
+
+             return '<a data-toggle="modal" href="#modalconfirm" class="btn btn-primary">Add New Hashtag</a>'
+             }
+           },
+           escapeMarkup: function (markup) {
+               return markup;
+           },
+
+           ajax: {
+           url: "/get-hashtags-list/",
+           dataType: 'json',
+           delay: 250,
+           cache: false,
+
+           processResults: function(data)
+           {
+             return {
+                   results: data
+               };
+
+           },
+
+         }
+       });
+
+
+
+       $("#reports").change(function(){
+             if($(this).val() == ""){
+               $('.paramters').css({"display": "none"});
+             }
+             else{
+               var report_type = [$(this).val()];
+               $('.paramters').css({"display": "block"});
+               $('#customerModal #paramters').select2({
+
+                 placeholder: "Search for a report type",
+                 minimumInputLength: 3,
+                 ajax: {
+                   url: "/b2b/get-paramters/"+report_type+"/",
+                   dataType: 'json',
+                   delay: 250,
+                   processResults: function (data) {
+                   return {
+                     results: data
+                   };
+                 },
+                 cache: false
+                 }
+               });
+             }
+         })
+   	 });
+     function reportClick(id){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           $("#reportType").val(id);
+           $("#edit_reportType").val(id);
+           $.ajax({
+                   headers: temp,
+                   url:'/b2b/get_report_title/'+id+"/",
+                   type:"GET",
+                   success: function(data){
+                       $("#customerModal #reportTitle").html('<b>Report Type: </b>'+data);
+                       $("#EditModal #edit_reportTitle").html('<b>Report Type: </b>'+data);
+                       $("#edit_report_type").trigger('click');
+                   }
+           });
+           $.ajax({
+                   headers: temp,
+                   url:'/b2b/get_parameters_details/'+id+"/",
+                   type:"GET",
+                   success: function(data){
+                       $("#report-params").html(data);
+                       $("#EditModal #edit_report-params").html(data);
+                   }
+           });
+        }
+
+
+        $("#edit_saveCustomerChip").click(function(){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           var chip_id = $("#EditModal #edit_hidden-report").val();
+           console.log("---------------chip_id------------------>")
+           console.log(chip_id);
+           console.log ($("#editChipForm").serialize())
+           $.ajax({
+               headers: temp,
+               url:'/b2b/add-new-persona/',
+               type:"POST",
+               data: $("#editChipForm").serialize(),
+               success: function(data){
+                   if(data.success === 1)
+                   {
+                        data.message = "Persona has been updated successfully...!";
+                        $("#editPersonaErrors").text()
+                        $("#editPersonaErrors").hide()
+                        $("#editPersonaSuccess").text(data.message)
+                        $("#editPersonaSuccess").show()
+                        $('#EditModal').hide()
+                        $('#EditModal').hide()
+                        window.location.href=""
+
+                   }
+                   if(data.success === 0)
+                   {
+                       $("#editPersonaErrors").text(data.message)
+                       $("#editPersonaErrors").show()
+                       $("#EditModal").show()
+                   }
+               },
+               error:function(data) {
+                   if(data.success === 0)
+                   {
+                       $("#editPersonaErrors").text(data.message)
+                       $("#editPersonaErrors").show()
+                       $("#EditModal").show()
+                   }
+               }
+           });
+       });
+
+
+
+      $("#saveCustomerChip").click(function(){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           console.log ($("#customerChip").serialize())
+           $.ajax({
+               headers: temp,
+               url:'/b2b/add-new-persona/',
+               type:"POST",
+               data: $("#customerChip").serialize(),
+               success: function(data){
+                   if(data.success === 1)
+                   {
+                        data.message = "Persona has been updated successfully...!";
+                        $("#addPersonaErrors").text()
+                        $("#addPersonaErrors").hide()
+                        $("#addPersonaSuccess").text(data.message)
+                        $("#addPersonaSuccess").show()
+                        $('#customerModal').hide()
+                        window.location.href=""
+
+                   }
+                   if(data.success === 0)
+                   {
+                       $("#addPersonaErrors").text(data.message)
+                       $("#addPersonaErrors").show()
+                       $("#customerModal").show()
+                   }
+               },
+               error:function(data) {
+                   if(data.success === 0)
+                   {
+                       $("#addPersonaErrors").text(data.message)
+                       $("#addPersonaErrors").show()
+                       $("#customerModal").show()
+                   }
+               }
+           });
+       });
+
+
+
+       $("#add_hashtag").click(function(){
+       $("#loaderAjax").show();
+         var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+         var Hashtag = $("#Hashtag").val()
+         $.ajax({
+               headers: temp,
+               url:"/add-hashtag/",
+               type:"POST",
+               data: {"hashtag":Hashtag},
+               success: function(data){
+                   if(data.success == 1)
+                   {
+                       alert(data.message)
+                       // $("#modalconfirm").modal("close");
+                       // $("#modalconfirm").modal("hide");
+
+                       $(".close_modal").click();
+                       $("#Hashtag").html("");
+                       // $('#modalconfirm :input', this).val("");
+                   }
+                   if(data.success == 0)
+                   {
+                       alert(data.message)
+                   }
+                   // window.location.href=""
+                   $("#loaderAjax").hide();
+
+               },
+               error:function(data) {
+                   alert("something went wrong, Please try again ..!")
+                   $("#loaderAjax").hide();
+               }
+         });
+      });
+function delete_chip(chip_id)
+{
+    $('#modalconfirm').modal('show');
+  $('#modalconfirm')
+          .find("h4.modal-title")
+          .html("Delete Persona");
+  $('#modalconfirm')
+          .find(".modal-body")
+          .html('<p>Are you sure want to delete this persona ?</p><input type="text" id="response" \ class="form-control" aria-label="Text input with checkbox"');
+  $('#modalconfirm')
+          .find(".modal-footer")
+          .html('<input class="btn btn-outline-primary" type="button" value="Yes" id="deleteChip" onclick="deletePersona('+chip_id+')" data-attr='+chip_id +' /> <input style="margin-left: 10px; font-size: 13px;" type="button" class="btn btn-outline-secondary" data-dismiss="modal" value="Close" />');
+}
+function deletePersona(chip_id)
+{
+    //var result = confirm("Are you sure want to delete this persona ? ");
+    if(chip_id)
+    {
+        var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+        $.ajax({
+                    headers: temp,
+                    url:'/b2b/delete-persona-details/'+chip_id+"/",
+                    type:"POST",
+                    data: "chip_id="+chip_id,
+                    success: function(data){
+                        if(data.success === 1)
+                        {
+                            // alert("Persona has been deleted successfully..!!");
+                            window.location.href="";
+                        }
+                    },
+                    error:function(data) {
+                        if(data.success === 0)
+                        {
+                            // alert("Something went wrong..!!");
+                        }
+                    }
+                });
+    }
+}
+
+$("#edit_saveChipData").click(function(){
+
+  var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+    $.ajax({
+        headers: temp,
+        url:'/b2b/edit-persona-data/',
+        type:"POST",
+        data: $("#editChipForm").serialize(),
+        success: function(data){
+            if(data.success === 1)
+            {
+                data.message = "Persona has been updated successfully...!";
+                $("#editPersonaErrors").text()
+                $("#editPersonaErrors").hide()
+                $("#editPersonaSuccess").text(data.message)
+                $("#editPersonaSuccess").show()
+                $('#EditModal').hide()
+                window.location.href=""
+
+            }
+            if(data.success === 0)
+            {
+                $("#editPersonaErrors").text(data.message)
+                $("#editPersonaErrors").show()
+            }
+        },
+        error:function(data) {
+            if(data.success === 0)
+            {
+                $("#editPersonaErrors").text(data.message)
+                $("#editPersonaErrors").show()
+            }
+        }
+    });
+});
+</script>
+
+
+<script>
+
+
+
+
+  $(".js-select2").select2({
+    minimumInputLength: 3,
+    closeOnSelect : false,
+    placeholder: 'Select an item',
+    allowHtml: false,
+    allowClear: false,
+    dropdownAutoWidth: false
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      /*var select = $('#sentiment');
+      select.empty().append('<option value="">---Select Sentiment---</option>');*/
+      console.log("--------------log------------------->");
+       $('#sentiment, #EditModal #sentiment').select2({
+          placeholder: "Search for sentiments",
+          minimumInputLength: 3,
+          ajax:{
+              url: "/b2b/get-sentiment/",
+              dataType: 'json',
+              delay: 250,
+              processResults: function (data) {
+              return {
+                results: data
+              };
+              },
+          cache: false
+          }
+       });
+  
+  
+  
+      $('#social_accounts, #EditModal #social_accounts').select2({
+        placeholder: "Search for social accounts",
+        minimumInputLength: 3,
+        ajax: {
+          url: "/b2b/get-social-accounts/",
+          dataType: 'json',
+          delay: 250,
+          processResults: function (data) {
+          console.log("------------------data---------------");
+          console.log(data);
+          return {
+            results: data
+          };
+        },
+        cache: false
+        }
+      });
+      $('#locations,#EditModal #locations').select2({
+        placeholder: "Search for a locations",
+        minimumInputLength: 3,
+        ajax: {
+          url: "/b2b/get-locations-list/",
+          dataType: 'json',
+          delay: 250,
+          processResults: function (data) {
+            console.log("------------------dd-------------------->");
+          return {
+            results: data
+          };
+        },
+        cache: false
+        }
+      });
+  
+      $('#nationalities, #EditModal #nationalities').select2({
+          placeholder: "Search for a culture",
+          minimumInputLength: 3,
+          ajax: {
+          url: "/b2b/get-nationalities-list/",
+          dataType: 'json',
+          delay: 250,
+          processResults: function(data)
+          {
+              return {
+                  results: data
+              };
+          },
+          cache: false
+          }
+      });
+  
+  });
+  </script>
+{% endblock %}

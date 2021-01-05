@@ -1,0 +1,192 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} Custome Response {% endblock title %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<!--<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />-->
+
+<style>
+.badge-secondary {
+    color: #000 !important;
+    background-color: #adb2b63b !important;
+    border: 2px solid #f6f6f6;
+}
+.select2-container{
+  width:100% !important;
+}
+
+.badge{
+    font-weight: 10 !important;
+}
+.btn{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="box box-primary">
+                <div class="box-body box-profile" >
+                  <h3 class="profile-username text-center">Pre-set Reponses for: {{dataDictRow.social_accounts_text}}</h3>
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+<!--                    <label class="text-normal text-dark required">Social Account</label>-->
+                    <div>
+                        <input type="hidden" name="social_accounts" value="{{dataDictRow.social_accounts_id}}">
+<!--                         <select id="social_accounts" name="social_accounts" class="form-control js-select2" autocomplete="off" required>-->
+<!--                             {% if dataDictRow %}-->
+<!--                             <option value="{{dataDictRow.social_accounts_id}}">{{dataDictRow.social_accounts_text}}</option>-->
+<!--                              {% endif %}-->
+<!--                         </select>-->
+                    </div>
+                    <div class="suggestion-box appearAbove shadows suggtn-brdr brtl brtr" id="suggestion-box3" style="display: none;"></div>
+                    </div>
+                    {% if dataDictRow.page_name %}
+                        <div class="form-group">
+                        <label class="text-normal text-dark required">Page Name</label>
+                        <div>
+                            <input type="email" class="form-control" id="page_name" value="{{ dataDictRow.page_name }}" readonly>
+                        </div>
+                        <div class="suggestion-box appearAbove shadows suggtn-brdr brtl brtr" id="suggestion-box0" style="display: none;"></div>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                    <label class="text-normal text-dark required">Positive Response</label>
+                    <div>
+                            {{ form.positive_response_text }}
+                    </div>
+                    <div class="suggestion-box appearAbove shadows suggtn-brdr brtl brtr" id="suggestion-box0" style="display: none;"></div>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="text-normal text-dark required">Negative Response</label>
+                    <div>{{ form.negative_response_text }}</div>
+                    <div class="suggestion-box appearAbove shadows suggtn-brdr brtl brtr" id="suggestion-box1" style="display: none;"></div>
+                    </div>
+
+
+                    <div class="form-group">
+                    <label class="text-normal text-dark required">Neutral Response</label>
+                    <div>{{ form.neutral_response_text }}</div>
+
+                    </div>
+                    <div class="suggestion-box appearAbove shadows suggtn-brdr brtl brtr" id="suggestion-box2" style="display: none;"></div>
+                    </div>
+
+                    {% if msg %}
+                        <h4 class="fw-100 c-red-900 mB-40" style="font-size:14px; text-align:center;">{{ msg | safe }}</h4>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <div class="peers ai-c jc-sb fxw-nw">
+                        <div class="peer" style="width:100%">
+                            {% if canned_reponse %}
+                            <button type='submit' href="{% url 'b2b:add-canned-response' %}" class="btn btn-outline-primary"> Update</button>
+                            {% else %}
+                            <button type='submit' href="{% url 'b2b:add-canned-response' %}" class="btn btn-outline-primary"> Create</button>
+                            {% endif %}
+
+                            <a href="{% url 'b2b:custom-response' %}" type="button" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- <script src="{% static 'assets/jquery-3.4.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/jquery.cookie.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="{% static 'assets/bootstrap.min.js' %}"></script> -->
+<script>
+function hello(msg, id){
+    console.log("---------------id---------------->");
+    console.log(id);
+
+    $("#"+id).val(msg);
+    var value = $("#"+id).val();
+    if (id == "id_positive_response_text"){
+        Autocomplete(value, id, "suggestion-box0");
+    }
+    else if (id == "id_negative_response_text"){
+        Autocomplete(value, id, "suggestion-box1");
+    }
+    else if (id == "id_neutral_response_text"){
+        Autocomplete(value, id, "suggestion-box2");
+    }
+    
+}
+
+function emoji(msg, id){
+    $('#'+id).val($('#'+id).val() + ' ' + msg);
+    var value = $("#"+id).val();
+    if (id == "id_positive_response_text"){
+        Autocomplete(value, id, "suggestion-box0");
+    }
+    else if (id == "id_negative_response_text"){
+        Autocomplete(value, id, "suggestion-box1");
+    }
+    else if (id == "id_neutral_response_text"){
+        Autocomplete(value, id, "suggestion-box2");
+    }
+}
+
+
+
+$("#id_positive_response_text").on("keyup", function(){
+    var id = "id_positive_response_text";
+    Autocomplete(this.value, id, "suggestion-box0");
+});
+
+
+$("#id_negative_response_text").on("keyup", function(){
+    var id = "id_negative_response_text";
+    Autocomplete(this.value, id, "suggestion-box1");
+});
+
+
+$("#id_neutral_response_text").on("keyup", function(){
+    var id = "id_neutral_response_text";
+    Autocomplete(this.value, id, "suggestion-box2");
+});
+
+$('#social_accounts').select2
+({
+      placeholder: "Select social account",
+      minimumInputLength: 0,
+      ajax: {
+        url: "/b2b/get-social-accounts/",
+        dataType: 'json',
+        delay: 250,
+        data:{
+        {% if dataDictRow.social_accounts_text %} 'type':'edit','id':{{dataDictRow.social_accounts_id}}
+        {% else %} 'type':'add'
+        {% endif %},
+        'for':'canned',
+        },
+        processResults: function (data) {
+        console.log("------------------data---------------");
+        console.log(data);
+        return {
+          results: data
+        };
+      },
+      cache: false
+      }
+    });
+
+ $('#id_social_accounts').addClass('form-control')
+</script>
+
+
+{% endblock %}

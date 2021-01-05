@@ -1,0 +1,73 @@
+{% load i18n %}
+{% load utils %}
+{% load static %}
+
+<link href="{% static 'assets/css/pagination.css' %}" rel="stylesheet">
+
+{% if page_obj.paginator.num_pages > 1 %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li>
+        <a href="{% construct_get_query page=page_obj.previous_page_number %}">
+          <!-- <svg data-src="{% static "assets/static/images/chevron-left.svg" %}" fill="#000" /> -->
+          <!-- <svg fill="#9E9E9E" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="{% static 'assets/static/images/chevron-left.svg' %}" class="injected-svg">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" role="presentation"></path>
+            <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+        </svg> -->
+        <svg fill="#000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="{% static 'assets/static/images/chevron-left.svg' %}" class="injected-svg">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" role="presentation"></path>
+          <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+      </svg>
+        </a>
+      </li>
+      {% if page_obj.number|add:previous_section >= 1 %}
+        <li><a href="{% construct_get_query page=page_obj.number|add:previous_section %}">&hellip;</a></li>
+      {% elif page_obj.number|add:previous_section < 1 and page_obj.number|add:n_backward >= 1 %}
+        <li><a href="?page=1">&hellip;</a></li>
+      {% endif %}
+    {% else %}
+      <li class="disabled"><a href="#!">
+          <svg fill="#9E9E9E" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="{% static 'assets/static/images/chevron-left.svg' %}" class="injected-svg">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" role="presentation"></path>
+            <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+        </svg>
+        
+      </a></li>
+    {% endif %}
+
+    {% for page in page_obj.paginator.page_range %}
+      {% if page_obj.number == page %}
+        <li class="active"><a href="{% construct_get_query page=page %}">{{ page }}</a></li>
+      {% elif page > page_obj.number|add:n_backward and page < page_obj.number|add:n_forward %}
+        <li class="waves-effect"><a href="{% construct_get_query page=page %}">{{ page }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      {% if page_obj.number|add:next_section <= page_obj.paginator.num_pages %}
+        <li><a href="{% construct_get_query page=page_obj.number|add:next_section %}">&hellip;</a></li>
+      {% elif page_obj.number|add:next_section > page_obj.paginator.num_pages and page_obj.number|add:n_forward <= page_obj.paginator.num_pages %}
+        <li><a href="{% construct_get_query page=page_obj.paginator.num_pages %}">&hellip;</a></li>
+      {% endif %}
+      
+      <li><a href="{% construct_get_query page=page_obj.next_page_number %}">
+          <svg fill="#000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="{% static 'assets/static/images/chevron-right.svg' %}" class="injected-svg">
+            
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" role="presentation"></path>
+            <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+        </svg>
+      </a></li>
+    {% else %}
+      <li class="disabled"><a href="#!">
+          <!-- <svg fill="#000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="{% static 'assets/static/images/chevron-right.svg' %}" class="injected-svg">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" role="presentation"></path>
+            <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+        </svg> -->
+        <svg fill="#9E9E9E" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" data-src="https://snovel.progfeel.co.in/static/dashboard/images/chevron-right.svg" class="injected-svg">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" role="presentation"></path>
+          <path d="M0 0h24v24H0z" fill="none" role="presentation"></path>
+      </svg>
+      </a></li>
+    {% endif %}
+  </ul>
+{% endif %}

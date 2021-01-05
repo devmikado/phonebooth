@@ -1,0 +1,251 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer Reports {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+
+<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+
+
+{% endblock stylesheets %}
+{% block content %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['Opening Move', 'Percentage'],
+          ["King's pawn (e4)", 44],
+          ["Queen's pawn (d4)", 31],
+          ["Knight to King 3 (Nf3)", 12],
+          ["Queen's bishop pawn (c4)", 10],
+          ['Other', 3]
+        ]);
+
+        var options = {
+          title: 'Chess opening moves',
+          width: 900,
+          legend: { position: 'none' },
+          chart: { title: 'Chess opening moves',
+                   subtitle: 'popularity by percentage' },
+          bars: 'vertical', // Required for Material Bar Charts.
+          axes: {
+            x: {
+              0: { side: 'top', label: 'Percentage'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        chart.draw(data, options);
+      };
+    </script>
+    <script>
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Country');
+          data.addColumn('number', 'Positive');
+          data.addColumn('number', 'Negative');
+          data.addColumn('number', 'Neutral');
+          data.addRows([
+              ['1 July', 100, 400, 200],
+              ['3 July', 117, 460, 250],
+              ['4 July', 660, 112, 300],
+              ['5 July', 13, 0, 350],
+              ['7 July', 10, 540, 0],
+              ['8 July', 0, 540, 340]
+            ]);
+
+
+        var options = {
+          chart: {
+            title: '',
+            subtitle: '',
+          },
+          bars: 'vertical', // Required for Material Bar Charts.
+          hAxis: {format: 'decimal'},
+          height: 400,
+          colors: ['#76a024', '#e0172a', 'grey']
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('chart_div'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+
+        var btns = document.getElementById('btn-group');
+
+        btns.onclick = function (e) {
+
+          if (e.target.tagName === 'BUTTON') {
+            options.hAxis.format = e.target.id === 'none' ? '' : e.target.id;
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+          }
+        }
+      }
+      </script>
+
+  <font face = "arial" >
+   <div id="report-params" class="container-fluid pt-3 p-3 my-3 border">
+       <form>
+            <div class="form-group">
+                <label class="control-label" style="margin: 5px;">Date Duration:</label>
+                 <div class="card-deck row">
+                   <div class="card">
+                     <label class="card-header"> From Date</label>
+                     <div class="card-body ">
+                              <input type="text" name="date_from" id="date_from" placeholder="" maxlength="200" value="06/06/2020"  class="form-control datepicker" required="">
+                     </div>
+                   </div>
+                  <div class="card">
+                     <label class="card-header"> To Date</label>
+                     <div class="card-body">
+                              <input type="text" name="date_to" id="date_to" placeholder="" maxlength="200" value="" class="form-control datepicker" required="">
+                     </div>
+                   </div>
+                      <div class="card">
+<!--                     <label class="card-header"> To Date</label>-->
+                     <div class="card-body form-group">
+                               <div class="row">
+                                   <input type="button" class="btn btn-outline-success col-md-8 offset-2" value="View Report"/>
+                               </div>
+                         <br/>
+                         <div class="row">
+                             <input type="button" class="btn btn-outline-primary col-md-8 offset-2" value="Download Report"/>
+                         </div>
+                     </div>
+                   </div>
+                </div>
+
+            </div>
+</form>
+   <hr/>
+<!--    <div id="top_x_div" style="width: 900px; height: 500px;"></div>-->
+       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <div class="container-md p-3 my-3 border bg-white" style="border:1px grey">
+          <div class="card">
+              <div class="card-header">
+                  <pre>
+                      <font face = "arial">
+                          <h2 align="center">Location wise languages comment counts</h2>
+                        <b>Parameters: </b>
+                        <b>Social media accounts: </b>Twitter
+                        <b>Sentiments:</b> Positive,Negative,Neutral
+                      </font>
+                  </pre>
+              </div>
+        <div id="chart_div" class="card-body" width="80%"></div></div>
+  </div>
+<hr/>
+    <br/><br/><br/>
+<hr/>
+  <div class="container-md p-3 my-3 border bg-white">
+    <div class="card">
+        <div class="card-header">
+              <pre>
+                  <h2 align="center">Last week's daily culture sentiments</h2>
+                  <font face = "arial">
+                      <b>Parameters: </b>
+                      <b>Date duration: </b>26-07-2020 To 31-07-2020
+                      <b>Social media accounts: </b>Twitter
+                      <b>Culture:</b> Indian
+                      <b>Location:</b> Pune
+                  </font>
+              </pre>
+        </div>
+        <div class="card-body">
+               <table class="table table-bordered" style="margin-bottom:-1px" title="Location wise languages comment counts">
+                <thead>
+                	<tr>
+                      <th style="text-align:center" >Sr.No.</th>
+                      <th style="text-align:center">Date</th>
+                      <th style="text-align:center">Weekday</th>
+                      <th style="text-align:center">Location</th>
+                      <th style="text-align:center">Culture</th>
+                      <th style="text-align:center">Language</th>
+                      <th style="text-align:center">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center" >1</td>
+                        <td style="text-align:center">26 July 2020</td>
+                        <td style="text-align:center">Sunday</td>
+                        <td style="text-align:center">Pune</td>
+                        <td style="text-align:center" >Indian</td>
+                        <td style="text-align:center">Hindi</td>
+                        <td style="text-align:center" >15</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center" >2</td>
+                        <td style="text-align:center">26 July 2020</td>
+                        <td style="text-align:center">Sunday</td>
+                        <td style="text-align:center">Pune</td>
+                        <td style="text-align:center" >Indian</td>
+                        <td style="text-align:center">Hindi</td>
+                        <td style="text-align:center" >13</td>
+                    </tr><tr>
+                        <td style="text-align:center" >3</td>
+                        <td style="text-align:center">27 July 2020</td>
+                        <td style="text-align:center">Monday</td>
+                        <td style="text-align:center">Pune</td>
+                        <td style="text-align:center" >Indian</td>
+                        <td style="text-align:center">Hindi</td>
+                        <td style="text-align:center" >164</td>
+                    </tr><tr>
+                        <td style="text-align:center" >4</td>
+                        <td style="text-align:center">28 July 2020</td>
+                        <td style="text-align:center">Tuesday</td>
+                        <td style="text-align:center">Pune</td>
+                        <td style="text-align:center" >Indian</td>
+                        <td style="text-align:center">Hindi</td>
+                        <td style="text-align:center" >64</td>
+                    </tr><tr>
+                        <td style="text-align:center" >5</td>
+                        <td style="text-align:center">28 July 2020</td>
+                        <td style="text-align:center">Tuesday</td>
+                        <td style="text-align:center">Pune</td>
+                        <td style="text-align:center" >Indian</td>
+                        <td style="text-align:center">Hindi</td>
+                        <td style="text-align:center" >16</td>
+                    </tr><tr>
+                        <td style="text-align:center" >6</td>
+                        <td style="text-align:center">31 July 2020</td>
+                        <td style="text-align:center">Friday</td>
+                        <td style="text-align:center">Pune</td>
+                        <td style="text-align:center" >Indian</td>
+                        <td style="text-align:center">Hindi</td>
+                        <td style="text-align:center" >14</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+    </div>
+</div>
+ </div>
+  </font>
+
+<script>
+$(function(){
+    $('.datepicker').datepicker({
+      format: "MM dd, yyyy",
+      todayBtn: "linked",
+      autoclose: true,
+      todayHighlight: true
+    });
+});
+</script>
+
+
+
+{% endblock content %}

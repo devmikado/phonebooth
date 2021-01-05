@@ -1,0 +1,209 @@
+      {% load static %}
+      <!-- #Left Sidebar ==================== -->
+      <style>
+        .sidebar-logo{
+          margin-left: 5px;
+        }
+        /* .sidebar:hover {
+            width: 70px;
+        }
+        .sidebar:hover .sidebar-inner .sidebar-logo {
+            padding: 0;
+        } */
+        .sidebar-inner .sidebar-logo img {
+          max-width: 120px;
+          height: 45px;
+          /* width: 100%; */
+        }
+
+        .sidebar-inner .sidebar-logo {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .title{
+          color: #72777a !important;
+        }
+        .title:hover{
+          color: #000 !important;
+        }
+      </style>
+      <div class="sidebar">
+        <div class="sidebar-inner">
+          <!-- ### $Sidebar Header ### -->
+          <div class="sidebar-logo">
+            <div class="peers ai-c fxw-nw">
+              <div class="peer">
+                <div class="mobile-toggle sidebar-toggle" style="display: block !important;">
+                  <a href="" class="td-n">
+                    
+                    <img src="/media/booth.png" height="20">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ### $Sidebar Menu ### -->
+          <ul class="sidebar-menu scrollable pos-r">
+
+            
+
+
+            <li class="nav-item dropdown">
+                <a class="sidebar-link" href="{% url 'customer:social-accounts' %}">
+                <span class="icon-holder">
+                  <i class="ti-layout-media-center-alt" style="color:#bf3b2f"></i>
+                </span>
+                  <span class="title">
+                    Social Platforms
+                  </span>
+                  <!-- <span class="arrow">
+                      <i class="ti-angle-right"></i>
+                    </span> -->
+                </a>
+              
+            </li>
+
+            <!-- <li class="nav-item dropdown">
+              <a class="sidebar-link" href="{% url 'b2b:persona-list' %}">
+              <span class="icon-holder">
+                <i class="ti-notepad" style="color:#bf3b2f"></i>
+              </span>
+                <span class="title">
+                  Persona
+                </span>
+              </a>
+
+            </li> -->
+
+
+            <li class="nav-item dropdown">
+              <a class="sidebar-link" href="{% url 'b2b:custom-response' %}">
+              <span class="icon-holder">
+                <i class=" ti-comment-alt " style="color:#bf3b2f"></i>
+              </span>
+                <span class="title">
+                  <!-- Pre-set Responses -->
+                  Custom Responses
+                </span>
+                <!-- <span class="arrow">
+                    <i class="ti-angle-right"></i>
+                  </span> -->
+              </a>
+            
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="sidebar-link" href="{% url 'customer:customer-dashboard' %}">
+              <span class="icon-holder">
+                <i class="ti-dashboard" style="color:#bf3b2f"></i>
+              </span>
+                <span class="title">
+                  <!-- Dashboard -->
+                  Custom Reports
+                </span>
+                <!-- <span class="arrow">
+                    <i class="ti-angle-right"></i>
+                  </span> -->
+              </a>
+            
+            </li>
+
+
+            <li class="nav-item dropdown">
+              <a class="sidebar-link" href="{% url 'customer:dahsboard-reports' %}">
+              <span class="icon-holder">
+                <i class=" ti-layout-media-overlay-alt-2 " style="color:#bf3b2f"></i>
+              </span>
+                <span class="title">
+                  <!-- Dashboard -->
+                  Dashboard
+                </span>
+                <!-- <span class="arrow">
+                    <i class="ti-angle-right"></i>
+                  </span> -->
+              </a>
+            
+            </li>
+
+
+            <li class="nav-item dropdown">
+              <a class="sidebar-link" href="{% url 'customer:free-listening' %}">
+              <span class="icon-holder">
+                <i class="ti-bar-chart" style="color:#bf3b2f"></i>
+              </span>
+                <span class="title">
+                  <!-- Dashboard -->
+                  Free Listening
+                </span>
+                <!-- <span class="arrow">
+                    <i class="ti-angle-right"></i>
+                  </span> -->
+              </a>
+            
+            </li>
+
+            
+
+            <!-- <li class="nav-item dropdown">
+                <a class="sidebar-link" href="{% url 'b2b:reports' %}">
+                <span class="icon-holder">
+                  <i class=" ti-notepad " style="color:#bf3b2f"></i>
+                </span>
+                  <span class="title">
+                    Reports
+                  </span>
+                 
+                </a>
+            </li> -->
+
+            <!-- <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                  <a class="sidebar-link" href="{% url 'customer:customer-report' %}">
+                  <span class="icon-holder">
+                    <i class="ti-pie-chart" style="color:#bf3b2f"></i>
+                  </span>
+                    <span class="title">
+                      Reports
+                    </span>
+                 
+                  </a>
+
+                </a>
+              </li> -->
+
+            <!-- <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="javascript:void(0);">
+                <span class="icon-holder">
+                  <i class="ti-settings" style="color:#bf3b2f"></i>
+                </span>
+                <span class="title">Settings</span>
+                <span class="arrow">
+                  <i class="ti-angle-right"></i>
+                </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="nav-item dropdown">
+                  <a href="javascript:void(0);">
+                    <span>Wordcloud Stop Words</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="javascript:void(0);">
+                    <span>Users</span>
+                  </a>
+                </li>
+              </ul>
+            </li> -->
+            <!-- <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="{% url 'logout' %}">
+                <span class="icon-holder">
+                  <i class="ti-power-off" style="color:#bf3b2f"></i>
+                </span>
+                <span class="title">Logout</span>
+              </a>
+            </li> -->
+          </ul>
+        </div>
+      </div>

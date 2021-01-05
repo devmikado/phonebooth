@@ -1,0 +1,303 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% load utils %}
+
+{% block title %} Reports {% endblock title %}
+
+{% block stylesheets %}
+ <style>
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #fff!important;
+    background: #6363658c!important;
+}
+.dataTables_length{
+     display:none;
+}
+
+.badge-secondary {
+    color: #000 !important;
+    background-color: #adb2b63b !important;
+    border: 2px solid #f6f6f6;
+}
+.pagination li a {
+    font-size: 15px !important;
+}
+.column1{
+    font-family:arial !important;
+}
+.leftAlign,.column1{
+    text-align: justify !important;
+}
+.rightAlign{
+    text-align: right !important;
+}
+.header1{
+    line-height:2 !important;
+    font-size:14px !important;
+}
+.badge{
+    font-weight: 10 !important;
+}
+
+.no-data {
+    height: 50px;
+    background-color: #fff;
+    text-align: center;
+    font-size: 15px;
+    padding: 12px;
+}
+
+/* table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+
+tr:nth-of-type(odd) { 
+  background: #eee; 
+}
+th { 
+  background: #333; 
+  color: white; 
+  font-weight: bold; 
+}
+td, th { 
+  padding: 6px; 
+  border: 1px solid #ccc; 
+  text-align: left; 
+} */
+
+</style>
+
+<link rel="stylesheet" href="{% static 'assets/css/util.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/animate/animate.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+{% endblock stylesheets %}
+    
+
+
+
+
+{% block content %}
+
+<div id="loaderAjax" style="display:none;">
+    <div class="d-flex justify-content-center overlay">
+      <div class="spinner-grow spinner-grow-lg" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+</div>
+<!-- <div class="masonry-item w-100">
+    <div class="bgc-white bd bdrs-3 p-20 mB-20">
+      <h4 class="c-grey-900 mB-5"> Persona Title : {{ chipObj.chip_title }} </h4>
+    </div>
+</div> -->
+         <div class="wrap-table100">
+            <div class="table100 ver1">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                            <th class="cell100 column1" style="text-align:center!important"> Comment Activity: Facebook</th>
+                            
+                        </thead>
+
+                        
+                    </table>
+
+                </div>
+            
+            <div class="table100-body js-pscroll">
+                <table class="report-table">
+                    {% if dataRow%}
+                    <thead>
+                        <tr class="row100 head">
+                            <th class="cell100 column1 leftAlign header1" style="line-height:3;font-size:14px !important;width: 5%;">#</th>
+                            <th class="cell100 column1 leftAlign header1">Date</th>
+                            <th class="cell100 column1 leftAlign header1">Page</th>
+                            <th class="cell100 column1 leftAlign header1">Post</th>
+                            <th class="cell100 column1 leftAlign header1">Comment</th>
+                            <th class="cell100 column1 leftAlign header1">Location</th>
+                            <th class="cell100 column1 leftAlign header1">Nationality</th>
+                            <th class="cell100 column1 leftAlign header1">Language</th>
+                            <th class="cell100 column1 leftAlign header1">Custom Response</th>
+                            <th class="cell100 column1 leftAlign header1">Sentiment</th>
+
+                            <th class="cell100 column1 leftAlign header1">Action</th>
+                        </tr>
+                    </thead>
+                    
+                   <tbody>
+                        {% for trRow in dataRow %}
+                            <tr class="row100 body">
+                                <td class="cell100 column1 leftAlign">{{ forloop.counter|add:pageNo }}</td>
+                                <td class="cell100 column1 justifyAlign">{{trRow.created_on|date:'M d Y h:i A'}}</td>
+                                <td class="cell100 column1 leftAlign">{{trRow.fb_page}}</td>
+                                <td class="cell100 column1 leftAlign">{{trRow.post_tweet}}</td>
+                                <td class="cell100 column1 leftAlign">{{trRow.comment}}</td>
+                                <td class="cell100 column1 ">{{trRow.location}}</td>
+                                <td class="cell100 column1 justifyAlign">{{trRow.nationality}}</td>
+                                <td class="cell100 column1 justifyAlign">{{ trRow.language }}</td>
+                                <td class="cell100 column1 leftAlign">{{trRow.canned_response}}</td>
+                                <td class="cell100 column1 justifyAlign">{{trRow.sentiment_analysis}}</td>
+
+                                <td class="cell100 column1">
+                                        {% if trRow.is_replied == False %}
+                                            <a href="javascript:void(0)" onclick='send_reponses("{{ request.user.id }}", "{{trRow.source}}","{{trRow.canned_response}}","{{trRow.fb_post_ref}}","{{trRow.comment_id}}")' style="color: #0c7bbe;"> <i class="c-orange-500 ti-share-alt" title="Send response"></i></a>
+                                        {% else %}
+                                            Already replied 
+                                        {% endif %}
+
+                                    </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    {% else %}
+                    <div class="no-data">
+                        Sorry! There's no data to be displayed here.
+                    </div>
+                        
+                    {% endif %}
+                </table>
+
+                </div>
+              
+                
+            </div>
+            {% paginate dataRow %}
+        </div>        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="modal fade" id="modalconfirm" tabindex="-1" role="dialog" aria-labelledby="modalconfirmLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <!--  -->
+              <h4 class="modal-title" id="myModalLabel">  </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body"> {% csrf_token %}
+
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+    <!-- </div>  -->
+<!-- </div> -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<!-- <script src="{% static 'assets/jquery-3.4.1.min.js' %}"></script> -->
+<script type="text/javascript" src="{% static 'assets/jquery.cookie.js' %}"></script>
+<script src="{% static 'assets/select2.min.js' %}"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+<!-- <script src="{% static 'assets/bootstrap.min.js' %}"></script> -->
+<!-- Include Bootstrap Datepicker -->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-datepicker.min.css' %}" />
+<script src="{% static 'assets/bootstrap-datepicker.min.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://developer.emojidata.ai/static/plugin/autocomplete.js"></script> -->
+<script>
+$(document).ready( function() {
+    $('#dataTable_1').dataTable({
+       "bSort" : false
+    });
+})
+
+
+function hello(msg){
+    $("#response").val(msg);
+    var value = $("#response").val();
+    var id = "response";
+    Autocomplete(value, id, "suggestion-box");
+    // $("#suggestion-box").css("display", "none");
+    // $('.suggestion-box div').remove(); 
+}
+
+function emoji(msg){
+    $('#response').val($('#response').val() + ' ' + msg);
+    var value = $("#response").val();
+    var id = "response";
+    Autocomplete(value, id, "suggestion-box");
+    // $("#suggestion-box").css("display", "none");
+    // $('.suggestion-box div').remove(); 
+}
+
+
+function send_reponses(user_id, source, comment, post_id, comment_id){
+        $('#modalconfirm').modal('show');
+            $('#modalconfirm')
+                    .find("h4.modal-title")
+                    .html("Custom Response");
+            $('#modalconfirm')
+                    .find(".modal-body")
+                    .html('<p>Customize your response below</p><input type="text" id="response" \ class="form-control" aria-label="Text input with checkbox" value=\'' +comment +'\'><div class="suggestion-box appearAbove shadows suggtn-brdr brtl brtr" id="suggestion-box" style="display: none;"></div>');
+
+            $('.modal-footer').html('<input class="btn btn-outline-primary" type="button" value="Send Response" id="send" /> <input style="margin-left: 10px; font-size: 13px;" type="button" class="btn btn-outline-secondary" data-dismiss="modal" value="Close" />');
+            // $('.modal-footer').html('<input style="margin-left: 10px; font-size: 13px;" type="button" class="btn btn-danger" data-dismiss="modal" value="Close" />');
+
+            $("#response").on("keyup", function(){
+                var id = "response";
+                Autocomplete(this.value, id, "suggestion-box");
+            
+            });
+
+        
+
+
+
+        $("#send").on("click", function(){
+          $("#loaderAjax").show();
+          var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+          comment_val = $("#response").val()
+          $.ajax({
+                headers: temp,
+                url:"/b2b/put-reply-on-comment/",
+                type:"POST",
+                data: "user_id="+user_id+"&source="+source+"&comment="+comment_val+"&post_id="+post_id+"&comment_id="+comment_id,
+                success: function(data){
+                    if(data.success == 1)
+                    {
+                        alert(data.message)
+                    }
+                    if(data.success == 0)
+                    {
+                        alert(data.message)
+                    }
+                    window.location.href=""
+                    $("#loaderAjax").hide();
+                },
+                error:function(data) {
+                    alert("something went wrong, Please try again ..!")
+                    $("#loaderAjax").hide();
+                }
+          });
+      });
+
+    }
+
+
+
+
+</script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+{% endblock %}

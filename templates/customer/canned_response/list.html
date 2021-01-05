@@ -1,0 +1,186 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load utils %}
+{% block title %} Customer List {% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<style>
+    .table100.ver1 td {
+        font-family: arial;
+    }
+    .column1{
+        font-family:arial !important;
+    }
+</style>
+<!--<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />-->
+<link href="{% static 'assets/css/main.css' %}" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'assets/css/util.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/animate/animate.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+
+<div class="container">
+
+    <div style="float:right">
+<!--        <a class="sidebar-link" href="{% url 'b2b:add-canned-response' %}"><button type="button" class="btn btn-outline-primary" id="saveCustomerData">Add Pre-set Response</button></a>-->
+    </div>
+    <br><br>
+    <div class="row ">
+        <div class="col-md-12">
+        {% if msg %}
+            <h4 class="fw-100 c-red-900 mB-40" style="font-size:14px; text-align:center;">{{ msg | safe }}</h4>
+        {% endif %}
+
+<!--            <div class="card">-->
+
+<!--                      <div  class="card-body" width="80%">-->
+                          <div class="wrap-table100">
+                            <div class="table100 ver1">
+                                <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                            <th class="cell100 column1">Custom Reponses </th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                {% if dataRow %}
+                                <div class="table100-body js-pscroll">
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr class="row100 head">
+                                                <th class="cell100 column1 leftAlign header1" style="line-height:3;font-size:14px !important;width: 5%;">#</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Social Account</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Page Name</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Positive Response</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 30%;">Negative Response</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Neutral Response</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for response in dataRow %}
+                                            <tr class="row100 body">
+                                                <td class="cell100 column1 leftAlign" style="width: 3%;">{{ forloop.counter0|add:dataRow.start_index }}</td>
+                                                <td class="cell100 column1 leftAlign" >{{ response.social_accounts_text }}</td>
+                                                
+                                                <td class="cell100 column1 leftAlign" >
+                                                    {% if response.page_name %}
+                                                        {{ response.page_name }}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+
+                                                
+                                                <td class="cell100 column1 leftAlign" >
+                                                    {% if response.positive_response_text  %}
+                                                            {{ response.positive_response_text }}
+                                                    {% else %}
+                                                            --
+                                                    {% endif %}
+                                                    </td>
+                                                <td class="cell100 column1 leftAlign" >
+                                                    {% if response.negative_response_text  %}
+                                                            {{ response.negative_response_text }}
+                                                    {% else %}
+                                                            --
+                                                    {% endif %}
+                                                </td>
+                                                <td class="cell100 column1 leftAlign" >
+                                                    {% if response.neutral_response_text  %}
+                                                            {{ response.neutral_response_text }}
+                                                    {% else %}
+                                                            --
+                                                    {% endif %}
+                                                </td>
+                                                <td class="cell100 column1 leftAlign" >
+                                                    <a  href="{% url 'b2b:edit-custom-response' response.id %}"><i class="ti-pencil-alt" style="color:#bf3b2f; font-size: 15px; margin-right: 10px; cursor: pointer;" title="Edit pre-set response"></i></a></a>
+<!--                                                    <a  id="delete-response" onclick='deleteReponse({{response.id}})'>  <i class="ti-trash" style="color:#bf3b2f; font-size: 20px; cursor: pointer;" title="Delete canned response"></i></a>-->
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                      {% else %}
+                                      <div class="table100-body js-pscroll">
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr class="row100 head">
+                                                <th class="cell100 column1 leftAlign header1" style="line-height:3;font-size:14px !important;width: 5%;">#</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Date</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Positive Response</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;width: 30%;">Negative Response</th>
+                                                <th class="cell100 column1 leftAlign header1" style="font-size:14px !important;">Neutral Response</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="row100 body">
+                                               <td colspan="5" class="cell100 column1 centerAlign" style="width: 3%;">No records for the current selection</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    {% endif %}
+                                </div>
+                              </div>
+                              
+                      </div>
+                   </div>
+
+        </div>
+        {% paginate dataRow %}
+    </div>
+<!--</div>-->
+
+
+    
+
+    <script  type="text/javascript">
+        function deleteReponse(id){
+            console.log("--------------dd------------------------>");
+            console.log(id);
+            $('#modalconfirm').modal('show');
+            $('#modalconfirm')
+                    .find("h4.modal-title")
+                    .html("Delete Response");
+            $('#modalconfirm')
+                    .find(".modal-body")
+                    .html('<p>Are you sure?</p><input type="text" id="response" \ class="form-control" aria-label="Text input with checkbox"');
+    
+            $('.modal-footer').html('<input class="btn btn-outline-primary" type="button" value="Delete Response" id="delete" data-attr='+id +' /> <input style="margin-left: 10px; font-size: 13px;" type="button" class="btn btn-outline-secondary" data-dismiss="modal" value="Close" />');
+    
+    
+    
+    
+            $("#delete").click(function(){
+                var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+                var id = $(this).attr("data-attr");
+                console.log(id);
+                $.ajax({
+                    headers: temp,
+                    url: "/b2b/delete-canned-response/"+id+"/",
+                    type: 'POST',
+                    // data: id,
+                    success: function (response) {
+                        if (response.success == 1){
+                            window.location.reload();
+                            window.location.href=""
+                        }
+                    }
+                });
+            });
+    
+        }
+    
+      
+    
+          
+            
+        </script>
+{% endblock %}

@@ -1,0 +1,284 @@
+{% load static %}
+<div id="report-params">
+    <div class="card-deck">
+        {% if id == "1" or id == "2" or id == "3" or id == "4" or id == "5" %}
+          <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Connected social Accounts</div>
+                <div class="card-body">
+                    <select id="social_accounts" name="social_accounts" class="" multiple="multiple" autocomplete="off">>
+                    </select>
+                </div>
+            </div>
+        {% endif %}
+<!--      <div class="form-group">-->
+<!--          <label class="control-label" for="socialCheckbox" style="margin: 5px;">Sources:</label>-->
+<!--          <div class="input-group" id="socialCheckboxs">-->
+<!--              <div class="form-group d-inline-block w-100" id="socialCheckbox">-->
+<!--              <div class="d-inline-block">-->
+<!--                <input type="checkbox" id="cb1" name="customer_facebook">-->
+<!--                <label class="control-label col-sm-9" for="cb1">-->
+<!--                  <button type="button" class="btn btn-social-icon1 btn-facebook">-->
+<!--                    <img class="" src="{% static 'assets/static/images/facebook.png' %}" alt="logo" width="25">-->
+<!--                  </button>-->
+<!--                </label>-->
+<!--              </div>-->
+<!--              <div class="d-inline-block ml-3">-->
+<!--                <input type="checkbox" id="cb2" name="customer_twitter">-->
+<!--                <label class="control-label col-sm-9" for="cb2">-->
+<!--                <button type="button" class="btn btn-social-icon1 btn-twitter">-->
+<!--                  <img class="" src="{% static 'assets/static/images/twitter.png' %}" alt="logo" width="25">-->
+<!--                </button>-->
+<!--                </label>-->
+<!--              </div>-->
+<!--              <div class="d-inline-block ml-3">-->
+<!--                <input type="checkbox" id="cb3" name="customer_instagram">-->
+<!--                <label class="control-label col-sm-9" for="cb3">-->
+<!--                  <div class="insta-btn">-->
+<!--                    <button type="button" class="btn btn-social-icon1 btn-instagram">-->
+<!--                      <img class="" src="{% static 'assets/static/images/insta.png' %}" alt="logo" width="25">-->
+<!--                    </button>-->
+<!--                  </div>-->
+
+<!--                 </label>-->
+<!--              </div>-->
+<!--          </div>-->
+<!--          <input type="hidden" name="customer_id" value="{{customer_id}}">-->
+<!--          </div>-->
+<!--      </div>-->
+
+    {% if id == "1"  or id == "2" or  id == "3" or id == "4" or id == "5" %}
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header required"> From Date</div>
+                <div class="card-body">
+                 {% if id == "2" %}
+                      <input type="text" name="date_from" id="date_from" placeholder="Select a date" value="{{ from_date }}" readonly class="datepicker dateCard"  required="" style="border: 2px solid #aaa;width: 210px;" autocomplete="off">
+                 {% else %}
+                      <input type="text" name="date_from" id="date_from" placeholder="Select a date" value="" class="datepicker dateCard" required="" style="border: 2px solid #aaa;width: 210px;" autocomplete="off">
+                 {% endif %}
+                </div>
+            </div>
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header required"> To Date</div>
+                <div class="card-body">
+                  {% if id == "2" %}
+                      <input type="text" name="date_to" id="date_to" placeholder="Select a date" value="{{ to_date }}" readonly class=" datepicker"   required="" style="border: 2px solid #aaa;width: 210px;" autocomplete="off">
+                 {% else %}
+                      <input type="text" name="date_to" id="date_to" placeholder="Select a date" class="datepicker dateCard" required="" style="border: 2px solid #aaa;width: 210px;" autocomplete="off">
+                 {% endif %}
+                </div>
+            </div>
+      {% endif %}
+    </div>
+      {% if id == "1" or  id == "3" or id == "4"  or id == "5" %}
+       <div class="card-deck">
+          <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Location</div>
+                <div class="card-body">
+                    <select id="locations" name="locations" class="js-select2" multiple="multiple" onchange="$('li').removeClass('select2-results__option');" autocomplete="off">
+                    </select>
+                </div>
+            </div>
+            {% endif %}
+            {% if id == "1" or id == "2"   %}
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Sentiment</div>
+                <div class="card-body">
+                <select id="sentiment" name="sentiments" class="js-select2" multiple="multiple" autocomplete="off">
+                </select>
+                </div>
+            </div>
+            {% endif %}
+            {% if id == "1" or id == "3" or id == "4" or id == "5"  %}
+            <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                <div class="card-header">Culture</div>
+                <div class="card-body">
+                <select id="nationalities" name="nationalities" class="js-select2" multiple="multiple" autocomplete="off">
+                </select>
+                </div>
+            </div>
+           {% endif %}
+       </div>
+</div>
+
+<script>
+
+
+  /* $(document).ready(function() {
+       var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+       console.log("======================report========================>")
+       var report_type = $("#report_type11").val();
+       console.log(report_type);
+       $.ajax({
+               headers: temp,
+               url:'/b2b/get-report-details/'+report_type+"/",
+               type:"GET",
+               success: function(data){
+                   $("#params").html(data);
+               }
+       });
+   });
+   $(".js-select2").select2({
+       minimumInputLength: 3,
+       closeOnSelect : false,
+       placeholder: 'Select an item',
+       allowHtml: false,
+       allowClear: false,
+       dropdownAutoWidth: false
+   });*/
+</script>
+
+<script>
+$(document).ready(function() {
+  $(function() {
+    $("#date_from").datepicker();
+    $("#date_from").on("click",function(){
+        var selected = $(this).val();
+        $('#EditModal #date_from').datepicker('setDate', selected);
+    });
+
+
+    $("#date_to").datepicker();
+    $("#date_to").on("click",function(){
+        var selected = $(this).val();
+        $('#EditModal #date_to').datepicker('setDate', selected);
+    });
+});
+
+
+    /*var select = $('#sentiment');
+    select.empty().append('<option value="">---Select Sentiment---</option>');*/
+     $('#sentiment ,#EditModal #sentiment').select2({
+        placeholder: "Search for sentiments",
+        minimumInputLength: 0,
+        ajax:{
+            url: "/b2b/get-sentiment/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+            return {
+              results: data
+            };
+            },
+        cache: false
+        }
+     });
+
+    $('#social_accounts,#EditModal #social_accounts').select2({
+      placeholder: "Search for social accounts",
+      minimumInputLength: 0,
+      ajax: {
+        url: "/b2b/get-social-accounts/",
+        dataType: 'json',
+        delay: 250,
+        data:{for:''},
+        processResults: function (data) {
+        
+        return {
+          results: data
+        };
+      },
+      cache: false
+      }
+    });
+    $('#locations,#EditModal #locations').select2({
+      placeholder: "Search for a locations",
+      minimumInputLength: 3,
+      ajax: {
+        url: "/b2b/get-locations-list/",
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data) {
+          console.log("------------------dd-------------------->");
+        return {
+          results: data
+        };
+      },
+      cache: false
+      }
+    });
+
+    $('#nationalities ,#EditModal #nationalities').select2({
+        placeholder: "Search for a culture",
+        minimumInputLength: 3,
+        ajax: {
+        url: "/b2b/get-nationalities-list/",
+        dataType: 'json',
+        delay: 250,
+        processResults: function(data)
+        {
+            return {
+                results: data
+            };
+        },
+        cache: false
+        }
+    });
+
+});
+
+ if($('#customerModal').hasClass('show')){
+      $('#customerModal #date_from').datepicker({
+          format: "M dd, yyyy",
+          todayBtn: "linked",
+          autoclose: true,
+          todayHighlight: true
+        });
+
+        $('#customerModal #date_from').on('changeDate', function() {
+              
+              // $('#customerModal #date_to').val("");
+              // var temp = $(this).datepicker('getDate');
+              // var d = {{ from_date }}
+              // console.log("===========================>");
+              // console.log(d);
+              d.setDate(d.getDate() + 1);
+              $('#customerModal #date_to').datepicker({
+                  startDate: d,
+                  format: "M dd, yyyy",
+                  todayBtn: "linked",
+                  autoclose: true,
+                  todayHighlight: true
+              });
+        });
+ }
+ if($('#EditModal').hasClass('show')){
+            
+            $('#EditModal #date_from').datepicker({
+              format: "M dd, yyyy",
+              todayBtn: "linked",
+              autoclose: true,
+              todayHighlight: true
+            });
+            
+            var temp = $('#EditModal #date_from').datepicker('getDate');
+            var form_date = $('#EditModal #date_from').val();
+            
+            var d = new Date(temp);
+            
+            d.setDate(d.getDate() + 1);
+            console.log("---------------form_date----------------->");
+            console.log(form_date);
+            $('#EditModal #date_to').datepicker({
+                  startDate: d,
+                  format: "M dd, yyyy",
+                  todayBtn: "linked",
+                  autoclose: true,
+                  todayHighlight: true
+              });
+
+            $('#EditModal #date_from').on('changeDate', function() {
+              // $('#EditModal #date_to').val("");
+                     var temp = $(this).datepicker('getDate');
+                     var d = new Date(temp);
+                     d.setDate(d.getDate() + 1);
+                     $('#EditModal #date_to').datepicker({
+                        startDate: d,
+                        format: "M dd, yyyy",
+                        todayBtn: "linked",
+                        autoclose: true,
+                        todayHighlight: true
+                    });
+
+          });
+ }
+</script>

@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
+    <title>
+      PhoneBooth - {% block title %}{% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Muli" />
+
+    <style>
+      .app {
+          /* font-family: Serif !important; */
+          /* font-weight: 700; */
+          /* font-family: Arial !important;
+          font-size: 15px;
+          font-style: normal;
+          font-variant: normal;
+          line-height: 1.5; */
+
+
+          line-height: 1.5;
+          font-family: "Roboto", sans-serif;
+          font-weight: normal;
+          color: rgba(0,0,0,0.87);
+      }
+
+      #loader {
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        visibility: visible;
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        background: #fff;
+        z-index: 90000;
+      }
+
+      #loader.fadeOut {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+        background-color: #333;
+        border-radius: 100%;
+        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+        animation: sk-scaleout 1.0s infinite ease-in-out;
+      }
+
+      .page-container{
+          padding: 0 !important;
+      }
+
+      @-webkit-keyframes sk-scaleout {
+        0% { -webkit-transform: scale(0) }
+        100% {
+          -webkit-transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes sk-scaleout {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        } 100% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+      .special-img
+      {
+          position: relative;
+          top: -5px;
+          float: left;
+          left: -5px;
+      }
+    </style>
+    
+
+    <!-- Specific Page CSS goes HERE -->
+    {% block stylesheets %}
+    
+      <link href="{% static 'assets/style.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
+      <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+    {% endblock stylesheets %}
+    <!-- <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script> -->
+  </head>
+  <body class="app">
+    <!-- @TOC -->
+    <!-- =================================================== -->
+    <!--
+      + @Page Loader
+      + @App Content
+          - #Left Sidebar
+              > $Sidebar Header
+              > $Sidebar Menu
+
+          - #Main
+              > $Topbar
+              > $App Screen Content
+    -->
+
+    <!-- @Page Loader -->
+    <!-- =================================================== -->
+    <div id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    
+
+    <script>
+      window.addEventListener('load', function load() {
+        const loader = document.getElementById('loader');
+        setTimeout(function() {
+          loader.classList.add('fadeOut');
+        }, 300);
+      });
+    </script>
+
+    <!-- @App Content -->
+    <!-- =================================================== -->
+    <div>
+    
+
+      <!-- #Main ============================ -->
+      <div class="page-container">
+
+        {% include 'customer/includes/nav.html' %}
+
+       <!-- ### $App Screen Content ### -->
+      <main class="main-content bgc-grey-100">
+          
+        <div id="mainContent">
+          <!-- {% if messages %}
+                  {% for message in messages %}
+                      <div class="alert alert-{{ message.tags }}" role="alert">{{ message|safe }}</div>
+                  {% endfor %}
+          {% endif %} -->
+          {% if messages %}
+            <script src="{% static 'assets/jquery191.js' %}"></script>
+            <link rel="stylesheet" type="text/css" href="{% static 'assets/toastr.min.css' %}" media="all">
+            <script src="{% static 'assets/toastr.min.js' %}"></script>
+            <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% for message in messages %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+                
+              {% endfor %}
+          {% endif %}
+
+          {% block content %}{% endblock content %}  
+        
+        </div>
+      </main>
+
+        {% include 'customer/includes/footer.html' %}
+        
+
+    </div>
+  
+    
+    <!-- Specific Page JS goes HERE -->
+    {% block javascripts %}
+
+
+      <script src="{% static 'assets/jquery-3.4.1.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/jquery.cookie.js' %}"></script>
+      <script src="{% static 'assets/select2.min.js' %}"></script>
+      <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+      <script src="{% static 'assets/bootstrap.min.js' %}"></script>
+      
+      <!-- Include Bootstrap Datepicker -->
+      <link rel="stylesheet" href="{% static 'assets/bootstrap-datepicker.min.css' %}" />
+      <script src="{% static 'assets/bootstrap-datepicker.min.js' %}"></script>
+
+
+      <script type="text/javascript" src="{% static 'assets/vendor.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/bundle.js' %}"></script>
+      <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+      <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+      <!-- Include Bootstrap Datepicker -->
+      <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+     
+
+
+
+
+      
+
+
+
+
+
+
+    {% endblock javascripts %}
+
+  
+
+  </body>
+
+</html>

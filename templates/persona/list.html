@@ -1,0 +1,554 @@
+{% extends 'layouts/base.html' %}
+{% block title %} B2B Dashboard {% endblock title %}
+{% load static %}
+{% load twitter_ethnicity_tags %}
+
+{% block stylesheets %}
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/css/social.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row gap-20 masonry pos-r">
+              <div class="masonry-sizer col-md-6"></div>
+              <div class="masonry-item w-100">
+                <div class="row gap-20" >
+                  <!-- #Toatl Visits ==================== -->
+                  <div class="col-lg-3 col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1"> Hashtags</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">{{collected_hashtags}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- #Total Page Views ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1"> Tweets</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash2"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">{{total_tweets}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- #Unique Visitors ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1">Users</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash3"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">{{collected_users}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- #Bounce Rate ==================== -->
+                  <div class="col-md-3">
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1">Culture</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <span id="sparklinedash4"></span>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">{{collected_users}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="masonry-item col-12 row">
+                <div class="col-lg-4 col-md-4 col-sm-6" style="margin-top:20px;">
+                  <div class="p-20 bd" style="height:280px; background-color:#f1f1ff">
+                    <h6 class="c-grey-900"></h6>
+                    <div class="mT-30" style="padding-top:20%; text-align:center;">
+                        <a href="#chipTypeModal" data-toggle="modal"  onclick="addChip()" style="color:#C8574C;"> Create New Persona </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6" style="margin-top:20px;">
+                  <div class="bgc-white p-20 bd" style="height:280px;">
+
+                    <div class="mt-0">
+                    <h6 class="c-grey-900" style="float:left;">My New Persona : 26 July 2020 - 31 July 2020</h6>
+                     <span class="dropdown" style="float:right;">
+                        <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+                          <div class="peer mR-10">
+                            <span class="icon-holder">
+                              <i class="c-brown-500 ti-settings"></i>
+                            </span>
+                          </div>
+                        </a>
+                        <ul class="dropdown-menu fsz-sm">
+                        <li>
+                        <a href="#EditModal" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700" data-toggle="modal" data-modal_id="{{chips.id}}">
+                          <i class="ti-pencil mR-10"></i> <span>Edit</span>
+                        </a>
+                       </li>
+                       <li>
+                        <a href="javascript:void(0)" onclick="delete_chip({{chips.id}})" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                          <i class="ti-trash mR-10"></i> <span> Delete </span>
+                        </a>
+                       </li>
+                      </ul>
+                      </span>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="mT-10 peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c gap-10">
+                      <div class="peers" >
+                            <div class="peer">
+                              <h1><i class="c-blue-500 "><img src="/media/icons/library.png" class="img_data1"></i></h1>
+                               <h6 class="fsz-sm" style="justify-content:center;">Location wise  languages <br/>comment counts <br /> {{hashtag_count_data.collected_hashtagsCount}} </h6>
+                            </div>
+                      </div>
+                      <div class="peers">
+                            <div class="peer">
+                             <h1><i class="c-blue-500 "><img src="/media/icons/library.png" class="img_data1"></i></h1>
+
+                              <h6 class="fsz-sm" style="justify-content:center;">Last week's daily <br/> culture sentiments <br /> {{ nationality_count_data }} </h6>
+                            </div>
+                      </div>
+<!--                      <div class="peers">-->
+<!--                            <div class="peer">-->
+<!--                              <h1><i class="c-orange-500"></i></h1>-->
+
+<!--                              <h6 class="fsz-sm" style="justify-content:center;">Last week's daily culture sentiments <br /> {{ nationality_count_data }} </h6>-->
+<!--                            </div>-->
+<!--                    </div>-->
+                    </div>
+                    <div class="mT-10 peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c gap-10">
+                    <a href="/b2b/persona-report/" class="btn btn-lg btn-block" style="background-color:#C8574C; color:#ffffff; border: solid 1px #ffffff; font-size:16px;">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% for chips in chipTileObj %}
+                <div class="col-lg-4 col-md-4 col-sm-6" style="margin-top:20px;">
+                  <div class="bgc-white p-20 bd" style="height:280px;">
+
+                    <div class="mt-0">
+                    <h6 class="c-grey-900" style="float:left;">{{chips.chip_title}} : {{chips.start_date|date:"d M Y"}} - {{chips.end_date|date:"d M Y"}}</h6>
+                     <span class="dropdown" style="float:right;">
+                        <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
+                          <div class="peer mR-10">
+                            <span class="icon-holder">
+                              <i class="c-brown-500 ti-settings"></i>
+                            </span>
+                          </div>
+                        </a>
+                        <ul class="dropdown-menu fsz-sm">
+                        <li>
+                        <a href="#EditModal" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700" data-toggle="modal" data-modal_id="{{chips.id}}">
+                          <i class="ti-pencil mR-10"></i> <span>Edit</span>
+                        </a>
+                       </li>
+                       <li>
+                        <a href="javascript:void(0)" onclick="delete_chip({{chips.id}})" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                          <i class="ti-trash mR-10"></i> <span> Delete </span>
+                        </a>
+                       </li>
+                      </ul>
+                      </span>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="mT-10 peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c gap-10">
+                      <div class="peers">
+                            <div class="peer">
+                              <h1><i class="c-blue-500 ti-twitter-alt"></i></h1>
+
+                              <h6 class="fsz-sm" style="justify-content:center;">Tweets <br />  {{locations_count_data.dataCollectionObjCount}} </h6>
+                            </div>
+                      </div>
+                      <div class="peers">
+                            <div class="peer">
+                              <h1 class="c-green-500">#</h1>
+
+                              <h6 class="fsz-sm" style="justify-content:center;">Hashtags <br /> {{hashtag_count_data.collected_hashtagsCount}} </h6>
+                            </div>
+                      </div>
+                      <div class="peers">
+                            <div class="peer">
+                              <h1><i class="c-orange-500 ti-user"></i></h1>
+
+                              <h6 class="fsz-sm" style="justify-content:center;">Users <br /> {{ nationality_count_data }} </h6>
+                            </div>
+                    </div>
+                    </div>
+                    <div class="mT-10 peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c gap-10">
+                    <a href="/nationality/view-chip-details/{{chips.id}}" class="btn btn-lg btn-block" style="background-color:#C8574C; color:#ffffff; border: solid 1px #ffffff; font-size:16px;">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa4VG5jE5EA7zLDNxHxc2kOPz8w8fezts&amp;callback=myMap"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.0/morris.min.js"></script>
+<!-- Modal -->
+<div class="modal fade" id="customerModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+       <div class="modal-header text-center">
+          <h5 class="modal-title w-100" id="cutomerModalTitle">Create New Persona</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <section class="content1">
+             <div class="container-fluid">
+                <div id="persona_type" class="row clearfix" style="display:none;" >
+                </div>
+                <div id="report_type" class="row clearfix" >
+                </div>
+             </div>
+             <div id="gen_report" class="row clearfix" style="display:none;">
+                <div class="container-fluid">
+                   <form id="customerChip" class="form-horizontal" name="customerChip" >
+                        {% csrf_token %}
+                       <input type="hidden" name="customer_chip_title" id="sel_report_type" disabled="disabled" maxlength="200" class="form-control" required="" value="Last week's daily culture sentiments">
+                       <p align="center" style="margin-top: -40px;"><b>Report Type: </b>Last week's daily culture sentiments</p>
+                      <div class="form-group">
+                         <label class="control-label" for="id_customer_chip_title">Title:</label>
+                         <div class="input-group">
+                            <input type="text" name="customer_chip_title" id="id_customer_chip_title" placeholder="Enter chip title" maxlength="200" class="form-control" required="">
+                         </div>
+                      </div>
+                      <input type="hidden" id="hidden-report" name="reports" value="">
+                       {% include './include/parameters.html' with report_type=report_type %}
+                      <div id="report-params">
+                            <input type="hidden" name="reports" value="{{report_type}}">
+                            <input type="hidden" name="customer_id" value="{{customer_id}}">
+                   </div>
+                   </form>
+                </div>
+             </div>
+          </section>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-light" id="goBackReport"> <i class="fa fa-arrow-left"></i> Previous</button>
+          <button type="button" class="btn btn-primary" id="saveCustomerChip">Save changes</button>
+          <button type="button" class="btn btn-dark" id="close" data-dismiss="modal">Close</button>
+          </div>
+          </div>
+       </div>
+    </div>
+</div>
+
+<script>
+   function addChip(){
+       $('#customerModal').modal('show');
+   }
+        $('#customerModal').on('hidden', function () {
+          $("#report_type").show();
+          $("#gen_report").hide();
+          $("#goBackReport").hide();
+          $("#saveCustomerChip").hide();
+       })
+       $("#goBackReport").hide();
+       $("#saveCustomerChip").hide();
+       $("#close").click(function(){
+          $("#report_type").show();
+          $("#gen_report").hide();
+          $("#goBackReport").hide();
+          $("#saveCustomerChip").hide();
+       });
+       $("#report").click(function(){
+          $("#persona_type").hide();
+          $("#report_type").show();
+          $("#gen_report").hide();
+          $("#goBackReport").hide();
+          $("#saveCustomerChip").hide();
+      });
+      $("#report_type").click(function(){
+          $("#persona_type").hide();
+          $("#report_type").hide();
+          $("#gen_report").show();
+          $("#goBackReport").show();
+          $("#saveCustomerChip").show();
+
+       //    console.log($(this));
+
+          var x = $("#report_names")
+           var report_type  = x.children("span").text();
+           // console.log("------------report---------------->");
+           // console.log(report_type);
+           // $("#hidden-report").val(report_type);
+
+           // var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           // $.ajax({
+           //         headers: temp,
+           //         url:'/b2b/get-new-report-details/'+report_type+"/",
+           //         type:"GET",
+           //         success: function(data){
+           //             $("#report-params").html(data);
+           //         }
+           // });
+
+      });
+
+      $("#report_type").change(function(){
+       console.log("==============change====================>");
+      });
+      $("#goBackReport").click(function(){
+          $("#persona_type").hide();
+          $("#report_type").show();
+          $("#gen_report").hide();
+          $("#goBackReport").hide();
+          $("#saveCustomerChip").hide();
+      });
+
+
+   $(document).ready(function() {
+       var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+       // var report_type = $("#report_type").text();
+       // console.log(report_type);
+       var colors = ['bg-cyan', 'bg-cyan', 'bg-cyan', 'bg-cyan']
+       $.ajax({
+               headers: temp,
+               url:'/b2b/get-all-report-type/',
+               type:"GET",
+               success: function(data){
+                   for (i = 0; i < data.length; i++)
+                   {
+                       var type = "there"
+                       // reportClick(\'' + type + '\')
+                       $("#report_type").append('<div id="reports" class="col-lg-3 \
+                        col-md-3 col-sm-6 col-xs-12"> \
+                       <div class="info-box1 report-color card hover-expand-effect "> \
+                           <div class="content-report card-body" style="padding-left: 10px;" id="report_names" \
+                            onclick="reportClick(\'' + data[i]['report'][0] +','+ data[i]['report'][0] + '\')""> \
+                               <span class="info-box-text" id="report_name"> \
+                               ' + data[i]['report'][1] + '</span>\
+                               <span class="info-box-number"></span> \
+                           </div> \
+                       </div></div>' )
+
+                   }
+
+               }
+       });
+
+
+
+     $("#submitModal .js-select2").select2({
+           placeholder: 'Select an item',
+           closeOnSelect : false,
+           allowHtml: false,
+           allowClear: false,
+           dropdownAutoWidth: true
+       });
+
+     $("#EditModal .js-select2").select2({
+           closeOnSelect : false,
+           placeholder: 'Select an item',
+           allowHtml: false,
+           allowClear: false,
+           dropdownAutoWidth: true
+       });
+
+     $("#customerModal .js-select2").select2({
+           closeOnSelect : false,
+           placeholder: 'Select an item',
+           allowHtml: false,
+           allowClear: false,
+           dropdownAutoWidth: true
+       });
+
+
+       $('#customerModal #reports').select2({
+         placeholder: "Search for a report type",
+         minimumInputLength: 3,
+         ajax: {
+           url: "/b2b/get-report-type/",
+           dataType: 'json',
+           delay: 250,
+           processResults: function (data) {
+           return {
+             results: data
+           };
+         },
+         cache: false
+         }
+       });
+
+
+
+
+       $('#submitModal #hashtags, #EditModal #edit_hashtags #customerModal').select2({
+
+         placeholder: "Search for a hashtags",
+         minimumInputLength: 3,
+         language: {
+           noResults: function(data) {
+
+             return '<a data-toggle="modal" href="#modalconfirm" class="btn btn-primary">Add New Hashtag</a>'
+             }
+           },
+           escapeMarkup: function (markup) {
+               return markup;
+           },
+
+           ajax: {
+           url: "/get-hashtags-list/",
+           dataType: 'json',
+           delay: 250,
+           cache: false,
+
+           processResults: function(data)
+           {
+             return {
+                   results: data
+               };
+
+           },
+
+         }
+       });
+
+
+
+       $("#reports").change(function(){
+             if($(this).val() == ""){
+               $('.paramters').css({"display": "none"});
+             }
+             else{
+               var report_type = [$(this).val()];
+               $('.paramters').css({"display": "block"});
+               $('#customerModal #paramters').select2({
+
+                 placeholder: "Search for a report type",
+                 minimumInputLength: 3,
+                 ajax: {
+                   url: "/b2b/get-paramters/"+report_type+"/",
+                   dataType: 'json',
+                   delay: 250,
+                   processResults: function (data) {
+                   return {
+                     results: data
+                   };
+                 },
+                 cache: false
+                 }
+               });
+             }
+         })
+   	 });
+     function reportClick(id,type){
+           $("#hidden-report").val(id);
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           $.ajax({
+                   headers: temp,
+                   url:'/b2b/get-new-report-details/'+type+"/",
+                   type:"GET",
+                   success: function(data){
+                       $("#report-params").html(data);
+                   }
+           });
+
+       }
+
+
+
+      $("#saveCustomerChip").click(function(){
+           var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+           $.ajax({
+               headers: temp,
+               url:'/b2b/add-customer-chip/',
+               type:"POST",
+               data: $("#customerChip").serialize(),
+               success: function(data){
+                   if(data.success === 1)
+                   {
+                       $('#customerModal').hide()
+                       window.location.href=""
+
+                   }
+                   if(data.success === 0)
+                   {
+                       $("#customerModal").show()
+                   }
+               },
+               error:function(data) {
+                   if(data.success === 0)
+                   {
+                       $("#customerModal").show()
+                   }
+               }
+           });
+       })
+
+
+
+       $("#add_hashtag").click(function(){
+       $("#loaderAjax").show();
+         var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+         var Hashtag = $("#Hashtag").val()
+         $.ajax({
+               headers: temp,
+               url:"/add-hashtag/",
+               type:"POST",
+               data: {"hashtag":Hashtag},
+               success: function(data){
+                   if(data.success == 1)
+                   {
+                       alert(data.message)
+                       // $("#modalconfirm").modal("close");
+                       // $("#modalconfirm").modal("hide");
+
+                       $(".close_modal").click();
+                       $("#Hashtag").html("");
+                       // $('#modalconfirm :input', this).val("");
+                   }
+                   if(data.success == 0)
+                   {
+                       alert(data.message)
+                   }
+                   // window.location.href=""
+                   $("#loaderAjax").hide();
+
+               },
+               error:function(data) {
+                   alert("something went wrong, Please try again ..!")
+                   $("#loaderAjax").hide();
+               }
+         });
+      });
+
+</script>
+
+{% endblock content %}

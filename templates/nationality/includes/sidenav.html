@@ -1,0 +1,249 @@
+      {% load static %}
+      <!-- #Left Sidebar ==================== -->
+      <div class="sidebar">
+        <div class="sidebar-inner">
+          <!-- ### $Sidebar Header ### -->
+          <div class="sidebar-logo">
+            <div class="peers ai-c fxw-nw">
+              <div class="peer">
+                <div class="mobile-toggle sidebar-toggle">
+                  <a href="" class="td-n">
+                    <i class="ti-arrow-circle-left"></i>
+                    <img src="/media/logo.png" height="20">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ### $Sidebar Menu ### -->
+          <ul class="sidebar-menu scrollable pos-r">
+            <a href="" class="td-n">
+              <img src="/media/logo.png" height="25">
+            </a>
+            <li class="nav-item mT-70 actived">
+              <a class="sidebar-link" href="{% url 'nationality:dashboard' %}">
+                <span class="icon-holder">
+                    <i><img src="/media/icons/phone.png"/></i>
+                </span>
+                <span class="title">Conversations </span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="sidebar-link" href="javascript:void(0)">
+                <span class="icon-holder">
+                  <i><img src="/media/icons/tag.png"/></i>
+                 </span>
+                <span class="title">Bookmark</span>
+              </a>
+            </li>
+
+           <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="javascript:void(0)">
+                <span class="icon-holder">
+                  <i><img src="/media/icons/telephone.png"/></i>
+                </span>
+                <span class="title">Social Media Management</span>
+                <span class="arrow">
+                  <i class="ti-angle-right"></i>
+                </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="nav-item dropdown">
+                  <a href="{% url 'customer:customer-dashboard' %}">
+                    <span>Profiles</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="/admin/b2b_tool/socialmedia_page_manangement/">
+                    <span>Profile Configuration</span>
+                  </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a href="/admin/b2b_tool/canned_response_management/">
+                    <span>Pre-set responses</span>
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+
+            <!-- <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="javascript:void(0)">
+                <span class="icon-holder">
+                  <i class="ti-user" style="color:#bf3b2f"></i>
+                </span>
+                <span class="title">Customer Management</span>
+                <span class="arrow">
+                  <i class="ti-angle-right"></i>
+                </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="nav-item dropdown">
+                  <a href="/admin/b2b_tool/customer_management/">
+                    <span>Customer Management</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="/admin/b2b_tool/socialmedia_page_manangement/">
+                    <span>Social Media Management</span>
+                  </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a href="/admin/b2b_tool/canned_response_management/">
+                    <span>Canned Response</span>
+                  </a>
+                </li>
+
+              </ul>
+            </li> -->
+
+            <!-- <li class="nav-item">
+              <a class="sidebar-link" href="/facebook-app/">
+                <span class="icon-holder">
+                  <i class="ti-home" style="color:#bf3b2f"></i>
+                </span>
+                <span class="title">Facebook</span>
+              </a>
+            </li> -->
+
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="javascript:void(0);">
+                <span class="icon-holder">
+                  <i><img src="/media/icons/library.png"/></i>
+                </span>
+                <span class="title">Directory</span>
+                <span class="arrow">
+                  <i class="ti-angle-right"></i>
+                </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="nav-item dropdown">
+                  <a href="/nationality/nationality_prediction/">
+                    <span>Users</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="/nationality/nationality_prediction/">
+                    <span>Culture</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="/nationality/nationality_prediction/">
+                    <span>Sentiment</span>
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+
+            <!--<li class="nav-item dropdown">-->
+              <!--<a class="dropdown-toggle" href="javascript:void(0);">-->
+                <!--<span class="icon-holder">-->
+                  <!--<i class="ti-twitter" style="color:#bf3b2f"></i>-->
+                <!--</span>-->
+                <!--<span class="title">Twitter Platform</span>-->
+                <!--<span class="arrow">-->
+                  <!--<i class="ti-angle-right"></i>-->
+                <!--</span>-->
+              <!--</a>-->
+              <!--<ul class="dropdown-menu">-->
+                <!--<li class="nav-item dropdown">-->
+                  <!--<a href="/admin/twitter_ethnicity/tweet_basic_info/">-->
+                    <!--<span>Collected Tweets</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+                <!--<li class="nav-item dropdown">-->
+                  <!--<a href="/admin/twitter_ethnicity/tweet_entities_hashtags/">-->
+                    <!--<span>Collected Hashtags</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</li>-->
+
+            <!--<li class="nav-item dropdown">-->
+              <!--<a class="dropdown-toggle" href="javascript:void(0);">-->
+                <!--<span class="icon-holder">-->
+                  <!--<i class="ti-facebook" style="color:#bf3b2f"></i>-->
+                <!--</span>-->
+                <!--<span class="title">Facebook Platform</span>-->
+                <!--<span class="arrow">-->
+                  <!--<i class="ti-angle-right"></i>-->
+                <!--</span>-->
+              <!--</a>-->
+              <!--<ul class="dropdown-menu">-->
+                <!--<li class="nav-item dropdown">-->
+                  <!--<a href="/admin/b2b_tool/fb_post_management/">-->
+                    <!--<span>FB Posts</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+                <!--<li class="nav-item dropdown">-->
+                  <!--<a href="/admin/b2b_tool/fb_comment_management/">-->
+                    <!--<span>FB Comments</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+
+              <!--</ul>-->
+            <!--</li>-->
+
+            <!--<li class="nav-item dropdown">-->
+              <!--<a class="dropdown-toggle" href="javascript:void(0);">-->
+                <!--<span class="icon-holder">-->
+                  <!--<i class="ti-instagram" style="color:#bf3b2f"></i>-->
+                <!--</span>-->
+                <!--<span class="title">Instagram Platform</span>-->
+                <!--<span class="arrow">-->
+                  <!--<i class="ti-angle-right"></i>-->
+                <!--</span>-->
+              <!--</a>-->
+              <!--<ul class="dropdown-menu">-->
+                <!--<li class="nav-item dropdown">-->
+                  <!--<a href="/admin/b2b_tool/ig_post_management/">-->
+                    <!--<span>Insta Posts</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+                <!--<li class="nav-item dropdown">-->
+                  <!--<a href="/admin/b2b_tool/ig_comment_management/">-->
+                    <!--<span>Insta Comments</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</li>-->
+
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="javascript:void(0);">
+                <span class="icon-holder">
+                  <i class="ti-settings" style="color:#bf3b2f"></i>
+                </span>
+                <span class="title">Settings</span>
+                <span class="arrow">
+                  <i class="ti-angle-right"></i>
+                </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="nav-item dropdown">
+                  <a href="javascript:void(0);">
+                    <span>Wordcloud Stop Words</span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="javascript:void(0);">
+                    <span>Users</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="{% url 'logout' %}">
+                <span class="icon-holder">
+                  <i class="ti-power-off" style="color:#bf3b2f"></i>
+                </span>
+                <span class="title">Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>

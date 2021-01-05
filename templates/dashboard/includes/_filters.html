@@ -1,0 +1,91 @@
+{% load i18n %}
+{% load materializecss %}
+{% load static %}
+
+<link href="{% static 'assets/css/filter.css' %}" rel="stylesheet">
+
+<div class="card">
+  <form method="get">
+    <div class="card-content">
+      <div class="col s12">
+        <span class="card-title">{% trans 'Filters' context 'Dashboard card title' %}</span>
+        {% if filter.get_summary_message %}
+          {{ filter.get_summary_message }}
+        {% endif %}
+        <span class="collapse-activate hide-on-large-only">
+          <!-- <svg data-src="{% static 'images/filter-icon.svg' %}" /> -->
+          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 76 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve" role="img" data-src="https://api.snovel.in/static/images/filter-icon.svg" class="injected-svg">
+            <g role="presentation">
+              <g id="filter">
+                <path d="M178.5,382.5h102v-51h-102V382.5z M0,76.5v51h459v-51H0z M76.5,255h306v-51h-306V255z"></path>
+              </g>
+            </g>
+            </svg>
+        </span>
+      </div>
+      <div class="col s12 hide-on-large-only chips-container">
+        {% for chip in chips %}
+          <div class="chip">{{ chip.content|safe }} <a href="{{ chip.link }}">×</a></div>
+        {% endfor %}
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="collapse">
+      <div class="card-content card-action wide">
+        <div class="row no-margin">
+          {% for field in filter.form %}
+          
+            
+              {% if field.name == 'sort_by' %}
+              <div class="col s12" style="display: none">
+                <!--Field 'sort_by' is hidden because it is rendered in header.
+                This is required if you want to have sorting to be kept during further filtering.-->
+                <input type="hidden" name="sort_by" value="{% if sort_by %}{{ sort_by }}{% endif %}" disabled>
+              </div>
+              {% else %}
+              <div class="col s12">
+
+                {{ field|materializecss }}
+              </div>
+              {% endif %}
+            
+          {% endfor %}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      
+      <div class="card-action">
+        <div class="right-align">
+          <div class="col s12">
+            {% if filter.is_bound_unsorted %}
+              <a href="." class="clear-filters btn-flat waves-effect">
+                {% trans 'Clear' context 'Category page filters' %}
+              </a>
+            {% endif %}
+            {% if filter.get_summary_message %}
+              <button class="btn-flat waves-effect" type="submit">
+                {% trans 'Filter' context 'Category price filter' %}
+              </button>
+            {% endif %}
+            
+            
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>
+
+
+<script>
+$('.collapse-activate').on('click', (e) => {
+  const $collapsibleCard = $('.collapse');
+  if ($collapsibleCard.hasClass('collapsed')) {
+    $collapsibleCard.removeClass('collapsed');
+  } else {
+    $collapsibleCard.addClass('collapsed');
+  }
+});
+</script>

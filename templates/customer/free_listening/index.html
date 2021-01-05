@@ -1,0 +1,607 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer Report {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'assets/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/css/free_listen.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/css/vendor/select2/select2.min.css' %}">
+
+<style>
+
+    .select2-selection__choice_rp{
+        background-color: #fff;
+        border: 1px solid #bf3b2f;
+        border-radius: 4px;
+        cursor: default;
+        float: left;
+        margin-right: 5px;
+        margin-top: 5px;
+        padding: 0 5px;
+    }
+    .select2-selection__choice__remove_rp{
+        border-radius: 14px;
+        background-color: #000;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        padding-left: 1px;
+        vertical-align: middle;
+        font-size: larger;
+    }
+    .select2-results__option::before {
+        content: "";
+        display: inline-block;
+        position: relative;
+        height: 20px;
+        width: 20px;
+        border: 2px solid #e9e9e9;
+        border-radius: 4px;
+        background-color: #fff;
+        margin-right: 20px;
+        vertical-align: middle;
+    }
+    .select2-container {
+        min-width: 250px !important;
+        margin-top: 10px;
+    }
+
+    .select2-container .select2-selection--multiple{
+        min-height: 90px !important;
+    }
+
+    .label {
+        display: inline-block;
+        width: 10em;
+        margin-right: .5em;
+        /* padding-top: 1.5em; */
+        min-width: 247px !important;
+    }
+
+    .card-body{
+        padding: 0.25rem !important;
+    }
+
+    .chart-deck{
+        height: 320px;
+        margin-top: 20px;
+    }
+
+    .charts{
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    .chart-title{
+        width: 77%;
+        text-align: center;
+        margin: 20px 16px 0px 66px;
+        color: #000; 
+        font-size:18px;
+        font-family: Arial !important;
+        font-weight: bold;
+    }
+
+    .chart-div{
+        padding-top: 20px;
+    }
+
+    .btn{
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+    }
+
+    .chart-head{
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+    }
+    
+    .text-red{
+        color: red;
+        text-align: center;
+        width: 100%; 
+        display: none;
+    }
+
+    .select2-container .select2-selection {
+        height: 60px;
+        overflow: scroll;
+        overflow-x: hidden;
+        /* overflow-y: hidden; */
+        scrollbar-width: none;
+    } 
+    ::-webkit-scrollbar {
+        width: 0px;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+    /* Optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
+
+    svg > g > g:last-child { pointer-events: none }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="filters">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-deck">
+                        <div class="card" style="width:400px; float:left; margin-left:5px; margin-right:5px;">
+                            <!-- <div class="card-header">Location</div> -->
+                            <div class="card-body chart-head">
+                                <form id="editFilterForm" method="POST" enctype="multipart/form-data" autocomplete="off">
+                                {% csrf_token %}
+                                    <!-- countries -->
+                                    
+                                    <label style="margin-left:20px;" for="SelectOEM" class="label">Countries
+                                    
+                                    <select id="countries" name="countries" class="js-select2" multiple="multiple" autocomplete="off">
+                                    </select>
+                                    
+                                    </label>
+                                    
+
+                                    <!-- cities -->
+                                    <label for="SelectOEM" class="label">Cities
+                                    <select id="cities" name="cities" class="js-select2" multiple="multiple" autocomplete="off">
+                                    </select></label>
+
+                                    <!-- hashtag -->
+                                    <label for="SelectOEM" class="label">Hashtags
+                                    <select id="hashtag" name="hashtag" class="js-select2" multiple="multiple" autocomplete="off">
+                                    </select></label>
+
+                                    <!-- cultures -->
+                                    <label for="SelectOEM" class="label">Cultures
+                                    <select id="culture" name="culture" class="js-select2" multiple="multiple" autocomplete="off">
+                                    </select></label>
+
+                                    <button type="submit" class="btn btn-outline-primary" id="go-btn" value="Validate">Go</button>
+                                    <div><label class="text-red"></label></div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+{% if no_data %}
+
+    <div class="charts">
+        <div class="d-flex justify-content-center">
+            <div class="row" style="width: 100%;">
+                <div class="col-md-6">
+                    <div id='brand_div1' class="chart-head">
+                        <div class="card-deck chart-deck">
+                            <div class="card chart-card">
+                                    {% if not first_report_empty %}
+                                        <h3 class="chart-title">Hashtag Comments By Location</h3>
+                                        <div id="chart_div_1" class="chart-div"></div>
+                                        
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div id='brand_div2' class="chart-head">
+                        <div class="card-deck chart-deck">
+                            <div class="card chart-card">
+                                    {% if not secone_report_empty %}
+                                        <h3 class="chart-title">Location Wise Culture Distribution</h3>
+                                        <div id="chart_div_2" class="chart-div"></div>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-center">
+
+
+            <div class="row" style="width: 100%;">
+            
+                <!-- <div class="col-md-6">
+                    <div id='brand_div3'>
+                        <div class="card-deck chart-deck">
+                            <div class="card chart-card">
+                                    {% if not third_report_empty %}
+                                        <h3 class="chart-title">Location Wise Sentiment Comments  For Selected Hashtag</h3>
+                                        <div id="chart_div_3" class=""></div>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                
+                <div class="col-md-6">
+                    <div id='brand_div3' class="chart-head">
+                        <div class="card-deck chart-deck">
+                            <div class="card chart-card">
+                                    {% if not third_report_empty %}
+                                        <h3 class="chart-title">Location Wise Sentiment Comments  For Selected Hashtag</h3>
+                                        <div id="chart_div_3" class=""></div>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="col-md-6">
+                    <div id='brand_div4' class="chart-head">
+                        <div class="card-deck chart-deck">
+                            <div class="card chart-card">
+                                    {% if not forth_report_empty %}
+                                        <h3 class="chart-title">Culture Wise Hashtag Usage</h3>
+                                        <div id="chart_div_4" class="chart-div"></div>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% else %}
+<div style="width: 100%;  text-align:center;margin-top:20px;">
+    <p>Sorry! There's no data to be displayed here.</p>
+</div>
+
+
+{% endif %}
+
+<script src="{% static 'assets/select2.min.js' %}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+
+    $.ajax({
+        type : "GET",
+        url:"/customer/get-filters/",
+        success : function(result){
+            if (result.cities){
+                result.cities.forEach(function(city) {
+                var newOption = new Option(city.text, city.id, true, true);
+                $("#cities").append(newOption).trigger('change');
+                });
+            }
+
+            if (result.countries){
+                result.countries.forEach(function(country) {
+                var newOption = new Option(country.text, country.id, true, true);
+                $("#countries").append(newOption).trigger('change');
+                });
+            }
+
+            if (result.hashtags){
+                result.hashtags.forEach(function(hashtag) {
+                var newOption = new Option(hashtag.text, hashtag.id, true, true);
+                $("#hashtag").append(newOption).trigger('change');
+                });
+            }
+
+            if (result.cultures){
+                result.cultures.forEach(function(culture) {
+                var newOption = new Option(culture.text, culture.id, true, true);
+                $("#culture").append(newOption).trigger('change');
+                });
+            }
+
+        }
+
+    
+    });
+
+
+
+    $("#go-btn").click(function(){
+        // console.log($("#chart_div_1").val());
+        var errormessage1    = "";
+        var errormessage2    = "";
+        var errormessage3    = "";
+        var errormessage4    = "";
+        $('#countries').each(function(){
+        var countries        = $(this).val();
+        
+        console.log(countries.length);
+        if (countries.length == 0)
+            errormessage1 = "Please select country";
+        });
+
+        $('#cities').each(function(){
+        var cities        = $(this).val();
+        // var errormessage2    = "";
+        console.log(cities.length);
+        if (cities.length == 0)
+            errormessage2 = "Please select city";
+        });
+
+        $('#hashtag').each(function(){
+        var hashtag        = $(this).val();
+        // var errormessage3    = "";
+        console.log(hashtag.length);
+        if (hashtag.length == 0)
+            errormessage3 = "Please select hashtag";
+        });
+
+        $('#culture').each(function(){
+        var culture        = $(this).val();
+        // var errormessage4    = "";
+        console.log(culture.length);
+        if (culture.length == 0)
+            errormessage4 = "Please select culture";
+        });
+
+        if (errormessage1 && errormessage2 && errormessage3 && errormessage4){
+            console.log("------------if---------------");
+            var erromsg = "Please select options";
+            $(".text-red").css("display", "block");
+            $(".text-red").text(erromsg);
+
+        }
+        
+    });
+
+
+    $('#countries').select2({
+        placeholder: "Search for countries",
+        minimumInputLength: 3,
+        ajax:{
+            url: "/customer/get-countries/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+            return {
+                results: data
+            };
+            },
+        cache: false
+        }
+    });
+
+    $('#cities').select2({
+        placeholder: "Search for cities",
+        minimumInputLength: 3,
+        ajax:{
+            url: "/customer/get-cities/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+            return {
+                results: data
+            };
+            },
+        cache: false
+        }
+    });
+
+
+    $('#hashtag').select2({
+        placeholder: "Search for hashtags",
+        minimumInputLength: 3,
+        ajax:{
+            url: "/customer/get-hashtags/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+            return {
+                results: data
+            };
+            },
+        cache: false
+        }
+    });
+
+    $('#culture').select2({
+        placeholder: "Search for cultures",
+        minimumInputLength: 3,
+        ajax:{
+            url: "/customer/get-nationality/",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+            return {
+                results: data
+            };
+            },
+        cache: false
+        }
+    });
+});
+</script>
+
+<script>
+    var is_report1 = "{{first_report_empty}}";
+    var is_report2 = "{{secone_report_empty}}";
+    var is_report3 = "{{third_report_empty}}";
+    var is_report4 = "{{forth_report_empty}}";
+
+    console.log(is_report1);
+    console.log(typeof(is_report1));
+    console.log(is_report2);
+    console.log(is_report3);
+    console.log(is_report4);
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+     
+    if ( is_report1 == "False" ){
+        
+  
+        var data = google.visualization.arrayToDataTable({{ dataList | safe }});
+
+        var options = {
+        
+        // title: 'Hashtag Comments By Location',
+        height: 200,
+        width: 522,
+        chartArea: {width: '80%', left:100},
+        // chartArea: {
+        //     left: 80,
+        //     top: 10,
+        //     width: '90%',
+        //     height: '60%'
+        // },
+        isStacked: true,
+        hAxis: {
+            minValue: 0,
+            maxValue: 100,
+            textStyle : {
+                fontSize: 15 
+            }
+        },
+        vAxis:{
+            textStyle:{
+                fontSize: 15
+            }
+        },
+       
+        legend: {position: 'bottom', maxLines: 4,
+        textStyle : {
+                fontSize: 15 
+            },
+        },
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div_1'));
+        chart.draw(data, options);
+    }
+
+
+    if ( is_report2 == "False" ){
+        var data2 = google.visualization.arrayToDataTable({{ loc_dataList | safe }});
+
+        var options2 = {
+            // title: 'Location Wise Culture Distribution',
+            height: 200,
+            width: 522,
+            chartArea: {width: '80%', left:100},
+            isStacked: 'percent',
+            hAxis: {
+                minValue: 0,
+                ticks: [0, .3, .6, .9, 1],
+                textStyle : {
+                    fontSize: 15 
+                }
+            },
+            vAxis: {
+            textStyle : {
+                fontSize: 15
+            },
+            },
+            legend: {position: 'bottom', maxLines: 4,
+            textStyle : {
+                fontSize: 15 
+            },},
+        };
+
+        var chart2 = new google.visualization.BarChart(document.getElementById('chart_div_2'));
+        chart2.draw(data2, options2);
+    }
+    
+
+    if ( is_report3 == "False" ){
+        
+        var data3 = google.visualization.arrayToDataTable({{ sentiment_dataList | safe }});
+        // for (var i = 0; i < data3.getNumberOfRows(); i++) {
+        //     console.log(data3.getValue(i, 1));
+        //     console.log(typeof(String(data3.getValue(i, 1))));
+        //     if (String(data3.getValue(i, 1)) == '0'){
+        //         data3.setValue(i, 1, null);
+        //         data3.getValue(i, 1);
+        //     }
+        // }
+        var options3 = {
+        // title: 'Location Wise Sentiment Comments  For Selected Hashtag',
+        height: 200,
+        width: 522,
+        chartArea: {width: '80%', left:100},
+        isStacked: true,
+        hAxis: {
+            minValue: 0,
+            maxValue: 100,
+            textStyle : {
+                fontSize: 15
+            },
+         
+            gridlines : {
+                count : 12
+            },
+            maxAlternation: 1, // use a maximum of 1 line of labels
+            showTextEvery: 1, // show every label if possible
+            minTextSpacing: 8 // minimum spacing between adjacent labels, in pixels
+        },
+        vAxis: {
+            minValue: 0,
+            textStyle : {
+                    fontSize: 15 
+                },
+                
+        },
+        legend: {position: 'bottom', maxLines: 5,
+        textStyle : {
+                fontSize: 15 
+            },
+        },
+        };
+
+        var chart3 = new google.visualization.ColumnChart(document.getElementById('chart_div_3'));
+        chart3.draw(data3, options3);
+    }
+
+    if ( is_report4 == "False" ) {
+        var data4 = google.visualization.arrayToDataTable({{ culture_dataList | safe }});
+
+        var options4 = {
+        // title: 'Culture Wise Hashtag Usage',
+        height: 200,
+        width: 522,
+        chartArea: {width: '80%', left:100},
+        isStacked: true,
+        hAxis: {
+            minValue: 0,
+            maxValue: 100,
+            textStyle : {
+                fontSize: 15 
+            },
+           
+            gridlines : {
+                count : 12
+            },
+            maxAlternation: 1, // use a maximum of 1 line of labels
+            showTextEvery: 1, // show every label if possible
+            minTextSpacing: 8 // minimum spacing between adjacent labels, in pixels
+            },
+        vAxis: {
+        textStyle : {
+                fontSize: 15 
+            },
+        },
+        legend: {position: 'bottom', maxLines: 5,
+        textStyle : {
+                fontSize: 15 
+            },
+        },
+        };
+
+        var chart4 = new google.visualization.ColumnChart(document.getElementById('chart_div_4'));
+        chart4.draw(data4, options4);
+    }
+
+  }
+</script>
+{% endblock %}

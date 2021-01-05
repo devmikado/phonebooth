@@ -1,0 +1,87 @@
+{% extends 'layouts/base-fullscreen.html' %}
+{% load i18n static %}
+{% load static %}
+
+{% block title %} Login {% endblock title %}
+
+{% block stylesheets %}
+<style>
+  #bg {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+
+    /* Preserve aspet ratio */
+    min-width: 77%;
+    min-height: 77%;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv" style='background-color: #f8f8f8'>
+
+  <!-- <img src="/media/back-logo.jpg"  id="bg" alt=""> -->
+  <div class="pos-a centerXY">
+    <div class="bgc-white bdrs-50p pos-r" style="width: 512px; height: 512px;">
+      <!-- <img class="pos-a centerXY" src="{% static 'assets/static/images/logo.png' %}" alt="logo" width="250"> -->
+      <img class="pos-a centerXY" src="/media/logo.png" alt="logo" width="250">
+    </div>
+  </div>
+</div>
+<div class="col-12 col-md-4 peer pX-40 pY-80 h-100 bgc-white scrollable pos-r" style="min-width: 320px;">
+
+  <h2 class="fw-300 c-grey-900 mB-40" align="center"> PhoneBooth Login </h2>
+
+  <form method="post" action="">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label class="text-normal text-dark required">Email</label>
+      {{ form.email }}
+    </div>
+
+    <div class="form-group">
+      <label class="text-normal text-dark required">Password</label>
+      {{ form.password }}
+    </div>
+
+    {% if msg %}
+      <h4 class="fw-100 c-red-900 mB-40" style="font-size:14px; text-align:center;">{{ msg | safe }}</h4>
+    {% endif %}
+
+    
+    
+
+
+    <div class="form-group">
+      <div class="peers ai-c jc-sb fxw-nw">
+        <div class="peer" style="width:100%">
+          <button type="submit" class="btn btn-outline-primary btn-lg btn-block">Login</button>
+        </div>
+      </div>
+    </div>
+
+    {% url 'password_reset' as password_reset_url %}
+    {% if password_reset_url %}
+      <div class="password-reset-link" style="text-align: center;">
+        <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+      </div>
+      
+    {% endif %}
+
+
+
+    <div style="text-align: center;" class="text-small font-weight-semibold">Doesn't have an account yet?
+      <a href={% url 'register' %} >Sign Up</a>
+    </div>
+    
+    
+  </form>
+
+</div>
+</div>
+
+{% endblock content %}

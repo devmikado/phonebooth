@@ -1,0 +1,322 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
+    <title>
+      PhoneBooth - {% block title %}{% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Muli" />
+
+    <style>
+      html{
+        scrollbar-width: none;
+      }
+
+      .app, pre {
+          /* font-family: Serif !important; */
+          /* font-weight: 700; */
+          /* font-family: Arial !important;
+          font-size: 15px;
+          font-style: normal;
+          font-variant: normal;
+          line-height: 1.5; */
+
+
+          line-height: 1.5;
+          /* font-family: "Roboto", sans-serif; */
+          font-family: Arial !important;
+          font-weight: normal;
+          color: rgba(0,0,0,0.87);
+      }
+
+      .btn{
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+      }
+
+      #loader {
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        visibility: visible;
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        background: #fff;
+        z-index: 90000;
+      }
+
+      #loader.fadeOut {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+        background-color: #333;
+        border-radius: 100%;
+        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+        animation: sk-scaleout 1.0s infinite ease-in-out;
+      }
+
+      .swal-text{
+        font-family: "Roboto", sans-serif !important;
+      }
+
+      .swal-button{
+        background-color: #fff !important;
+        color: #60824d !important;
+        font-family: "Roboto", sans-serif !important;
+        border: 1px #a8c996 solid !important;
+        font-weight: 599 !important;
+      }
+
+      @-webkit-keyframes sk-scaleout {
+        0% { -webkit-transform: scale(0) }
+        100% {
+          -webkit-transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes sk-scaleout {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        } 100% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+      .special-img
+      {
+          position: relative;
+          top: -5px;
+          float: left;
+          left: -5px;
+      }
+
+      .required:after {
+        content:" *";
+        color: red;
+      }
+
+      .footer{
+        color: #0c7bbe !important;
+        text-decoration: none !important;
+      }
+    </style>
+    
+
+    <!-- Specific Page CSS goes HERE -->
+    {% block stylesheets %}
+    
+      <link href="{% static 'assets/style.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
+      <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+    {% endblock stylesheets %}
+    <!-- <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script> -->
+  </head>
+  <body class="app">
+    <!-- @TOC -->
+    <!-- =================================================== -->
+    <!--
+      + @Page Loader
+      + @App Content
+          - #Left Sidebar
+              > $Sidebar Header
+              > $Sidebar Menu
+
+          - #Main
+              > $Topbar
+              > $App Screen Content
+    -->
+
+    <!-- @Page Loader -->
+    <!-- =================================================== -->
+    <div id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    
+
+    <script>
+      window.addEventListener('load', function load() {
+        const loader = document.getElementById('loader');
+        setTimeout(function() {
+          loader.classList.add('fadeOut');
+        }, 300);
+      });
+    </script>
+
+    <!-- @App Content -->
+    <!-- =================================================== -->
+    <div>
+      
+      {% if request.user.is_superuser %}
+        {% include 'nationality/includes/sidenav.html' %}
+      {% else %}
+        {% include 'customer/includes/sidenav.html' %}
+      {% endif %}
+
+      <!-- #Main ============================ -->
+      <div class="page-container">
+
+        {% include 'customer/includes/navigation.html' %}
+        
+
+       <!-- ### $App Screen Content ### -->
+      <main class="main-content bgc-grey-100">
+          
+        <div id="mainContent">
+          <!-- {% if messages %}
+                  {% for message in messages %}
+                      <div class="alert alert-{{ message.tags }}" role="alert">{{ message|safe }}</div>
+                  {% endfor %}
+          {% endif %} -->
+          {% if messages %}
+          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script src="{% static 'assets/jquery191.js' %}"></script>
+            <link rel="stylesheet" type="text/css" href="{% static 'assets/toastr.min.css' %}" media="all">
+            <script src="{% static 'assets/toastr.min.js' %}"></script>
+            <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% for message in messages %}
+              <!-- swal("Good job!", "You clicked the button!", "success"); -->
+              
+                <script type=text/javascript>
+                console.log("==================================>")
+                console.log('{{ message.tags }}')
+                swal("", "{{ message }}", '{{ message.tags }}');
+                // toastr.{{ message.tags }}('{{ message }}')
+                </script>
+                
+              {% endfor %}
+          {% endif %}
+
+          {% block content %}{% endblock content %}  
+        
+        </div>
+      </main>
+
+      {% include 'customer/includes/footer.html' %}
+
+        
+        
+
+    </div>
+
+    <div class="modal fade" id="modalconfirm" tabindex="-1" role="dialog" aria-labelledby="modalconfirmLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <!--  -->
+                  <h4 class="modal-title" id="myModalLabel">  </h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body"> {% csrf_token %}
+  
+              </div>
+              
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div>
+
+
+    
+    
+    <!-- Specific Page JS goes HERE -->
+    {% block javascripts %}
+
+
+      <script src="{% static 'assets/jquery-3.4.1.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/jquery.cookie.js' %}"></script>
+      <script src="{% static 'assets/select2.min.js' %}"></script>
+      <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+      <script src="{% static 'assets/bootstrap.min.js' %}"></script>
+      
+      <!-- Include Bootstrap Datepicker -->
+      <link rel="stylesheet" href="{% static 'assets/bootstrap-datepicker.min.css' %}" />
+      <script src="{% static 'assets/bootstrap-datepicker.min.js' %}"></script>
+
+
+      <script type="text/javascript" src="{% static 'assets/vendor.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/bundle.js' %}"></script>
+      <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+      <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+      <!-- Include Bootstrap Datepicker -->
+      <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+     
+
+      <script>
+      
+      
+      function Autocomplete(value, id, suggestion_id){
+          var temp = {'X-CSRFToken': $.cookie('csrftoken')}
+          if (value){
+              var data = {"req": value}
+                  $.ajax({
+                  headers: temp,
+                  url:"/api/auto-complete/",
+                  type:"POST",
+                  data: data,
+                  success: function(data){
+                      if(data.status == 1)
+                      {   
+                          $("#"+suggestion_id).css("display", "block");
+                          // $("#"+id).val(data.short_message);
+                          $('.suggestion-box span').remove(); 
+                          
+                          data.emoji.forEach(e =>{
+                              $('#'+suggestion_id).append("<span class='badge badge-pill badge-secondary' style='margin-right: 2px; font-size: 14px; cursor:pointer;' onclick='emoji(" + '"' + e + '"' +','+'"' + id + '"'+ ")' >"+e+"</span>")
+                          });
+
+                          data.message.forEach(message => {
+                              var str = message.replace(/[']+/g, '`');
+                              $('#'+suggestion_id).append("<span class='badge badge-pill badge-secondary' style='margin-right: 2px; font-size: 12px; cursor:pointer;' onclick='hello(" + '"' + str + '"' +','+'"' + id + '"'+ ")' >"+str+"</span>");
+                          });
+                      }
+                      if(data.status == 2)
+                      {
+                          alert(data.message)
+                          // $("#"+id).val(data.message);
+                      }
+                      // window.location.href=""
+                      // $("#loaderAjax").hide();
+                  },
+                  error:function(data) {
+                      alert("something went wrong, Please try again ..!")
+                      $("#loaderAjax").hide();
+                  }
+              });
+          }
+      }
+
+      </script>
+
+
+      
+
+
+
+
+
+
+    {% endblock javascripts %}
+
+  
+
+  </body>
+
+</html>

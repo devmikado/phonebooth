@@ -1,0 +1,274 @@
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    <!-- ### $Topbar ### -->
+    <div class="header navbar">
+      <div class="header-container">
+        <ul class="nav-left">
+          <li>
+             <a id="sidebar-toggle" class="sidebar-toggle" href="javascript:void(0);">
+              <i><img src="/media/icons/lines-arrow.png"/></i>
+            </a>
+          </li>
+          <!--<li class="search-box">-->
+            <!--<a class="search-toggle no-pdd-right" href="javascript:void(0);">-->
+              <!--<i class="search-icon ti-search pdd-right-10"></i>-->
+              <!--<i class="search-icon-close ti-close pdd-right-10"></i>-->
+            <!--</a>-->
+          <!--</li>-->
+          <!--<li class="search-input">-->
+            <!--<input class="form-control" type="text" placeholder="Search...">-->
+          <!--</li>-->
+        </ul>
+        <ul class="nav-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="/media/download.jpeg"  width="30px" class="profile-image img-circle"> {{ request.user.email }} <b class="carets"></b></a>
+              <ul class="dropdown-menu">
+                  <li><a href="{% url 'customer:user-profile' request.user.id %}"><i class="ti-user"  style="color:#bf3b2f"></i> My Profiles</a></li>
+                  <li class="divider"></li>
+                  <li><a href="{% url 'logout' %}"><i class="ti-power-off"  style="color:#bf3b2f"></i> Logout</a></li>
+              </ul>
+          </li>
+        </ul>
+<!--          <li class="nav-item dropdown">-->
+<!--              <a class="dropdown-toggle" href="javascript:void(0)">-->
+<!--                <span class="icon-holder">-->
+<!--                    <i class="ti-user"  style="color:#bf3b2f"></i>-->
+<!--&lt;!&ndash;                    <i><img src="/media/download.jpeg" width="8%"/></i>&ndash;&gt;-->
+<!--                </span>-->
+<!--                <span class="title">{{ request.user.email }}</span>-->
+<!--              </a>-->
+<!--              <ul class="dropdown-menu">-->
+<!--                <li class="nav-item dropdown">-->
+<!--                  <a href="{% url 'customer:customer-dashboard' %}">-->
+<!--                    <span>My Profiles</span>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item dropdown">-->
+<!--                  <a class="dropdown-toggle" href="{% url 'logout' %}">-->
+<!--                    <span class="icon-holder">-->
+<!--                      <i class="ti-power-off" style="color:#bf3b2f"></i>-->
+<!--                    </span>-->
+<!--                    <span class="title">Logout</span>-->
+<!--                  </a>s-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </li>-->
+
+<!--          <li>-->
+<!--            <a href="/">-->
+<!--              <i class="ti-angle-down"></i>-->
+<!--              <img src="/media/logo.png" height="20">-->
+<!--            </a>-->
+<!--          </li>-->
+
+          <!--<li class="notifications dropdown">-->
+            <!--<span class="counter bgc-red">3</span>-->
+            <!--<a href="" class="dropdown-toggle no-after" data-toggle="dropdown">-->
+              <!--<i class="ti-bell"></i>-->
+            <!--</a>-->
+
+            <!--<ul class="dropdown-menu">-->
+              <!--<li class="pX-20 pY-15 bdB">-->
+                <!--<i class="ti-bell pR-10"></i>-->
+                <!--<span class="fsz-sm fw-600 c-grey-900">Notifications</span>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--<ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">-->
+                  <!--<li>-->
+                    <!--<a href="" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">-->
+                      <!--<div class="peer mR-15">-->
+                        <!--<span class="icon-holder">-->
+                  <!--<i class="c-brown-500 ti-twitter-alt"></i>-->
+                <!--</span>-->
+                      <!--</div>-->
+                      <!--<div class="peer peer-greed">-->
+                        <!--<span>-->
+                          <!--<span class="fw-500">10000</span>-->
+                          <!--<span class="c-grey-600"> posts has been <span class="text-dark">performed </span>-->
+                          <!--</span>-->
+                        <!--</span>-->
+                        <!--<p class="m-0">-->
+                          <!--<small class="fsz-xs">5 mins ago</small>-->
+                        <!--</p>-->
+                      <!--</div>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a href="" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">-->
+                      <!--<div class="peer mR-15">-->
+                        <!--<span class="icon-holder">-->
+                  <!--<i class="c-brown-500 ti-twitter-alt"></i>-->
+                <!--</span>-->
+                      <!--</div>-->
+                      <!--<div class="peer peer-greed">-->
+                        <!--<span>-->
+                          <!--<span class="fw-500">3500</span>-->
+                          <!--<span class="c-grey-600"> posts has been <span class="text-dark">performed </span>-->
+                          <!--</span>-->
+                        <!--</span>-->
+                        <!--<p class="m-0">-->
+                          <!--<small class="fsz-xs">60 mins ago</small>-->
+                        <!--</p>-->
+                      <!--</div>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a href="" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">-->
+                      <!--<div class="peer mR-15">-->
+                        <!--<span class="icon-holder">-->
+                  <!--<i class="c-brown-500 ti-twitter-alt"></i>-->
+                <!--</span>-->
+                      <!--</div>-->
+                      <!--<div class="peer peer-greed">-->
+                        <!--<span>-->
+                          <!--<span class="fw-500">10000</span>-->
+                          <!--<span class="c-grey-600"> posts has been <span class="text-dark">performed </span>-->
+                          <!--</span>-->
+                        <!--</span>-->
+                        <!--<p class="m-0">-->
+                          <!--<small class="fsz-xs">5 mins ago</small>-->
+                        <!--</p>-->
+                      <!--</div>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                <!--</ul>-->
+              <!--</li>-->
+              <!--<li class="pX-20 pY-15 ta-c bdT">-->
+                <!--<span>-->
+                  <!--<a href="javascript:void(0)" class="c-grey-600 cH-blue fsz-sm td-n">View All Notifications <i class="ti-angle-right fsz-xs mL-10"></i></a>-->
+                <!--</span>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</li>-->
+          <!--<li class="notifications dropdown">-->
+            <!--<span class="counter bgc-blue">3</span>-->
+            <!--<a href="" class="dropdown-toggle no-after" data-toggle="dropdown">-->
+              <!--<i class="ti-email"></i>-->
+            <!--</a>-->
+
+            <!--<ul class="dropdown-menu">-->
+              <!--<li class="pX-20 pY-15 bdB">-->
+                <!--<i class="ti-email pR-10"></i>-->
+                <!--<span class="fsz-sm fw-600 c-grey-900">Emails</span>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--<ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">-->
+                  <!--<li>-->
+                    <!--<a href="" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">-->
+                      <!--<div class="peer mR-15">-->
+                        <!--<img class="w-3r bdrs-50p" src="https://randomuser.me/api/portraits/men/1.jpg" alt="">-->
+                      <!--</div>-->
+                      <!--<div class="peer peer-greed">-->
+                        <!--<div>-->
+                          <!--<div class="peers jc-sb fxw-nw mB-5">-->
+                            <!--<div class="peer">-->
+                              <!--<p class="fw-500 mB-0">John Doe</p>-->
+                            <!--</div>-->
+                            <!--<div class="peer">-->
+                              <!--<small class="fsz-xs">5 mins ago</small>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                          <!--<span class="c-grey-600 fsz-sm">-->
+                            <!--Want to create your own customized data generator for your app...-->
+                          <!--</span>-->
+                        <!--</div>-->
+                      <!--</div>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a href="" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">-->
+                      <!--<div class="peer mR-15">-->
+                        <!--<img class="w-3r bdrs-50p" src="https://randomuser.me/api/portraits/men/2.jpg" alt="">-->
+                      <!--</div>-->
+                      <!--<div class="peer peer-greed">-->
+                        <!--<div>-->
+                          <!--<div class="peers jc-sb fxw-nw mB-5">-->
+                            <!--<div class="peer">-->
+                              <!--<p class="fw-500 mB-0">Moo Doe</p>-->
+                            <!--</div>-->
+                            <!--<div class="peer">-->
+                              <!--<small class="fsz-xs">15 mins ago</small>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                          <!--<span class="c-grey-600 fsz-sm">-->
+                            <!--Want to create your own customized data generator for your app...-->
+                          <!--</span>-->
+                        <!--</div>-->
+                      <!--</div>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a href="" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">-->
+                      <!--<div class="peer mR-15">-->
+                        <!--<img class="w-3r bdrs-50p" src="https://randomuser.me/api/portraits/men/3.jpg" alt="">-->
+                      <!--</div>-->
+                      <!--<div class="peer peer-greed">-->
+                        <!--<div>-->
+                          <!--<div class="peers jc-sb fxw-nw mB-5">-->
+                            <!--<div class="peer">-->
+                              <!--<p class="fw-500 mB-0">Lee Doe</p>-->
+                            <!--</div>-->
+                            <!--<div class="peer">-->
+                              <!--<small class="fsz-xs">25 mins ago</small>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                          <!--<span class="c-grey-600 fsz-sm">-->
+                            <!--Want to create your own customized data generator for your app...-->
+                          <!--</span>-->
+                        <!--</div>-->
+                      <!--</div>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                <!--</ul>-->
+              <!--</li>-->
+              <!--<li class="pX-20 pY-15 ta-c bdT">-->
+                <!--<span>-->
+                  <!--<a href="/email.html" class="c-grey-600 cH-blue fsz-sm td-n">View All Email <i class="fs-xs ti-angle-right mL-10"></i></a>-->
+                <!--</span>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</li>-->
+          <!--<li class="dropdown">-->
+            <!--<a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">-->
+              <!--<div class="peer mR-10">-->
+                <!--<span class="icon-holder">-->
+                  <!--<i class="c-brown-500 ti-user"></i>-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div class="peer">-->
+                <!--<span class="fsz-sm c-grey-900">-->
+                  <!--{{ request.user.user }}-->
+                <!--</span>-->
+              <!--</div>-->
+            <!--</a>-->
+            <!--<ul class="dropdown-menu fsz-sm">-->
+              <!--<li>-->
+                <!--<a href="javascript:void(0)" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">-->
+                  <!--<i class="ti-settings mR-10"></i>-->
+                  <!--<span>Setting</span>-->
+                <!--</a>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--<a href="javascript:void(0)" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">-->
+                  <!--<i class="ti-user mR-10"></i>-->
+                  <!--<span>Profile</span>-->
+                <!--</a>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--<a href="javascript:void(0)" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">-->
+                  <!--<i class="ti-email mR-10"></i>-->
+                  <!--<span>Messages</span>-->
+                <!--</a>-->
+              <!--</li>-->
+              <!--<li role="separator" class="divider"></li>-->
+              <!--<li>-->
+                <!--<a href={% url 'logout' %} class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">-->
+                  <!--<i class="ti-power-off mR-10"></i>-->
+                  <!--<span>Logout</span>-->
+                <!--</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</li>-->
+<!--        </ul>-->
+      </div>
+    </div>

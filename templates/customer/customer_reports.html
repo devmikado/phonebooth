@@ -1,0 +1,229 @@
+
+{% extends 'layouts/base.html' %}
+
+{% block title %} Customer List {% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    .navbar{
+        margin-bottom: 0px;
+    }
+    .main-content{
+        padding: 20px !important;
+    }
+    .row .col-sm-4{
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+    .notification {
+      border:Solid 1px #555;
+      color: black;
+      text-decoration: none;
+      padding: 5px 6px;
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+    }
+
+    .notification:hover {
+      #background: red;
+    }
+
+    .notification .badge {
+      border: Solid 1px #555;
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      padding: 5px 10px;
+      border-radius: 50%;
+      background: red;
+      color: white;
+    }
+  </style>
+<h1>Customer Reports</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Unanswered Messages</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Facebook</span>
+                      <span class="badge">3</span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Instagram</span>
+                      <span class="badge">0</span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Twitter</span>
+                      <span class="badge">56</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Other</span>
+                      <span class="badge">0</span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Other</span>
+                      <span class="badge">0</span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Other</span>
+                      <span class="badge">0</span>
+                    </a>
+                </div>
+             </div>
+        </div>
+        <div class="panel-footer">Click on badge to view in detail</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Negative Messages</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Facebook</span>
+                      <span class="badge">5</span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Instagram</span>
+                      <span class="badge">2</span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Twitter</span>
+                      <span class="badge">1</span>
+                    </a>
+                </div>
+            </div>
+          <div class="row">
+            <div class="col-sm-4">
+                <a href="#" class="notification col-sm-12">
+                  <span>Other</span>
+                  <span class="badge">0</span>
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="notification col-sm-12">
+                  <span>Other</span>
+                  <span class="badge">0</span>
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="notification col-sm-12">
+                  <span>Other</span>
+                  <span class="badge">0</span>
+                </a>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">Click on badge to view in detail</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Average Sentiment</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Facebook</span>
+                      <span class="badge"></span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Instagram</span>
+                      <span class="badge"></span>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="notification col-sm-12">
+                      <span>Twitter</span>
+                      <span class="badge"></span>
+                    </a>
+                </div>
+            </div>
+          <div class="row">
+            <div class="col-sm-4">
+                <a href="#" class="notification col-sm-12">
+                  <span>Other</span>
+                  <span class="badge"></span>
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="notification col-sm-12">
+                  <span>Other</span>
+                  <span class="badge"></span>
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="notification col-sm-12">
+                  <span>Other</span>
+                  <span class="badge"></span>
+                </a>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">Click on badge to view in detail</div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">New Report Type</div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-footer">Click on badge to view in detail</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">New Report Type</div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+       <div class="panel-footer">Click on badge to view in detail</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">New Report Type</div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+       <div class="panel-footer">Click on badge to view in detail</div>
+      </div>
+    </div>
+  </div>
+</div><br><br>
+
+</body>
+</html>
+{% endblock %}
